@@ -7,3 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('migrate', function () {
     Artisan::call('migrate');
 });
+
+Route::get('', function () {
+    return view('welcome');
+});
