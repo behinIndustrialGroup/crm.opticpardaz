@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function defined;
+use function error_clear_last;
 use function extension_loaded;
 use function get_include_path;
 use function hrtime;
@@ -25,6 +26,7 @@ use function var_export;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -60,15 +62,18 @@ final class TestRunner
      * @throws \PHPUnit\Runner\Exception
      * @throws CodeCoverageException
      * @throws InvalidArgumentException
+     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws UnintentionallyCoveredCodeException
      */
     public function run(TestCase $test): void
     {
         Assert::resetCount();
 
-        $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
+        if ($this->configuration->registerMockObjectsFromTestArgumentsRecursively()) {
+            $test->registerMockObjectsFromTestArgumentsRecursively();
+        }
 
-        $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor(
+        $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
             $test::class,
             $test->name(),
         );
@@ -78,6 +83,8 @@ final class TestRunner
         $incomplete = false;
         $risky      = false;
         $skipped    = false;
+
+        error_clear_last();
 
         if ($this->shouldErrorHandlerBeUsed($test)) {
             ErrorHandler::instance()->enable();
@@ -152,12 +159,12 @@ final class TestRunner
 
             if ($append) {
                 try {
-                    $linesToBeCovered = $codeCoverageMetadataApi->linesToBeCovered(
+                    $linesToBeCovered = (new CodeCoverageMetadataApi)->linesToBeCovered(
                         $test::class,
                         $test->name(),
                     );
 
-                    $linesToBeUsed = $codeCoverageMetadataApi->linesToBeUsed(
+                    $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
                         $test::class,
                         $test->name(),
                     );
@@ -244,6 +251,7 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
      * @throws StaticAnalysisCacheNotConfiguredException
@@ -279,6 +287,7 @@ final class TestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         }
 
+        $exportObjects    = Event\Facade::emitter()->exportsObjects() ? 'true' : 'false';
         $coverage         = CodeCoverage::instance()->isActive() ? 'true' : 'false';
         $linesToBeIgnored = var_export(CodeCoverage::instance()->linesToBeIgnored(), true);
 
@@ -329,6 +338,7 @@ final class TestRunner
             'offsetNanoseconds'              => $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
             'processResultFile'              => $processResultFile,
+            'exportObjects'                  => $exportObjects,
         ];
 
         if (!$runEntireClass) {
@@ -349,26 +359,22 @@ final class TestRunner
      */
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
-        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isCovers()) {
-                return true;
-            }
+        $metadata = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
 
-            if ($metadata->isCoversClass()) {
-                return true;
-            }
+        if ($metadata->isCovers()->isNotEmpty()) {
+            return true;
+        }
 
-            if ($metadata->isCoversMethod()) {
-                return true;
-            }
+        if ($metadata->isCoversClass()->isNotEmpty()) {
+            return true;
+        }
 
-            if ($metadata->isCoversFunction()) {
-                return true;
-            }
+        if ($metadata->isCoversFunction()->isNotEmpty()) {
+            return true;
+        }
 
-            if ($metadata->isCoversNothing()) {
-                return true;
-            }
+        if ($metadata->isCoversNothing()->isNotEmpty()) {
+            return true;
         }
 
         return false;

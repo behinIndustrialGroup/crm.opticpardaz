@@ -38,6 +38,7 @@ function __phpunit_run_isolated_test()
             {offsetSeconds},
             {offsetNanoseconds}
         ),
+        {exportObjects},
     );
 
     require_once '{filename}';

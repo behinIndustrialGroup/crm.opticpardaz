@@ -219,7 +219,6 @@ final class Facade
             self::$testDoxResultPrinter = new TestDoxResultPrinter(
                 self::$printer,
                 $configuration->colors(),
-                $configuration->columns(),
             );
         }
 
