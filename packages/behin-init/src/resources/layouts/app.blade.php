@@ -112,7 +112,6 @@
         </script>
 
         <script src="{{ url('public/behin/behin-js/loader.js')  . '?' . config('app.version') }}"></script>
-        <script src="{{ url('public/behin/behin-js/clearcach.js')  . '?' . config('app.version') }}"></script>
         <script src="{{ url('public/behin/behin-js/scripts.js')  . '?' . config('app.version') }}"></script>
 
         @yield('script')
