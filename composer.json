@@ -25,8 +25,13 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "BehinInit\\": "packages/behin-init/src/"
-        }
+            "BehinInit\\": "packages/behin-init/src/",
+            "BehinUserRoles\\": "packages/behin-user-roles/src/",
+            "UserProfile\\": "packages/behin-user-profile/src/"
+        },
+        "files": [
+            "packages/behin-init/src/app/Helpers/behin-helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

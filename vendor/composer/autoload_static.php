@@ -43,6 +43,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'ce9671a430e4846b44e1c68c7611f9f5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'd634523d799d97a8ab4807b650bf5cea' => __DIR__ . '/..' . '/pestphp/pest-plugin-laravel/src/Autoload.php',
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
+        'cc3b89370d0521642d96c395d46cf11a' => __DIR__ . '/../..' . '/packages/behin-init/src/app/Helpers/behin-helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -58,6 +59,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
+        ),
+        'U' => 
+        array (
+            'UserProfile\\' => 12,
         ),
         'T' => 
         array (
@@ -195,6 +200,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'B' => 
         array (
             'Brick\\Math\\' => 11,
+            'BehinUserRoles\\' => 15,
             'BehinInit\\' => 10,
         ),
         'A' => 
@@ -221,6 +227,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'UserProfile\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-user-profile/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -595,6 +605,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
+        'BehinUserRoles\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-user-roles/src',
+        ),
         'BehinInit\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-init/src',
@@ -626,6 +640,11 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BehinInit\\BehinInitProvider' => __DIR__ . '/../..' . '/packages/behin-init/src/BehinInitProvider.php',
+        'BehinUserRoles\\Controllers\\GetMethodsController' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Controllers/GetMethodsController.php',
+        'BehinUserRoles\\Controllers\\GetRoleController' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Controllers/GetRoleController.php',
+        'BehinUserRoles\\Models\\Method' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/Method.php',
+        'BehinUserRoles\\Models\\Role' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/Role.php',
+        'BehinUserRoles\\UserRolesServiceProvider' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/UserRolesServiceProvider.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',
         'Brick\\Math\\BigNumber' => __DIR__ . '/..' . '/brick/math/src/BigNumber.php',
@@ -6986,6 +7005,12 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Processor' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Processor.php',
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'UserProfile\\Controllers\\ChangePasswordController' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/Controllers/ChangePasswordController.php',
+        'UserProfile\\Controllers\\GetUserAgenciesController' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/Controllers/GetUserAgenciesController.php',
+        'UserProfile\\Controllers\\NationalIdController' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/Controllers/NationalIdController.php',
+        'UserProfile\\Controllers\\UserProfileController' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/Controllers/UserProfileController.php',
+        'UserProfile\\Models\\UserProfile' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/Models/UserProfile.php',
+        'UserProfile\\UserProfileProvider' => __DIR__ . '/../..' . '/packages/behin-user-profile/src/UserProfileProvider.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',

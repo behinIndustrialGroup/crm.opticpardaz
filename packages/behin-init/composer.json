@@ -10,7 +10,10 @@
     "autoload": {
         "psr-4": {
             "BehinInit\\": "src/"
-        }
+        },
+        "files": [
+            "packages/behin-init/src/app/Helpers/behin-helpers.php"
+        ]
     },
     "require": {}
 }
