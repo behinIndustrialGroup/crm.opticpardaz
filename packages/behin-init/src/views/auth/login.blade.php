@@ -4,7 +4,7 @@
 <div class="register-box">
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <img src="https://altfuel.ir/fa/public/logo.png" class="col-sm-12" alt="">
+            <img src="{{ url('public/behin/logo.png') }}" class="col-sm-12" alt="">
         </div>
         <div class="card-body">
             <form action="javascript:void(0)" method="post" id="login-form">
