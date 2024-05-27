@@ -23,7 +23,7 @@ class Access
         if(!Auth::id()){
             return abort(403, 'ابتدا وارد شوید');
         }
-        $route = $request->route()->getName() ? $request->route()->getName() : $request->route()->uri();
+        $route = $request->route()->uri();
         $a = new AccessController($route);
         if(!$a->check()){
             return abort(403, "Forbidden For Route: " . $route);

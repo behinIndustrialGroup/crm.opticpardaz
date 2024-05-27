@@ -4,7 +4,7 @@ namespace BehinUserRoles\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use BehinInitApp\Models\Access;
+use BehinInit\App\Models\Access;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use BehinUserRoles\Models\Method;

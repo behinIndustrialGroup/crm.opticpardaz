@@ -1,5 +1,6 @@
 <?php
 
+use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mkhodroo\AgencyInfo\Controllers\GetAgencyController;
@@ -14,7 +15,7 @@ Route::get('', function(){
 
 require __DIR__.'/auth.php';
 
-Route::prefix('admin')->name('admin')->middleware(['web', 'auth'])->group(function(){
+Route::prefix('admin')->name('admin')->middleware(['web', 'auth', Access::class])->group(function(){
     Route::get('', function(){
         return view('admin.dashboard');
     })->name('dashboard');
