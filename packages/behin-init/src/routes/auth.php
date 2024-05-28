@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use BehinInit\App\Http\Controllers\Auth\LoginController;
+use BehinInit\App\Http\Controllers\LoginController;
 use BehinInit\App\Http\Controllers\RegisterUserController;
 use BehinInit\App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
