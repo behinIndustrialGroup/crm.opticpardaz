@@ -1,6 +1,6 @@
 <?php
 
-namespace BehinInit\App\Http\Controllers\Auth;
+namespace BehinInit\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
