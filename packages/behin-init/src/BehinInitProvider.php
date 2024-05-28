@@ -30,5 +30,7 @@ class BehinInitProvider extends ServiceProvider
             __DIR__. '/routes' => 'routes',
             __DIR__. '/config' => config_path(),
         ]);
+
+        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 }
