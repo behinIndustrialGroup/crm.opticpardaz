@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('behin-layouts.app')
 
 @section('title')
     پروفایل

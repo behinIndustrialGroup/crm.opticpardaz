@@ -1,4 +1,4 @@
-@extends('behin-layouts.app')
+@extends('behin-behin-layouts.app')
 
 @section('content')
     <div class="box">

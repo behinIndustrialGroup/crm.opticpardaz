@@ -27,7 +27,8 @@
             "Database\\Seeders\\": "database/seeders/",
             "BehinInit\\": "packages/behin-init/src/",
             "BehinUserRoles\\": "packages/behin-user-roles/src/",
-            "UserProfile\\": "packages/behin-user-profile/src/"
+            "UserProfile\\": "packages/behin-user-profile/src/",
+            "BehinProcessMaker\\": "packages/behin-process-maker/src/"
         },
         "files": [
             "packages/behin-init/src/app/Helpers/behin-helpers.php"

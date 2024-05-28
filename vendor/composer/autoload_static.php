@@ -201,6 +201,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             'Brick\\Math\\' => 11,
             'BehinUserRoles\\' => 15,
+            'BehinProcessMaker\\' => 18,
             'BehinInit\\' => 10,
         ),
         'A' => 
@@ -608,6 +609,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinUserRoles\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-user-roles/src',
+        ),
+        'BehinProcessMaker\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-process-maker/src',
         ),
         'BehinInit\\' => 
         array (

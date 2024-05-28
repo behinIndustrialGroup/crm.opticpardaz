@@ -104,6 +104,7 @@ return array(
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'BehinUserRoles\\' => array($baseDir . '/packages/behin-user-roles/src'),
+    'BehinProcessMaker\\' => array($baseDir . '/packages/behin-process-maker/src'),
     'BehinInit\\' => array($baseDir . '/packages/behin-init/src'),
     'App\\' => array($baseDir . '/app', $vendorDir . '/laravel/pint/app'),
 );

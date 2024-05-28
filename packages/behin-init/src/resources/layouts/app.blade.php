@@ -38,11 +38,14 @@
     <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" />
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.css') }}">
     @yield('style')
 
     <script src="{{ url('public/behin/behin-dist/plugins/jquery/jquery.min.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-dist/plugins/datatables/jquery.dataTables.js')  . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-dist/plugins/datatables/dataTables.bootstrap4.js')  . '?' . config('app.version') }}"></script>
+    <script src="{{ url('public/behin/behin-dist/persian-date-picker/persian-date.js')  . '?' . config('app.version') }}"></script>
+    <script src="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.js')  . '?' . config('app.version') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="{{ url('public/behin/behin-js/ajax.js')  . '?' . config('app.version') }}"></script>
@@ -97,7 +100,7 @@
             function initial_view(){
                 $('.select2').select2();
                 $('.select2').css('width', '100%')
-                $(".persian-date").persianDatepicker({
+                $(".persian-date").pDatepicker({
                     viewMode: 'year',
                     format: 'YYYY-MM-DD',
                     initialValueType: 'persian'
