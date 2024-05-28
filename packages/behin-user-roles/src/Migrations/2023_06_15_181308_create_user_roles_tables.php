@@ -49,9 +49,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mkhodroo_access');
-        Schema::dropIfExists('mkhodroo_methods');
-        Schema::dropIfExists('mkhodroo_roles');
+        Schema::dropIfExists('behin_access');
+        Schema::dropIfExists('behin_methods');
+        Schema::dropIfExists('behin_roles');
         Schema::table('users', function(Blueprint $table){
             $table->dropColumn('role_id');
         });

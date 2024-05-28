@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('Behin_methods', function (Blueprint $table) {
+        Schema::table('behin_methods', function (Blueprint $table) {
             $table->string('category')->nullable()->after('name');
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('mkhodroo_methods', function (Blueprint $table) {
+        Schema::table('behin_methods', function (Blueprint $table) {
             //
         });
     }
