@@ -31,7 +31,7 @@
             "BehinProcessMaker\\": "packages/behin-process-maker/src/"
         },
         "files": [
-            "packages/behin-init/src/app/Helpers/behin-helpers.php"
+            "packages/behin-init/src/App/Helpers/behin-helpers.php"
         ]
     },
     "autoload-dev": {

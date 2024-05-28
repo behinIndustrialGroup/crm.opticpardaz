@@ -43,7 +43,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'ce9671a430e4846b44e1c68c7611f9f5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'd634523d799d97a8ab4807b650bf5cea' => __DIR__ . '/..' . '/pestphp/pest-plugin-laravel/src/Autoload.php',
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
-        'cc3b89370d0521642d96c395d46cf11a' => __DIR__ . '/../..' . '/packages/behin-init/src/app/Helpers/behin-helpers.php',
+        '1dd62bb642d9cb89aae0bb1db4f26894' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Helpers/behin-helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -644,6 +644,13 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'BehinInit\\App\\Http\\Controllers\\AccessController' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Controllers/AccessController.php',
+        'BehinInit\\App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Controllers/LoginController.php',
+        'BehinInit\\App\\Http\\Controllers\\RegisterUserController' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Controllers/RegisterUserController.php',
+        'BehinInit\\App\\Http\\Controllers\\TestController' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Controllers/TestController.php',
+        'BehinInit\\App\\Http\\Middleware\\Access' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Middleware/Access.php',
+        'BehinInit\\App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Requests/Auth/LoginRequest.php',
+        'BehinInit\\App\\Models\\Access' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Models/Access.php',
         'BehinInit\\BehinInitProvider' => __DIR__ . '/../..' . '/packages/behin-init/src/BehinInitProvider.php',
         'BehinProcessMaker\\BehinProcessMakerProvider' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/BehinProcessMakerProvider.php',
         'BehinProcessMaker\\Controllers\\AuthController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/AuthController.php',
