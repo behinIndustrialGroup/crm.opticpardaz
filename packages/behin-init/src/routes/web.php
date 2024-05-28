@@ -20,3 +20,7 @@ Route::prefix('admin')->name('admin')->middleware(['web', 'auth', Access::class]
         return view('admin.dashboard');
     })->name('dashboard');
 });
+
+Route::get('test', function(){
+    return 'test';
+});
