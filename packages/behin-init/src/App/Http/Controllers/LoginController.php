@@ -1,8 +1,8 @@
 <?php
-namespace BehinInit\App\Http\Controllers;
+namespace BehinInit\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use BehinInit\App\Http\Requests\Auth\LoginRequest;
+use BehinInit\app\Http\Requests\Auth\LoginRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\RedirectResponse;

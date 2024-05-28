@@ -1,9 +1,9 @@
 <?php 
 
-namespace BehinInit\App\Http\Controllers;
+namespace BehinInit\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use BehinInit\App\Models\Access;
+use BehinInit\app\Models\Access;
 use Illuminate\Support\Facades\Auth;
 use BehinUserRoles\Models\Method;
 

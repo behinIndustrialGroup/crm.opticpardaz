@@ -3,7 +3,7 @@
 
 
 add 
-use BehinInit\App\Http\Middleware\Access;
+use BehinInit\app\Http\Middleware\Access;
 ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(Access::class);
     })

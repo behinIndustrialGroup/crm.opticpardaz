@@ -1,6 +1,6 @@
 <?php 
 
-namespace BehinInit\App\Models;
+namespace BehinInit\app\Models;
 
 use BehinUserRoles\Models\Method;
 use BehinUserRoles\Models\Role;

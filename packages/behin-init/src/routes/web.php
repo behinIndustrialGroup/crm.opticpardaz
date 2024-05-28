@@ -1,6 +1,6 @@
 <?php
 
-use BehinInit\App\Http\Middleware\Access;
+use BehinInit\app\Http\Middleware\Access;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mkhodroo\AgencyInfo\Controllers\GetAgencyController;
