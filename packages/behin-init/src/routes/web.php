@@ -2,6 +2,7 @@
 
 use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Mkhodroo\AgencyInfo\Controllers\GetAgencyController;
 use UserProfile\Controllers\ChangePasswordController;
@@ -21,6 +22,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', Access::class
     })->name('dashboard');
 });
 
-Route::get('test', function(){
-    return 'test';
+Route::get('build-app', function(){
+    Artisan::call('migrate');
+    return 'done';
 });
