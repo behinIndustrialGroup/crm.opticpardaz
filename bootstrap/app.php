@@ -1,6 +1,6 @@
 <?php
 
-use BehinInit\app\Http\Middleware\Access;
+use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

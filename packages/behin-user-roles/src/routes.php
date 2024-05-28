@@ -1,6 +1,6 @@
 <?php
 
-use BehinInit\app\Http\Middleware\Access;
+use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Support\Facades\Route;
 use BehinUserRoles\Controllers\GetMethodsController;
 use BehinUserRoles\Controllers\GetRoleController;

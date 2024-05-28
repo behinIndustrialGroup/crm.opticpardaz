@@ -8,9 +8,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use BehinInit\app\Http\Controllers\LoginController;
-use BehinInit\app\Http\Controllers\RegisterUserController;
-use BehinInit\app\Http\Controllers\TestController;
+use BehinInit\App\Http\Controllers\LoginController;
+use BehinInit\App\Http\Controllers\RegisterUserController;
+use BehinInit\App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {

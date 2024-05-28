@@ -3,7 +3,7 @@
 namespace BehinProcessMaker;
 
 use App\CustomClasses\SimpleXLSX;
-use BehinInit\app\Http\Middleware\Access;
+use BehinInit\App\Http\Middleware\Access;
 use Exception;
 use Illuminate\Support\Facades\Route;
 use BehinProcessMaker\Controllers\AuthController;

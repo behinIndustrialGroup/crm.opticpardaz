@@ -1,8 +1,8 @@
 <?php
 
-namespace BehinInit\app\Http\Middleware;
+namespace BehinInit\App\Http\Middleware;
 
-use BehinInit\app\Http\Controllers\AccessController;
+use BehinInit\App\Http\Controllers\AccessController;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
