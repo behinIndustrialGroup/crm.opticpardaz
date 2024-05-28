@@ -9,14 +9,14 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use BehinInit\App\Http\Controllers\Auth\LoginController;
-use BehinInit\App\Http\Controllers\Auth\RegisteredUserController;
+use BehinInit\App\Http\Controllers\Auth\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('register', [RegisterUserController::class, 'create'])
                 ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisterUserController::class, 'store']);
 
     Route::get('login', [LoginController::class, 'create'])
                 ->name('login');
