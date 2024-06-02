@@ -68,6 +68,7 @@ class DynaFormController extends Controller
         );
         $content = json_decode($json->dyn_content);
         $fields = $content->items[0]->items;
+        $local_fields = GetCaseVarsController::getVarsFromLocal($processId, $caseId);
         $docs = collect(InputDocController::list($caseId));
         echo "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
         echo "<div class='row' style='border-bottom: solid 1px black'>
@@ -79,7 +80,8 @@ class DynaFormController extends Controller
             echo "<div class='row' style='margin-bottom: 20px'>";
             foreach ($rows as $field) {
                 $field_name = isset($field->name) ? $field->name : '';
-                $field_value = isset($variable_values->$field_name) ? $variable_values->$field_name : '';
+                // $field_value = isset($variable_values->$field_name) ? $variable_values->$field_name : '';
+                $field_value = $local_fields->where('key', $field_name)->first()?->value;
                 $field_required = isset($field->required) and $field->required ? 'required' : '';
                 if (isset($field->mode)) {
                     switch ($field->mode) {
@@ -107,7 +109,7 @@ class DynaFormController extends Controller
                     if ($field->type == "datetime") {
                         if($field_value){
                             $date = new SDate();
-                            $field_value = $date->toGrDate($field_value);
+                            // $field_value = $date->toGrDate($field_value);
                         }
                         
                         echo  "<div class='col-sm-$field->colSpan'>";
@@ -172,10 +174,35 @@ class DynaFormController extends Controller
                         echo "</div>";
 
                     }
+                    if ($field->type == 'multipleFile') {
+                        echo  "<div class='col-sm-$field->colSpan'>";
+                        echo  "$field->label: ";
+                        echo "<div style='text-align: center'>";
+
+                        for($i=0; $i < config('pm_config.max_multiple_file_upload'); $i++){
+                            $field_key = $field_name. "_$i";
+                            $field_value = $local_fields->where('key', $field_key)->first()?->value;
+                            if($field_value){
+                                echo "<a href='". url("public/$field_value") ."' >$field_key</a><br>";
+                            }else{
+                                break;
+                            }
+                        }
+                        echo "<input id='' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
+
+                        
+                        echo "</div>";
+                        echo "</div>";
+
+                    }
                 }
             }
             echo "</div>";
         }
         echo '</form>';
+        echo "<pre>";
+        print_r($fields);
+        print_r($docs);
+        echo "</pre>";
     }
 }

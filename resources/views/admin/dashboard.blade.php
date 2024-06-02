@@ -1,1 +1,1 @@
-@extends('behin-behin-layouts.app')
+@extends('behin-layouts.app')

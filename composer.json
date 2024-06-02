@@ -28,7 +28,8 @@
             "BehinInit\\": "packages/behin-init/src/",
             "BehinUserRoles\\": "packages/behin-user-roles/src/",
             "UserProfile\\": "packages/behin-user-profile/src/",
-            "BehinProcessMaker\\": "packages/behin-process-maker/src/"
+            "BehinProcessMaker\\": "packages/behin-process-maker/src/",
+            "BehinFileControl\\": "packages/behin-file-control/src/"
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php"

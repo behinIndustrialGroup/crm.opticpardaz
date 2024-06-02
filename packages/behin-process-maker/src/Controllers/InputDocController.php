@@ -30,7 +30,7 @@ class InputDocController extends Controller
         );
     }
 
-    public static function upload($file, $taskId, $caseId, $inputDocId, $userId, $docFieldName)
+    public static function upload($file, $taskId, $caseId, $inputDocId = null, $userId, $docFieldName)
     {
         $path = $file;
         $params = array(
@@ -42,7 +42,7 @@ class InputDocController extends Controller
             'APP_DOC_TYPE' => 'INPUT',
             'APP_DOC_FIELDNAME' => $docFieldName,
             'APP_DOC_FILENAME' => $file. '.' . $file->getClientOriginalExtension(),
-            'TITLE'        => "Identification for John Doe",
+            'TITLE'        => $docFieldName,
             'COMMENT'      => "Scanned ID document"
         );
         ob_flush();

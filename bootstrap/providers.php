@@ -1,5 +1,6 @@
 <?php
 
+use BehinFileControl\BehinFileControlProvider;
 use BehinInit\BehinInitProvider;
 use BehinProcessMaker\BehinProcessMakerProvider;
 use BehinUserRoles\UserRolesServiceProvider;
@@ -10,5 +11,6 @@ return [
     BehinInitProvider::class,
     UserRolesServiceProvider::class,
     UserProfileProvider::class,
-    BehinProcessMakerProvider::class
+    BehinProcessMakerProvider::class,
+    BehinFileControlProvider::class
 ];

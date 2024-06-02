@@ -59,19 +59,34 @@ class SetCaseVarsController extends Controller
             'PIN'
         );
         $variables = array();
+        $local_fields = GetCaseVarsController::getVarsFromLocal($system_vars->PROCESS, $r->caseId);
         foreach ($vars as $key => $val) {
             if (gettype($val) == 'object') {
                 $field_name = explode("-", $key)[0];
                 $fileId = explode("-", $key)[1];
                 InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, $system_vars->USER_LOGGED, $field_name );
+            }elseif(gettype($val) == 'array'){
+                for($i=0; $i< config('pm_config.max_multiple_file_upload'); $i++){
+                    $field_value = $local_fields->where('key', $key. "_$i")->first()?->value;
+                    if(!$field_value){
+                        break;
+                    }
+                }
+                foreach($val as $pic){
+                    print_r($pic->getClientOriginalName());
+                    SaveVarsController::saveDoc($system_vars->PROCESS, $r->caseId, $key . "_$i", $pic);
+                    $i++;
+                    // InputDocController::upload($pic, $r->taskId, $r->caseId, null, $system_vars->USER_LOGGED, $key );
+                }
             } else {
                 $obj = new variableListStruct();
                 $obj->name = $key;
                 $obj->value = $val;
                 $variables[] = $obj;
+                SaveVarsController::save($system_vars->PROCESS, $r->caseId, $key, $val);
             }
         }
-
+        return ;
         $params = array(array('sessionId' => $sessionId, 'caseId' => $r->caseId, 'variables' => $variables));
         $result = $client->__SoapCall('sendVariables', $params);
         if ($result->status_code != 0)
