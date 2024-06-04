@@ -9,7 +9,8 @@
                     {{-- <th>{{__('Id')}}</th> --}}
                     <th>{{__('Number')}}</th>
                     <th>{{__('Process Name')}}</th>
-                    <th>{{__('Main Info')}}</th>
+                    <th>{{__('Task Title')}}</th>
+                    <th>{{__('Case')}}</th>
                     <th>{{__('Pending')}}</th>
                     <th>{{__('Status')}}</th>
                     <th style="text-align: center; direction: ltr">{{__('Create Date')}}</th>
@@ -34,7 +35,8 @@
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
                 {data : 'APP_NUMBER'},
                 {data : 'PRO_TITLE'},
-                {data : 'MAIN_INFO'},
+                {data : 'TAS_TITLE'},
+                {data : 'DEL_TITLE'},
                 {data : 'PENDING', render: function(data){
                     var s = '';
                     data.forEach(element => {
