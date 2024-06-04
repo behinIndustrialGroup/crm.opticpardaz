@@ -15,7 +15,6 @@
                     <th>{{__('Send By')}}</th>
                     <th style="text-align: center; direction: ltr">{{__('Send Date')}}</th>
                     <th style="text-align: center; direction: ltr">{{__('Delay/Deadline')}}</th>
-                    <th>{{__('Action')}}</th>
                 </tr>
             </thead>
         </table>
@@ -65,8 +64,7 @@
                     delay_m = DELAY.split(" ")[5]
                     delay_s = DELAY.split(" ")[7]
                     return `<span style="float: left; direction: ltr; color: ${row.TAS_COLOR_LABEL}">${delay_day}d  ${delay_h}h ${delay_m}m ${delay_s}s</span>`; 
-                }},
-                {data : 'APP_UID', render: function(APP_UID){return  `<i class='fa fa-trash bg-red' onclick="delete_case('${APP_UID}')"></i>`; }},
+                }}
             ],
             function(row){
                 $(row).css('cursor', 'pointer')
