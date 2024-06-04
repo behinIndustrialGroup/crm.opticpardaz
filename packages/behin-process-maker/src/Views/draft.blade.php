@@ -36,7 +36,15 @@
                 {data : 'PRO_TITLE'},
                 {data : 'TAS_TITLE'},
                 {data : 'DEL_TITLE'},
-                {data : 'TAS_STATUS'},
+                {data : 'TAS_STATUS', render: function(data){
+                    if(data == 'ON_TIME'){
+                        return '{{trans("ON_TIME")}}';
+                    }else if(data == 'OVERDUE'){
+                        return '{{trans("OVERDUE")}}';
+                    }else{
+                        return data;
+                    }
+                }},
                 {data : 'SEND_BY_INFO', render: function(SEND_BY_INFO){
                     if(SEND_BY_INFO.user_tooltip.usr_firstname){
                         user = SEND_BY_INFO.user_tooltip;
