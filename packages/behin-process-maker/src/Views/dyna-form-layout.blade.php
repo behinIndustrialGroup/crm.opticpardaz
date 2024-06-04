@@ -67,20 +67,7 @@
         )
     }
 </script>
+@yield('script')
 
-@if (config('pm_config.debug'))
-<br>
-<hr>
-    <div class="col-sm-12" dir="ltr" style="text-align: left">
-        <pre>
-            {{ print_r($variable_values) }}
-        </pre>
-    </div>
-    <div class="col-sm-12" dir="ltr" style="text-align: left">
-        <pre>
-            {{ print_r($input_docs) }}
-        </pre>
-    </div>
-@endif
 
 

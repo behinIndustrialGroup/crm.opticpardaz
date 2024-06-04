@@ -11,6 +11,7 @@ use BehinProcessMaker\Controllers\CaseController;
 use BehinProcessMaker\Controllers\CaseTrackerController;
 use BehinProcessMaker\Controllers\CurlRequestController;
 use BehinProcessMaker\Controllers\DeleteCaseController;
+use BehinProcessMaker\Controllers\DeleteVarController;
 use BehinProcessMaker\Controllers\DoneCaseController;
 use BehinProcessMaker\Controllers\DraftCaseController;
 use BehinProcessMaker\Controllers\DynaFormController;
@@ -62,6 +63,7 @@ Route::name('MkhodrooProcessMaker.')->prefix('pm')->middleware(['web', 'auth', A
         Route::get('get-trigger-list', [TriggerController::class, 'list'])->name('getTriggerList');
         Route::get('get-task/{taskId}', [TaskController::class, 'getByTaskId'])->name('getTask');
         Route::get('get-tasks-by-process/{processId}', [TaskController::class, 'getByProcessId'])->name('getTaskByProcessId');
+        Route::post('delete-doc', [DeleteVarController::class, 'deleteDoc'])->name('deleteDoc');
 
         Route::name('process.')->prefix('process')->group(function () {
             Route::get('get-by-id/{process_id}', [ProcessController::class, 'getNameById']);

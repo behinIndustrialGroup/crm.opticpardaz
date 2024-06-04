@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DynaFormController extends Controller
@@ -39,7 +40,7 @@ class DynaFormController extends Controller
             'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values),
             // 'vars' => $variables,
             'variable_values' => $variable_values,
-            'input_docs' => InputDocController::list($r->appUid),
+            // 'input_docs' => InputDocController::list($r->appUid),
             'processId' => $r->processId,
             'processTitle' => $r->processTitle,
             'caseId' => $r->caseId,
@@ -138,6 +139,14 @@ class DynaFormController extends Controller
                         echo  "$field->label: ";
                         echo "<div class='form-group'>";
                         echo "<select name='$field->name' class='form-control select2' $field_required $field_mode>";
+                        if($field->sql){
+                            $options = DB::select($field->sql);
+                            foreach ($options as $opt) {
+                                $selected = $field_value == $opt->value ? 'selected' : '';
+                                echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
+                            }
+                            $field->sql_options = $options;
+                        }
                         foreach ($field->options as $opt) {
                             $selected = $field_value == $opt->value ? 'selected' : '';
                             echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
@@ -150,28 +159,28 @@ class DynaFormController extends Controller
                         // echo "<pre>";
                         // print_r($field);
                         // echo "<pre>";
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: ";
-                        echo "<div style='text-align: center'>";
-                        if ($field_value != '') {
-                            // print_r($field_value);
-                            $values = json_decode($field_value);
-                            // print_r($values);
-                            $doc = $docs->where('app_doc_uid', $values[0])->first();
-                            if($field->mode != 'view'){
-                                // echo "<label for='$field->inp_doc_uid' class='btn'>Select Image</label>";
-                                echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control' >";
-                            }
-                            echo "<a href='https://pmaker.altfuel.ir/sysworkflow/en/neoclassic/$doc?->app_doc_link' >$doc?->app_doc_filename</a>";
+                        // echo  "<div class='col-sm-$field->colSpan'>";
+                        // echo  "$field->label: ";
+                        // echo "<div style='text-align: center'>";
+                        // if ($field_value != '') {
+                        //     // print_r($field_value);
+                        //     $values = json_decode($field_value);
+                        //     // print_r($values);
+                        //     $doc = $docs->where('app_doc_uid', $values[0])->first();
+                        //     if($field->mode != 'view'){
+                        //         // echo "<label for='$field->inp_doc_uid' class='btn'>Select Image</label>";
+                        //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control' >";
+                        //     }
+                        //     echo "<a href='https://pmaker.altfuel.ir/sysworkflow/en/neoclassic/$doc?->app_doc_link' >$doc?->app_doc_filename</a>";
                             
 
-                        } else {
-                            if($field->mode != 'view'){
-                                echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control'>";
-                            }
-                        }
-                        echo "</div>";
-                        echo "</div>";
+                        // } else {
+                        //     if($field->mode != 'view'){
+                        //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control'>";
+                        //     }
+                        // }
+                        // echo "</div>";
+                        // echo "</div>";
 
                     }
                     if ($field->type == 'multipleFile') {
@@ -179,14 +188,12 @@ class DynaFormController extends Controller
                         echo  "$field->label: ";
                         echo "<div style='text-align: center'>";
 
-                        for($i=0; $i < config('pm_config.max_multiple_file_upload'); $i++){
-                            $field_key = $field_name. "_$i";
-                            $field_value = $local_fields->where('key', $field_key)->first()?->value;
-                            if($field_value){
-                                echo "<a href='". url("public/$field_value") ."' >$field_key</a><br>";
-                            }else{
-                                break;
-                            }
+                        $field_rows = $local_fields->where('key', $field->name);
+                        foreach($field_rows as $field_row){
+                            echo "<a href='". url("public/$field_row->value") ."' >$field->name</a> | ";
+                            echo "<i class='fa fa-trash' onclick='delete_doc(
+                                $field_row->id,`$processId`,`$caseId`, `$dynaId`, `$processTitle`, `$caseTitle`
+                            )'></i> <br>";
                         }
                         echo "<input id='' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
 
@@ -200,9 +207,13 @@ class DynaFormController extends Controller
             echo "</div>";
         }
         echo '</form>';
-        echo "<pre>";
-        print_r($fields);
-        print_r($docs);
-        echo "</pre>";
+        if (config('pm_config.debug')){
+            echo "<pre>";
+            print_r($fields);
+            print_r($docs);
+            echo "</pre>";
+            echo"";
+        }
+        
     }
 }
