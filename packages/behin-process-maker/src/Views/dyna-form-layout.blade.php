@@ -6,7 +6,7 @@
 <div class="row" style="height: 10px"></div>
  --}}
 
-    @yield('content')
+@yield('content')
 
 <div class="row form-group">
     <button class="btn btn-primary m-1" onclick="save_and_next()">{{ __('save and next') }}</button>
@@ -49,25 +49,31 @@
                 console.log(response);
                 show_message("ذخیره شد");
             },
-            function(er){
+            function(er) {
                 console.log(er);
                 show_error(er);
             }
         )
     }
 
-    function show_process_map(caseId){
-        url = "{{route('MkhodrooProcessMaker.api.getCaseProcessMap', ['caseId' =>'caseId'])}}";
+    function show_process_map(caseId) {
+        url = "{{ route('MkhodrooProcessMaker.api.getCaseProcessMap', ['caseId' => 'caseId']) }}";
         url = url.replace('caseId', caseId);
         send_ajax_get_request(
             url,
-            function(data){
+            function(data) {
                 open_admin_modal_with_data(data)
             }
         )
     }
+
+    $(`input[type="checkbox"]`).change(function() {
+        var input = $(`input[name="${$(this).attr('name')}"]`)
+        if (this.checked) {
+            input.val('on')
+        }else{
+            input.val('off')
+        }
+    });
 </script>
 @yield('script')
-
-
-

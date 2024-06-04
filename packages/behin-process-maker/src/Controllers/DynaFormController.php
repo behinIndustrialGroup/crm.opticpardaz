@@ -134,6 +134,15 @@ class DynaFormController extends Controller
                         echo "</div>";
                         echo  "</div>";
                     }
+                    if ($field->type == 'checkbox') {
+                        echo  "<div class='col-sm-$field->colSpan'>";
+                        $check = $field_value == 'on' ? 'checked' : '';
+                        $field_mode = $field_mode ? 'disabled' : '';
+                        echo  "<input type='checkbox' name='$field->name' $check $field_mode>$field->label<br>";
+                        echo  "<input type='hidden' name='$field->name' value='$field_value'>";
+
+                        echo  "</div>";
+                    }
                     if ($field->type == 'dropdown') {
                         echo  "<div class='col-sm-$field->colSpan'>";
                         echo  "$field->label: ";
