@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('process_id');
             $table->string('case_id');
             $table->string('key');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
