@@ -8,9 +8,9 @@
                 <tr>
                     {{-- <th>{{__('Id')}}</th> --}}
                     <th>{{__('Number')}}</th>
-                    <th>{{__('Title')}}</th>
+                    <th>{{__('Task Title')}}</th>
+                    <th>{{__('Case')}}</th>
                     <th>{{__('Process Name')}}</th>
-                    <th>{{__('Main Info')}}</th>
                     <th>{{__('Status')}}</th>
                     <th>{{__('Send By')}}</th>
                     <th style="text-align: center; direction: ltr">{{__('Send Date')}}</th>
@@ -34,8 +34,8 @@
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
                 {data : 'APP_NUMBER'},
                 {data : 'TAS_TITLE'},
+                {data : 'DEL_TITLE'},
                 {data : 'PRO_TITLE'},
-                {data : 'MAIN_INFO'},
                 {data : 'TAS_STATUS'},
                 {data : 'SEND_BY_INFO', render: function(SEND_BY_INFO){
                     if(SEND_BY_INFO.user_tooltip.usr_firstname){
