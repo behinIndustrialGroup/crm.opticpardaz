@@ -78,7 +78,6 @@ class SetCaseVarsController extends Controller
                 SaveVarsController::save($system_vars->PROCESS, $r->caseId, $key, $val);
             }
         }
-        return ;
         $params = array(array('sessionId' => $sessionId, 'caseId' => $r->caseId, 'variables' => $variables));
         $result = $client->__SoapCall('sendVariables', $params);
         if ($result->status_code != 0)
