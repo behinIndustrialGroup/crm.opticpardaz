@@ -5,11 +5,11 @@
 
 @section('script')
     <script>
-        function delete_doc(id, processId, caseId) {
+        function delete_doc(id) {
             var fd = new FormData();
             fd.append('id', id);
-            fd.append('processId', processId);
-            fd.append('caseId', caseId);
+            fd.append('processId', '{{$processId}}');
+            fd.append('caseId', '{{$caseId}}');
             fd.append('taskId', '{{$taskId}}');
             fd.append('processTitle', '{{$processTitle}}');
             fd.append('caseTitle', '{{$caseTitle}}');

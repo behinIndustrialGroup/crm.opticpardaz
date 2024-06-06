@@ -68,6 +68,8 @@ class DynaFormController extends Controller
         );
         $content = json_decode($json->dyn_content);
         $fields = $content->items[0]->items;
+        $script = $content->items[0]->script;
+        $script = is_string($script) ? '' : $script->code;
         $local_fields = GetCaseVarsController::getVarsFromLocal($processId, $caseId);
         // $docs = collect(InputDocController::list($caseId));
         echo "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
@@ -79,148 +81,181 @@ class DynaFormController extends Controller
         foreach ($fields as $rows) {
             echo "<div class='row' style='margin-bottom: 20px'>";
             foreach ($rows as $field) {
-                $field_name = isset($field->name) ? $field->name : '';
-                // $field_value = isset($variable_values->$field_name) ? $variable_values->$field_name : '';
-                $field_value = $local_fields->where('key', $field_name)->first()?->value;
-                $field_required = isset($field->required) and $field->required ? 'required' : '';
-                if (isset($field->mode)) {
-                    switch ($field->mode) {
-                        case "view":
-                            $field_mode = "readonly";
-                            break;
-                        default:
-                            $field_mode = "";
-                            break;
-                    }
-                } else {
-                    $field_mode = "";
-                }
-                if (isset($field->type)) {
-                    if ($field->type == "hidden") {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "<input type='hidden' name='$field->name' class='form-control' value='$field_value' >";
-                        echo  "</div>";
-                    }
-                    if ($field->type == "text") {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: <input type='text' name='$field->name' class='form-control' value='$field_value' $field_required $field_mode>";
-                        echo  "</div>";
-                    }
-                    if ($field->type == "datetime") {
-                        if($field_value){
-                            $date = new SDate();
-                            // $field_value = $date->toGrDate($field_value);
-                        }
-                        
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: <input type='text' name='$field->name' class='form-control persian-date' value='$field_value' $field_required $field_mode>";
-                        echo  "</div>";
-                    }
-                    if ($field->type == "textarea") {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: <textarea name='$field->name' class='form-control' $field_required $field_mode>$field_value</textarea>";
-                        echo  "</div>";
-                    }
-                    if ($field->type == 'radio') {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: ";
-                        echo "<div>";
-                        foreach ($field->options as $opt) {
-                            $check = $field_value == $opt->value ? 'checked' : '';
-                            $field_mode = $field_mode ? 'disabled' : '';
-                            echo  "<input type='radio' value='$opt->value' name='$field->name' $check $field_mode>$opt->label <br>";
+                if($field->type === 'form'){
+                    $parent_mode = $field->mode;
+                    foreach($field->items as $subFormRows){
+                        echo "<div class='row col-sm-12' style='margin-bottom: 20px'>";
+                        foreach($subFormRows as $field){
+                            self::createField($field, $local_fields, $parent_mode);
                         }
                         echo "</div>";
-                        echo  "</div>";
                     }
-                    if ($field->type == 'checkbox') {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        $check = $field_value == 'on' ? 'checked' : '';
-                        $field_mode = $field_mode ? 'disabled' : '';
-                        echo  "<input type='checkbox' name='$field->name' $check $field_mode>$field->label<br>";
-                        echo  "<input type='hidden' name='$field->name' value='$field_value'>";
+                }else{
+                    $parent_mode = isset($field->mode) ? $field->mode : '';
 
-                        echo  "</div>";
-                    }
-                    if ($field->type == 'dropdown') {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: ";
-                        echo "<div class='form-group'>";
-                        echo "<select name='$field->name' class='form-control select2' $field_required $field_mode>";
-                        if($field->sql){
-                            $options = DB::select($field->sql);
-                            foreach ($options as $opt) {
-                                $selected = $field_value == $opt->value ? 'selected' : '';
-                                echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
-                            }
-                            $field->sql_options = $options;
-                        }
-                        foreach ($field->options as $opt) {
-                            $selected = $field_value == $opt->value ? 'selected' : '';
-                            echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
-                        }
-                        echo "</select>";
-                        echo "</div>";
-                        echo  "</div>";
-                    }
-                    if ($field->type == 'file') {
-                        // echo "<pre>";
-                        // print_r($field);
-                        // echo "<pre>";
-                        // echo  "<div class='col-sm-$field->colSpan'>";
-                        // echo  "$field->label: ";
-                        // echo "<div style='text-align: center'>";
-                        // if ($field_value != '') {
-                        //     // print_r($field_value);
-                        //     $values = json_decode($field_value);
-                        //     // print_r($values);
-                        //     $doc = $docs->where('app_doc_uid', $values[0])->first();
-                        //     if($field->mode != 'view'){
-                        //         // echo "<label for='$field->inp_doc_uid' class='btn'>Select Image</label>";
-                        //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control' >";
-                        //     }
-                        //     echo "<a href='https://pmaker.altfuel.ir/sysworkflow/en/neoclassic/$doc?->app_doc_link' >$doc?->app_doc_filename</a>";
-                            
-
-                        // } else {
-                        //     if($field->mode != 'view'){
-                        //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control'>";
-                        //     }
-                        // }
-                        // echo "</div>";
-                        // echo "</div>";
-
-                    }
-                    if ($field->type == 'multipleFile') {
-                        echo  "<div class='col-sm-$field->colSpan'>";
-                        echo  "$field->label: ";
-                        echo "<div style='text-align: center'>";
-
-                        $field_rows = $local_fields->where('key', $field->name);
-                        foreach($field_rows as $field_row){
-                            echo "<a href='". url("public/$field_row->value") ."' >$field->name</a> | ";
-                            echo "<i class='fa fa-trash' onclick='delete_doc(
-                                $field_row->id,`$processId`,`$caseId`, `$dynaId`, `$processTitle`, `$caseTitle`
-                            )'></i> <br>";
-                        }
-                        echo "<input id='' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
-
-                        
-                        echo "</div>";
-                        echo "</div>";
-
-                    }
+                    self::createField($field, $local_fields, $parent_mode);
                 }
             }
             echo "</div>";
         }
         echo '</form>';
+        // echo "<script>$script</script>";
         if (config('pm_config.debug')){
-            echo "<pre>";
-            print_r($fields);
-            echo "</pre>";
-            echo"";
+            $data = json_encode($content);
+            echo "<script>console.log($data)</script>";
         }
         
+    }
+
+    public static function createField($field, $local_fields, $parent_mode){
+        $field_name = isset($field->name) ? $field->name : '';
+        // $field_value = isset($variable_values->$field_name) ? $variable_values->$field_name : '';
+        $field_value = $local_fields->where('key', $field_name)->first()?->value;
+        $field_required = isset($field->required) and $field->required ? 'required' : '';
+        if (isset($field->mode)) {
+            switch ($field->mode) {
+                case "parent":
+                    if($parent_mode === 'parent'){
+                        $field_mode = '';
+                    }else{
+                        $field_mode = $parent_mode;
+                    }
+                    break;
+                case "view":
+                    $field_mode = "readonly";
+                    break;
+                case "disabled":
+                    $field_mode = "disabled";
+                    break;
+                default:
+                    $field_mode = "";
+                    break;
+            }
+        } else {
+            $field_mode = "";
+        }
+        if (isset($field->type)) {
+            if ($field->type == "title") {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<h5>$field->label</h5>";
+                echo  "</div>";
+            }
+            if ($field->type == "hidden") {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<input type='hidden' name='$field->name' id='$field->name' class='form-control' value='$field_value' >";
+                echo  "</div>";
+            }
+            if ($field->type == "text") {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": <input type='text' name='$field->name' id='$field->name' class='form-control' value='$field_value' placeholder='$field->placeholder' $field_required $field_mode>";
+                echo  "</div>";
+            }
+            if ($field->type == "datetime") {
+                if($field_value){
+                    $date = new SDate();
+                    // $field_value = $date->toGrDate($field_value);
+                }
+                
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": <input type='text' name='$field->name' id='$field->name' class='form-control persian-date' value='$field_value' $field_required $field_mode>";
+                echo  "</div>";
+            }
+            if ($field->type == "textarea") {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": <textarea name='$field->name' id='$field->name' rows='$field->rows' class='form-control' $field_required $field_mode>$field_value</textarea>";
+                echo  "</div>";
+            }
+            if ($field->type == 'radio') {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": ";
+                echo "<div>";
+                foreach ($field->options as $opt) {
+                    $check = $field_value == $opt->value ? 'checked' : '';
+                    $field_mode = $field_mode ? 'disabled' : '';
+                    echo  "<input type='radio' value='$opt->value' name='$field->name' $check $field_mode>$opt->label <br>";
+                }
+                echo "</div>";
+                echo  "</div>";
+            }
+            if ($field->type == 'checkbox') {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                $check = $field_value == 'on' ? 'checked' : '';
+                $field_mode = $field_mode ? 'disabled' : '';
+                echo  "<input type='checkbox' name='$field->name' $check $field_mode>". trans($field->label) . "<br>";
+                echo  "<input type='hidden' name='$field->name' value='$field_value'>";
+
+                echo  "</div>";
+            }
+            if ($field->type == 'dropdown') {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": ";
+                echo "<div class='form-group'>";
+                echo "<select name='$field->name' class='form-control select2' $field_required $field_mode>";
+                if($field->sql){
+                    $options = DB::select($field->sql);
+                    foreach ($options as $opt) {
+                        $selected = $field_value == $opt->value ? 'selected' : '';
+                        echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
+                    }
+                    $field->sql_options = $options;
+                }
+                foreach ($field->options as $opt) {
+                    $selected = $field_value == $opt->value ? 'selected' : '';
+                    echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
+                }
+                echo "</select>";
+                echo "</div>";
+                echo  "</div>";
+            }
+            if ($field->type == 'file') {
+                // echo "<pre>";
+                // print_r($field);
+                // echo "<pre>";
+                // echo  "<div class='col-sm-$field->colSpan'>";
+                // echo  "$field->label: ";
+                // echo "<div style='text-align: center'>";
+                // if ($field_value != '') {
+                //     // print_r($field_value);
+                //     $values = json_decode($field_value);
+                //     // print_r($values);
+                //     $doc = $docs->where('app_doc_uid', $values[0])->first();
+                //     if($field->mode != 'view'){
+                //         // echo "<label for='$field->inp_doc_uid' class='btn'>Select Image</label>";
+                //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control' >";
+                //     }
+                //     echo "<a href='https://pmaker.altfuel.ir/sysworkflow/en/neoclassic/$doc?->app_doc_link' >$doc?->app_doc_filename</a>";
+                    
+
+                // } else {
+                //     if($field->mode != 'view'){
+                //         echo "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control'>";
+                //     }
+                // }
+                // echo "</div>";
+                // echo "</div>";
+
+            }
+            if ($field->type == 'multipleFile') {
+                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  trans($field->label) . ": ";
+                echo "<div style='text-align: center'>";
+
+                $field_rows = $local_fields->where('key', $field->name);
+                foreach($field_rows as $field_row){
+                    echo "<a target='_blank' href='". url("public/$field_row->value") ."' >$field->name</a> | ";
+                    echo "<i class='fa fa-trash' onclick='delete_doc(
+                        $field_row->id
+                    )'></i> <br>";
+                }
+                if($field_mode === 'edit'){
+                    echo "<input id='' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
+                }
+
+                
+                echo "</div>";
+                echo "</div>";
+
+            }
+        }
     }
 }

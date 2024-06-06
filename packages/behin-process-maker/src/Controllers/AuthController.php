@@ -52,6 +52,10 @@ class AuthController extends Controller
         } else {
             // Log::info(var_dump($oToken));
             $user->pm_user_access_token = $oToken->access_token;
+            if(!$user->pm_user_uid){
+                $UID = RestApiController::getUserId();
+                $user->pm_user_uid = $UID;
+            }
             $user->save();
             return $oToken->access_token;
         }

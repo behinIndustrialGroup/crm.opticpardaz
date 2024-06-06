@@ -100,8 +100,9 @@
             function initial_view(){
                 $('.select2').select2();
                 $('.select2').css('width', '100%')
-                $(".persian-date").pDatepicker({
-                    viewMode: 'year',
+                $(".persian-date").persianDatepicker({
+                    viewMode: 'day',
+                    initialValue: false,
                     format: 'YYYY-MM-DD',
                     initialValueType: 'persian'
                 });

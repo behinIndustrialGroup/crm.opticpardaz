@@ -94,7 +94,9 @@ class RestApiController extends Controller
           }
     }
 
-    public static function getUserId($accessToken){
+    public static function getUserId($accessToken = null){
+        Log::info(__CLASS__);
+        $accessToken = self::getAccessToken();
         $username = Auth::user()->pm_username;
         if(!$username){
             return false;
