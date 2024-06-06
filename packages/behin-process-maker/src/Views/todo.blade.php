@@ -23,9 +23,6 @@
 
 @section('script')
     <script>
-        $.get('{{ route("MkhodrooProcessMaker.api.todo") }}', function(r){
-            console.log(r);
-        })
         var table = create_datatable(
             'draft-list',
             '{{ route("MkhodrooProcessMaker.api.todo") }}',

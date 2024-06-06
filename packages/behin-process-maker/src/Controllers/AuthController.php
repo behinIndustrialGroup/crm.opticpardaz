@@ -16,6 +16,10 @@ class AuthController extends Controller
     public static function getAccessToken()
     {
         $user = self::getAuthUser();
+        if($user->pm_user_access_token){
+            return $user->pm_user_access_token;
+        }
+        Log::info("Get Access Token Api Called");
         self::$pmServer = str_replace('https', 'http', env('PM_SERVER'));
         self::$pmWorkspace = "workflow";
         $postParams = array(
@@ -46,7 +50,9 @@ class AuthController extends Controller
                 "Description: {$oToken->error_description}\n");
             return false;
         } else {
-            // Log::info($oToken);
+            // Log::info(var_dump($oToken));
+            $user->pm_user_access_token = $oToken->access_token;
+            $user->save();
             return $oToken->access_token;
         }
 

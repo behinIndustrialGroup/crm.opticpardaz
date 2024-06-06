@@ -23,8 +23,10 @@ class TriggerController extends Controller
         return $result->triggers;
     }
     
-    public static function excute($triggerId, $caseId) {
-        $accessToken = AuthController::getAccessToken();
+    public static function excute($triggerId, $caseId, $accessToken = null) {
+        if(!$accessToken){
+            $accessToken = AuthController::getAccessToken();
+        }
         $result =  CurlRequestController::put(
             $accessToken, 
             "/api/1.0/workflow/cases/$caseId/execute-trigger/$triggerId"

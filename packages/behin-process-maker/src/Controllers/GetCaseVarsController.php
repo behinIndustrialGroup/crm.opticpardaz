@@ -14,10 +14,12 @@ class GetCaseVarsController extends Controller
 
     public function __construct() {
     }
-    function getByCaseId($caseId) {
-        $this->accessToken = AuthController::getAccessToken();
+    function getByCaseId($caseId, $accessToken = null) {
+        if(!$accessToken){
+            $accessToken = AuthController::getAccessToken();
+        }
         return CurlRequestController::send(
-            $this->accessToken, 
+            $accessToken, 
             "/api/1.0/workflow/cases/$caseId/variables"
         );
     }

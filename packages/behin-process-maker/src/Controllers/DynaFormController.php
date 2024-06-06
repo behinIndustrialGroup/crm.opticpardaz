@@ -15,11 +15,11 @@ class DynaFormController extends Controller
 
     public function __construct()
     {
+        $this->accessToken = AuthController::getAccessToken();
     }
     function get(Request $r)
     {
-
-        $steps = StepController::list($r->processId, $r->taskId);
+        $steps = StepController::list($r->processId, $r->taskId, $this->accessToken);
         foreach($steps as $step){
             if($step->step_type_obj === "DYNAFORM"){
                 $dynaform = $step->step_uid_obj;
@@ -27,17 +27,17 @@ class DynaFormController extends Controller
             $triggers = $step->triggers;
             foreach($triggers as $trigger){
                 if($trigger->st_type === "BEFORE"){
-                    TriggerController::excute($trigger->tri_uid, $r->caseId);
+                    TriggerController::excute($trigger->tri_uid, $r->caseId, $this->accessToken);
                 }
             }
         }
         if (!$dynaform) {
             return response("شناسه فرم پیدا نشد", 400);
         }
-        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId);
+        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $this->accessToken);
         // $variables = VariableController::getByProcessId($r->processId);
         return view("PMViews::dynamic-forms.main-form")->with([
-            'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values),
+            'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values, $this->accessToken),
             // 'vars' => $variables,
             'variable_values' => $variable_values,
             // 'input_docs' => InputDocController::list($r->appUid),
@@ -60,9 +60,8 @@ class DynaFormController extends Controller
         return $json;
     }
 
-    public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values)
+    public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values, $accessToken = null)
     {
-        $accessToken = AuthController::getAccessToken();
         $json =  CurlRequestController::send(
             $accessToken,
             "/api/1.0/workflow/project/$processId/dynaform/$dynaId"
@@ -70,7 +69,7 @@ class DynaFormController extends Controller
         $content = json_decode($json->dyn_content);
         $fields = $content->items[0]->items;
         $local_fields = GetCaseVarsController::getVarsFromLocal($processId, $caseId);
-        $docs = collect(InputDocController::list($caseId));
+        // $docs = collect(InputDocController::list($caseId));
         echo "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
         echo "<div class='row' style='border-bottom: solid 1px black'>
                 <h4>$caseTitle - $processTitle</h4>
@@ -219,7 +218,6 @@ class DynaFormController extends Controller
         if (config('pm_config.debug')){
             echo "<pre>";
             print_r($fields);
-            print_r($docs);
             echo "</pre>";
             echo"";
         }

@@ -67,7 +67,6 @@ class SetCaseVarsController extends Controller
                 InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, $system_vars->USER_LOGGED, $field_name );
             }elseif(gettype($val) == 'array'){
                 foreach($val as $pic){
-                    print_r($pic->getClientOriginalName());
                     SaveVarsController::saveDoc($system_vars->PROCESS, $r->caseId, $key, $pic);
                 }
             } else {
