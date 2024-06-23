@@ -4,6 +4,7 @@ namespace BehinProcessMaker\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use SoapClient;
@@ -16,7 +17,9 @@ class AuthController extends Controller
     public static function getAccessToken()
     {
         $user = self::getAuthUser();
-        if($user->pm_user_access_token){
+        $now = Carbon::now();
+        $diff = $now->diffInMinutes($user->pm_user_access_token_exp_date);
+        if($diff > 0 and $user->pm_user_access_token){
             return $user->pm_user_access_token;
         }
         Log::info("Get Access Token Api Called");
@@ -52,6 +55,7 @@ class AuthController extends Controller
         } else {
             // Log::info(var_dump($oToken));
             $user->pm_user_access_token = $oToken->access_token;
+            $user->pm_user_access_token_exp_date = Carbon::now()->addMinutes(config('pm_config.access_token_exp_in_minute'));
             if(!$user->pm_user_uid){
                 $UID = RestApiController::getUserId();
                 $user->pm_user_uid = $UID;

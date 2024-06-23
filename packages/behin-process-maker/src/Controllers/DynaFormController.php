@@ -67,24 +67,25 @@ class DynaFormController extends Controller
             "/api/1.0/workflow/project/$processId/dynaform/$dynaId"
         );
         $content = json_decode($json->dyn_content);
+        $task_title = $content->name;
         $fields = $content->items[0]->items;
-        $script = $content->items[0]->script;
-        $script = is_string($script) ? '' : $script->code;
+        $scripts[] = self::getFormScriptCode($content->items[0]->script);
         $local_fields = GetCaseVarsController::getVarsFromLocal($processId, $caseId);
         // $docs = collect(InputDocController::list($caseId));
         echo "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
         echo "<div class='row' style='border-bottom: solid 1px black'>
-                <h4>$caseTitle - $processTitle</h4>
+                <h4>$caseTitle - $task_title - $processTitle</h4>
                 <button type='button' style='flex: auto; text-align: left' class='close' data-dismiss='modal'
                     aria-hidden='true'>&times;</button>
             </div>";
         foreach ($fields as $rows) {
-            echo "<div class='row' style='margin-bottom: 20px'>";
+            echo "<div class='row' style='margin-bottom: 10px'>";
             foreach ($rows as $field) {
                 if($field->type === 'form'){
+                    $scripts[] = self::getFormScriptCode($field->script);
                     $parent_mode = $field->mode;
                     foreach($field->items as $subFormRows){
-                        echo "<div class='row col-sm-12' style='margin-bottom: 20px'>";
+                        echo "<div class='row col-sm-12' style='margin-bottom: 10px'>";
                         foreach($subFormRows as $field){
                             self::createField($field, $local_fields, $parent_mode);
                         }
@@ -99,7 +100,9 @@ class DynaFormController extends Controller
             echo "</div>";
         }
         echo '</form>';
-        // echo "<script>$script</script>";
+        foreach($scripts as $script){
+        echo "<script>$script</script>";
+        }
         if (config('pm_config.debug')){
             $data = json_encode($content);
             echo "<script>console.log($data)</script>";
@@ -146,7 +149,7 @@ class DynaFormController extends Controller
                 echo  "</div>";
             }
             if ($field->type == "text") {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": <input type='text' name='$field->name' id='$field->name' class='form-control' value='$field_value' placeholder='$field->placeholder' $field_required $field_mode>";
                 echo  "</div>";
             }
@@ -156,17 +159,17 @@ class DynaFormController extends Controller
                     // $field_value = $date->toGrDate($field_value);
                 }
                 
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": <input type='text' name='$field->name' id='$field->name' class='form-control persian-date' value='$field_value' $field_required $field_mode>";
                 echo  "</div>";
             }
             if ($field->type == "textarea") {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": <textarea name='$field->name' id='$field->name' rows='$field->rows' class='form-control' $field_required $field_mode>$field_value</textarea>";
                 echo  "</div>";
             }
             if ($field->type == 'radio') {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": ";
                 echo "<div>";
                 foreach ($field->options as $opt) {
@@ -178,7 +181,7 @@ class DynaFormController extends Controller
                 echo  "</div>";
             }
             if ($field->type == 'checkbox') {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 $check = $field_value == 'on' ? 'checked' : '';
                 $field_mode = $field_mode ? 'disabled' : '';
                 echo  "<input type='checkbox' name='$field->name' $check $field_mode>". trans($field->label) . "<br>";
@@ -187,10 +190,14 @@ class DynaFormController extends Controller
                 echo  "</div>";
             }
             if ($field->type == 'dropdown') {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": ";
                 echo "<div class='form-group'>";
-                echo "<select name='$field->name' class='form-control select2' $field_required $field_mode>";
+                echo "<select name='$field->name' id='$field->name' class='form-control select2' $field_required $field_mode>";
+                foreach ($field->options as $opt) {
+                    $selected = $field_value == $opt->value ? 'selected' : '';
+                    echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
+                }
                 if($field->sql){
                     $options = DB::select($field->sql);
                     foreach ($options as $opt) {
@@ -199,10 +206,7 @@ class DynaFormController extends Controller
                     }
                     $field->sql_options = $options;
                 }
-                foreach ($field->options as $opt) {
-                    $selected = $field_value == $opt->value ? 'selected' : '';
-                    echo  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
-                }
+                
                 echo "</select>";
                 echo "</div>";
                 echo  "</div>";
@@ -236,7 +240,7 @@ class DynaFormController extends Controller
 
             }
             if ($field->type == 'multipleFile') {
-                echo  "<div class='col-sm-$field->colSpan'>";
+                echo  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 echo  trans($field->label) . ": ";
                 echo "<div style='text-align: center'>";
 
@@ -248,7 +252,7 @@ class DynaFormController extends Controller
                     )'></i> <br>";
                 }
                 if($field_mode === 'edit'){
-                    echo "<input id='' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
+                    echo "<input id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
                 }
 
                 
@@ -258,4 +262,10 @@ class DynaFormController extends Controller
             }
         }
     }
+
+    public static function getFormScriptCode($script){
+        return is_string($script) ? '' : $script->code;
+    }
 }
+
+

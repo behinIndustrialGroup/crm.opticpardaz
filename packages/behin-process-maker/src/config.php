@@ -1,6 +1,9 @@
 <?php 
 
 return [
+    'max_multiple_file_upload' => 10,
+    'debug' => env('PM_DEBUG', false),
+    'access_token_exp_in_minute' => 10,
     'processes' => [
         'vacation' => [
             'triggers' => [

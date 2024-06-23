@@ -9,19 +9,14 @@ use Mkhodroo\PMReport\Controllers\TableController;
 
 class ToDoCaseController extends Controller
 {
-    private $accessToken;
 
-    public function __construct() {
-        $this->accessToken = AuthController::getAccessToken();
-    }
     function getMyCase()
     {        
         $inbox =  CurlRequestController::send(
-            $this->accessToken,
+            AuthController::getAccessToken(),
             "/api/1.0/workflow/home/todo"
         );
         return $inbox;
-
     }
 
     function form()

@@ -11,6 +11,7 @@ use SoapClient;
 class SetCaseVarsController extends Controller
 {
     private $accessToken;
+    private static $system_vars;
 
     public function __construct()
     {
@@ -19,15 +20,15 @@ class SetCaseVarsController extends Controller
     {
         $this->save($r);
 
-        $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
-        $steps = StepController::list($system_vars->PROCESS, $system_vars->TASK);
-
+        // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
+        $steps = StepController::list(self::$system_vars->PROCESS, self::$system_vars->TASK);
         foreach ($steps as $step) {
             $triggers = $step->triggers;
             foreach ($triggers as $trigger) {
                 if ($trigger->st_type === "AFTER") {
-                    $result = TriggerController::excute($trigger->tri_uid, $system_vars->APPLICATION);
+                    $result = TriggerController::excute($trigger->tri_uid, self::$system_vars->APPLICATION);
                     if($result?->original){
+                        Log::info("Trigger Executed");
                         $result = iconv("UTF-8", "ISO-8859-1", $result->original);
                         return response(str_replace("Bad Request: ", "", $result), 400);
                     }
@@ -41,7 +42,7 @@ class SetCaseVarsController extends Controller
 
     function save(Request $r)
     {
-        $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
+        self::$system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
         $sessionId = AuthController::wsdl_login()->message;
         $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')) . '/sysworkflow/en/green/services/wsdl2');
         $vars = $r->except(
@@ -59,22 +60,22 @@ class SetCaseVarsController extends Controller
             'PIN'
         );
         $variables = array();
-        $local_fields = GetCaseVarsController::getVarsFromLocal($system_vars->PROCESS, $r->caseId);
+        $local_fields = GetCaseVarsController::getVarsFromLocal(self::$system_vars->PROCESS, $r->caseId);
         foreach ($vars as $key => $val) {
             if (gettype($val) == 'object') {
                 $field_name = explode("-", $key)[0];
                 $fileId = explode("-", $key)[1];
-                InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, $system_vars->USER_LOGGED, $field_name );
+                InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, self::$system_vars->USER_LOGGED, $field_name );
             }elseif(gettype($val) == 'array'){
                 foreach($val as $pic){
-                    SaveVarsController::saveDoc($system_vars->PROCESS, $r->caseId, $key, $pic);
+                    SaveVarsController::saveDoc(self::$system_vars->PROCESS, $r->caseId, $key, $pic);
                 }
             } else {
                 $obj = new variableListStruct();
                 $obj->name = $key;
                 $obj->value = $val;
                 $variables[] = $obj;
-                SaveVarsController::save($system_vars->PROCESS, $r->caseId, $key, $val);
+                SaveVarsController::save(self::$system_vars->PROCESS, $r->caseId, $key, $val);
             }
         }
         $params = array(array('sessionId' => $sessionId, 'caseId' => $r->caseId, 'variables' => $variables));
