@@ -26,7 +26,7 @@ class BehinInitProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/resources/layouts' => resource_path('views/behin-layouts'),
             __DIR__.'/views' => resource_path('views'),
-            // __DIR__. '/public' => public_path('behin'),
+            __DIR__. '/public' => public_path('behin'),
             __DIR__. '/routes' => 'routes',
             __DIR__. '/config' => config_path(),
         ]);

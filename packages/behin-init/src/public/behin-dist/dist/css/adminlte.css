@@ -8801,7 +8801,7 @@ body,
  * ------------------
  */
 .main-sidebar {
-  z-index: 1100;
+  z-index: 10;
   height: 100vh;
   overflow-y: hidden;
 }
