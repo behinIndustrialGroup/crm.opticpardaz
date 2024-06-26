@@ -19,7 +19,7 @@ class AuthController extends Controller
         $user = self::getAuthUser();
         $now = Carbon::now();
         $diff = $now->diffInMinutes($user->pm_user_access_token_exp_date);
-        if($diff > 0 and $user->pm_user_access_token){
+        if($diff < config('pm_config.access_token_exp_in_minute') and $user->pm_user_access_token){
             return $user->pm_user_access_token;
         }
         Log::info("Get Access Token Api Called");
@@ -78,6 +78,7 @@ class AuthController extends Controller
 
     private static function getAuthUser(){
         $user = Auth::user();
+        Log::info($user);
         if(!$user->pm_user_password){
             $newPass = RestApiController::changePass();
             $user = User::find($user->id);

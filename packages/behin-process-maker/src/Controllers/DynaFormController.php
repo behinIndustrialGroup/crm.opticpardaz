@@ -11,15 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class DynaFormController extends Controller
 {
-    private $accessToken;
 
-    public function __construct()
-    {
-        $this->accessToken = AuthController::getAccessToken();
-    }
     function get(Request $r)
     {
-        $steps = StepController::list($r->processId, $r->taskId, $this->accessToken);
+        $accessToken = AuthController::getAccessToken();
+        $steps = StepController::list($r->processId, $r->taskId, $accessToken);
         foreach($steps as $step){
             if($step->step_type_obj === "DYNAFORM"){
                 $dynaform = $step->step_uid_obj;
@@ -27,17 +23,17 @@ class DynaFormController extends Controller
             $triggers = $step->triggers;
             foreach($triggers as $trigger){
                 if($trigger->st_type === "BEFORE"){
-                    TriggerController::excute($trigger->tri_uid, $r->caseId, $this->accessToken);
+                    TriggerController::excute($trigger->tri_uid, $r->caseId, $accessToken);
                 }
             }
         }
         if (!$dynaform) {
             return response("شناسه فرم پیدا نشد", 400);
         }
-        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $this->accessToken);
+        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $accessToken);
         // $variables = VariableController::getByProcessId($r->processId);
         return view("PMViews::dynamic-forms.main-form")->with([
-            'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values, $this->accessToken),
+            'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values, $accessToken),
             // 'vars' => $variables,
             'variable_values' => $variable_values,
             // 'input_docs' => InputDocController::list($r->appUid),
