@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use SoapClient;
+use Illuminate\Support\Str;
 
 class RestApiController extends Controller
 {
@@ -62,7 +63,7 @@ class RestApiController extends Controller
     public static function changePass($accessToken = null, $userId = null, $newPass = null){
         $accessToken = self::getAccessToken();
         $userId = self::getUserId($accessToken);
-        $newPass = str_random(10);
+        $newPass = Str::random(10);
         $postParams = array(
             'usr_new_pass'      => $newPass,
             'usr_cnf_pass' => $newPass
