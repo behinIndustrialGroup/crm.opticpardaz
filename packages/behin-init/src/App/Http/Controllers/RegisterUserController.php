@@ -33,13 +33,14 @@ class RegisterUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'digits:11', 'lowercase', 'unique:'.User::class],
             'password' => ['required', Rules\Password::defaults()],
-            'role_id' => config('init.default_role_id')
+            
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => config('init.default_role_id')
         ]);
 
         event(new Registered($user));
