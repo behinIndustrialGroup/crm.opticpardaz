@@ -4,12 +4,14 @@ return [
     'menu' =>[
 
         'dashboard' => [
+            'icon' => 'fa fa-dashboard',
             'fa_name' => 'داشبرد',
             'submenu' => [
                 'dashboard' => [ 'fa_name' => 'داشبرد', 'route-name' => '', 'route-url' => 'admin' ],
             ]
         ],
         'cases' => [
+            'icon' => 'fa fa-list',
             'fa_name' => 'کارپوشه',
             'submenu' => [
                 'new-case' => [ 'fa_name' => 'فرایند جدید', 'route-name' => 'MkhodrooProcessMaker.forms.start', 'route-url' => '' ],
@@ -19,6 +21,7 @@ return [
             ]
         ],
         'users' => [
+            'icon' => 'fa fa-user',
             'fa_name' => 'کاربران',
             'submenu' => [
                 'dashboard' => [ 'fa_name' => 'همه', 'route-name' => '', 'route-url' => 'admin/user/all' ],
@@ -27,6 +30,7 @@ return [
             ]
         ],
         'tickets' => [
+            'icon' => 'fa fa-ticket',
             'fa_name' => 'تیکت پشتیبانی',
             'submenu' => [
                 'create' => [ 'fa_name' => 'ایجاد', 'route-name' => 'ATRoutes.index', 'route-url' => '' ],
