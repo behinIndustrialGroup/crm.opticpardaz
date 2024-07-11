@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url('public/behin/behin-dist/plugins/datatables/dataTables.bootstrap4.css')  . '?' . config('app.version') }}" />
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/dist/css/dropzone.min.css')  . '?' . config('app.version') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" />
+    {{-- <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" /> --}}
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.css') }}">
