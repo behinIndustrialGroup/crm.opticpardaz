@@ -203,7 +203,7 @@ function open_admin_modal_with_data(data, title = '', customFun = null){
     var modal = $('<div class="modal fade" id="admin-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                     '<div class="modal-dialog modal-lg">' +
                     '<div class="modal-content">' +
-                    '<div class="modal-body" id="modal-body">' +
+                    '<div class="modal-body" id="modal-body" style="padding: 0">' +
                     '<h4 class="modal-title" id="myModalLabel" style="font-weight: bold">'+ title +'</h4>' +
                     '<p>Modal content goes here.</p>' +
                     '</div>' +

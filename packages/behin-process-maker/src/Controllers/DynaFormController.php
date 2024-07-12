@@ -15,6 +15,10 @@ class DynaFormController extends Controller
     function get(Request $r)
     {
         $accessToken = AuthController::getAccessToken();
+        if($r->taskStatus === "UNASSIGNED"){
+            ClaimCaseController::claim($r->caseId);
+        }
+        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $accessToken);
         $steps = StepController::list($r->processId, $r->taskId, $accessToken);
         foreach($steps as $step){
             if($step->step_type_obj === "DYNAFORM"){
@@ -30,10 +34,17 @@ class DynaFormController extends Controller
         if (!$dynaform) {
             return response("شناسه فرم پیدا نشد", 400);
         }
-        $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $accessToken);
         // $variables = VariableController::getByProcessId($r->processId);
         return view("PMViews::dynamic-forms.main-form")->with([
-            'html' => DynaFormController::getHtml($r->processId, $r->caseId, $dynaform, $r->processTitle, $r->caseTitle, $variable_values, $accessToken),
+            'html' => DynaFormController::getHtml(
+                $r->processId, 
+                $r->caseId, 
+                $dynaform, 
+                $r->processTitle, 
+                $r->caseTitle, 
+                $variable_values, 
+                $accessToken
+            ),
             // 'vars' => $variables,
             'variable_values' => $variable_values,
             // 'input_docs' => InputDocController::list($r->appUid),
@@ -57,7 +68,7 @@ class DynaFormController extends Controller
     }
 
     public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values, $accessToken = null)
-    {
+    {   
         $json =  CurlRequestController::send(
             $accessToken,
             "/api/1.0/workflow/project/$processId/dynaform/$dynaId"
@@ -69,13 +80,19 @@ class DynaFormController extends Controller
         $local_fields = GetCaseVarsController::getVarsFromLocal($processId, $caseId);
         // $docs = collect(InputDocController::list($caseId));
         echo "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
-        echo "<div class='row' style='border-bottom: solid 1px black'>
-                <h4>$caseTitle - $task_title - $processTitle</h4>
-                <button type='button' style='flex: auto; text-align: left' class='close' data-dismiss='modal'
-                    aria-hidden='true'>&times;</button>
-            </div>";
+        echo "<div class='row p-1' style='color: white; background: darkolivegreen; margin: 0; border-bottom: solid 1px black'>";
+            echo "<div class='col-sm-9'>";
+                echo "<h4>" . trans("Case") . ": " . str_replace('"', "", $caseTitle) . " </h4>";
+                echo "<h5>" . trans('Task') . ": $task_title </h5>";
+                echo "<h6>" . trans("Process") . ": $processTitle</h6>";
+            echo "</div>";
+            echo "<div class='col-sm-3'>";
+                echo "<button type='button' style='color: white; float:left; flex: auto; text-align: left' class='close' data-dismiss='modal'
+                            aria-hidden='true'>&times;</button>";
+            echo "</div>";
+        echo "</div>";
         foreach ($fields as $rows) {
-            echo "<div class='row' style='margin-bottom: 10px'>";
+            echo "<div class='row p-2' style='margin-bottom: 10px'>";
             foreach ($rows as $field) {
                 if($field->type === 'form'){
                     $scripts[] = self::getFormScriptCode($field->script);

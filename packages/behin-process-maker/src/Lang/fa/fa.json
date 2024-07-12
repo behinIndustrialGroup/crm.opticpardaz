@@ -52,7 +52,7 @@
     "TO_DO": "انجام شده",
     "OVERDUE": "سپری شده",
     "Task Title": "عنوان فعالیت",
-    "Case": "مورد",
+    "Case": "پرونده",
     "ON_TIME": "هنوز وقت هست",
     "Device Name": "نام دستگاه",
     "Device Pic": "تصاویر دستگاه",
@@ -81,5 +81,10 @@
     "Repair Review Report": "گزارش بازبینی تعمیرات",
     "Repair Cost": "هزینه تعمیرات",
     "Repair Cost Description": "توضیحات هزینه تعمیرات",
-    "Payment Method": "روش پرداخت"
+    "Payment Method": "روش پرداخت",
+    "Repairman": "تعمیرکار",
+    "case": "پرونده",
+    "Task": "مرحله",
+    "Process": "فرایند"
+
 }
