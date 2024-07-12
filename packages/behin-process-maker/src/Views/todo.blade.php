@@ -23,16 +23,6 @@
 
 @section('script')
     <script>
-        //this is for test 
-        send_ajax_get_request(
-            '{{ route("MkhodrooProcessMaker.api.todo") }}',
-            function(res){
-                console.log(res);
-            }
-        )
-        //end of test 
-
-
         var table = create_datatable(
             'draft-list',
             '{{ route("MkhodrooProcessMaker.api.todo") }}',
