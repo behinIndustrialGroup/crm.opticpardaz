@@ -1,4 +1,4 @@
-@extends('behin-layouts.app')
+@extends(config('pm_config.layout_name'))
 
 @section('content')
     <div class="col-sm-12" style="height: 10px;"></div>
