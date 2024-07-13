@@ -265,7 +265,7 @@ class DynaFormController extends Controller
                     )'></i> <br>";
                 }
                 if(in_array($field->mode, ['parent', 'edit'])){
-                    echo "<input capture id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
+                    echo "<input id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
                 }
 
                 
