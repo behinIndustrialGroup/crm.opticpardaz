@@ -2,6 +2,7 @@
 
 use BehinFileControl\BehinFileControlProvider;
 use BehinInit\BehinInitProvider;
+use BehinLogging\ServiceProvider;
 use BehinProcessMaker\BehinProcessMakerProvider;
 use BehinUserRoles\UserRolesServiceProvider;
 use UserProfile\UserProfileProvider;
@@ -12,5 +13,6 @@ return [
     UserRolesServiceProvider::class,
     UserProfileProvider::class,
     BehinProcessMakerProvider::class,
-    BehinFileControlProvider::class
+    BehinFileControlProvider::class,
+    ServiceProvider::class
 ];

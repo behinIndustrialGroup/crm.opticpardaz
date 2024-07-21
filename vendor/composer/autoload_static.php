@@ -202,6 +202,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'Brick\\Math\\' => 11,
             'BehinUserRoles\\' => 15,
             'BehinProcessMaker\\' => 18,
+            'BehinLogging\\' => 13,
             'BehinInit\\' => 10,
             'BehinFileControl\\' => 17,
         ),
@@ -615,6 +616,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-process-maker/src',
         ),
+        'BehinLogging\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-logging/src',
+        ),
         'BehinInit\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-init/src',
@@ -659,16 +664,21 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinInit\\App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Requests/Auth/LoginRequest.php',
         'BehinInit\\App\\Models\\Access' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Models/Access.php',
         'BehinInit\\BehinInitProvider' => __DIR__ . '/../..' . '/packages/behin-init/src/BehinInitProvider.php',
+        'BehinLogging\\Controllers\\LoggingController' => __DIR__ . '/../..' . '/packages/behin-logging/src/Controllers/LoggingController.php',
+        'BehinLogging\\ServiceProvider' => __DIR__ . '/../..' . '/packages/behin-logging/src/ServiceProvider.php',
         'BehinProcessMaker\\BehinProcessMakerProvider' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/BehinProcessMakerProvider.php',
         'BehinProcessMaker\\Controllers\\AuthController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/AuthController.php',
         'BehinProcessMaker\\Controllers\\CaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/CaseController.php',
         'BehinProcessMaker\\Controllers\\CaseTrackerController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/CaseTrackerController.php',
+        'BehinProcessMaker\\Controllers\\ClaimCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ClaimCaseController.php',
         'BehinProcessMaker\\Controllers\\CurlRequestController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/CurlRequestController.php',
         'BehinProcessMaker\\Controllers\\DeleteCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/DeleteCaseController.php',
+        'BehinProcessMaker\\Controllers\\DeleteVarController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/DeleteVarController.php',
         'BehinProcessMaker\\Controllers\\DoneCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/DoneCaseController.php',
         'BehinProcessMaker\\Controllers\\DraftCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/DraftCaseController.php',
         'BehinProcessMaker\\Controllers\\DynaFormController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/DynaFormController.php',
         'BehinProcessMaker\\Controllers\\GetCaseVarsController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/GetCaseVarsController.php',
+        'BehinProcessMaker\\Controllers\\GetTaskAsigneeController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/GetTaskAsigneeController.php',
         'BehinProcessMaker\\Controllers\\InboxController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/InboxController.php',
         'BehinProcessMaker\\Controllers\\InputDocController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/InputDocController.php',
         'BehinProcessMaker\\Controllers\\NewCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/NewCaseController.php',
@@ -686,6 +696,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinProcessMaker\\Controllers\\TaskController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/TaskController.php',
         'BehinProcessMaker\\Controllers\\ToDoCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ToDoCaseController.php',
         'BehinProcessMaker\\Controllers\\TriggerController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/TriggerController.php',
+        'BehinProcessMaker\\Controllers\\UnassignedCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/UnassignedCaseController.php',
         'BehinProcessMaker\\Controllers\\VariableController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/VariableController.php',
         'BehinProcessMaker\\Models\\PMCase' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Models/PMCase.php',
         'BehinProcessMaker\\Models\\PMTask' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Models/PMTask.php',
