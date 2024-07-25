@@ -97,13 +97,7 @@ class DynaFormController extends Controller
                 if($field->type === 'form'){
                     $scripts[] = self::getFormScriptCode($field->script);
                     $parent_mode = $field->mode;
-                    foreach($field->items as $subFormRows){
-                        echo "<div class='row col-sm-12' style='margin-bottom: 10px'>";
-                        foreach($subFormRows as $field){
-                            self::createField($field, $local_fields, $parent_mode);
-                        }
-                        echo "</div>";
-                    }
+                    self::createForm($field, $local_fields, $parent_mode);
                 }else{
                     $parent_mode = isset($field->mode) ? $field->mode : '';
 
@@ -121,6 +115,19 @@ class DynaFormController extends Controller
             echo "<script>console.log($data)</script>";
         }
         
+    }
+
+    public static function createForm($field, $local_fields, $parent_mode){
+        foreach($field->items as $subFormRows){
+            echo "<div class='row col-sm-12' style='margin-bottom: 10px'>";
+            foreach($subFormRows as $field){
+                if($field->type == 'form'){
+                    self::createForm($field, $local_fields, $field->mode);
+                }
+                self::createField($field, $local_fields, $parent_mode);
+            }
+            echo "</div>";
+        }
     }
 
     public static function createField($field, $local_fields, $parent_mode){
