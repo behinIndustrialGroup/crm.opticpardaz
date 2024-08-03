@@ -11,6 +11,7 @@
                     <th>{{__('Customer Fullname')}}</th>
                     <th>{{__('Receive Date')}}</th>
                     <th>{{__('RepairMan')}}</th>
+                    <th>{{__('Current User')}}</th>
                     <th>{{__('Status')}}</th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@
                 {data : 'customer_fullname'},
                 {data : 'receive_date'},
                 {data : 'repairman'},
+                {data : 'caseInfo.task.currentUser'},
                 {data : 'status'}
             ],
             function(row){

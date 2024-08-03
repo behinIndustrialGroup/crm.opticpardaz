@@ -7,6 +7,7 @@ use BehinProcessMaker\Controllers\AuthController;
 use BehinProcessMaker\Controllers\CurlRequestController;
 use BehinProcessMaker\Controllers\DynaFormController;
 use BehinProcessMaker\Controllers\GetCaseVarsController;
+use BehinProcessMaker\Controllers\GetTaskAsigneeController;
 use BehinProcessMaker\Models\PmVars;
 use Illuminate\Http\Request;
 

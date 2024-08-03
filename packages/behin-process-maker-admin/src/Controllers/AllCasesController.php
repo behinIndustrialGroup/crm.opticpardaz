@@ -23,12 +23,14 @@ class AllCasesController extends Controller
             $repairman_id = PmVars::where('case_id', $case->case_id)->where('key', 'repairman')->first()?->value;
             $repairman = PMUserController::getUserByPmUserId($repairman_id);
             $status = PmVars::where('case_id', $case->case_id)->where('key', 'status')->first()?->value;
+            $caseinfo = CaseInfoController::get($case->case_id);
             $data[]= [
                 'process_id' => $case->process_id,
                 'case_id' => $case->case_id,
                 'customer_fullname' => $customer_name,
                 'receive_date' => $receive_date,
                 'repairman' => $repairman?->name,
+                'caseInfo' => $caseinfo,
                 'status' => $status,
             ];
         }
