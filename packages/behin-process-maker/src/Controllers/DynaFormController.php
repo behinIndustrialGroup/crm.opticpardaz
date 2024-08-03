@@ -67,7 +67,7 @@ class DynaFormController extends Controller
         return $json;
     }
 
-    public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values, $accessToken = null)
+    public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values = null, $accessToken = null)
     {   
         $json =  CurlRequestController::send(
             $accessToken,

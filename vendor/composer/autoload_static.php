@@ -202,6 +202,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'Brick\\Math\\' => 11,
             'BehinUserRoles\\' => 15,
             'BehinProcessMaker\\' => 18,
+            'BehinProcessMakerAdmin\\' => 23,
             'BehinLogging\\' => 13,
             'BehinInit\\' => 10,
             'BehinFileControl\\' => 17,
@@ -616,6 +617,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-process-maker/src',
         ),
+        'BehinProcessMakerAdmin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src',
+        ),
         'BehinLogging\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-logging/src',
@@ -665,6 +670,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinInit\\App\\Models\\Access' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Models/Access.php',
         'BehinInit\\BehinInitProvider' => __DIR__ . '/../..' . '/packages/behin-init/src/BehinInitProvider.php',
         'BehinLogging\\Controllers\\LoggingController' => __DIR__ . '/../..' . '/packages/behin-logging/src/Controllers/LoggingController.php',
+        'BehinLogging\\Middlewares\\Logging' => __DIR__ . '/../..' . '/packages/behin-logging/src/Middlewares/Logging.php',
         'BehinLogging\\ServiceProvider' => __DIR__ . '/../..' . '/packages/behin-logging/src/ServiceProvider.php',
         'BehinProcessMaker\\BehinProcessMakerProvider' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/BehinProcessMakerProvider.php',
         'BehinProcessMaker\\Controllers\\AuthController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/AuthController.php',
@@ -686,6 +692,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinProcessMaker\\Controllers\\PMVacationController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/PMVacationController.php',
         'BehinProcessMaker\\Controllers\\ProcessController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ProcessController.php',
         'BehinProcessMaker\\Controllers\\ProcessMapController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ProcessMapController.php',
+        'BehinProcessMaker\\Controllers\\ReassignCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ReassignCaseController.php',
         'BehinProcessMaker\\Controllers\\RestApiController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/RestApiController.php',
         'BehinProcessMaker\\Controllers\\RouteCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/RouteCaseController.php',
         'BehinProcessMaker\\Controllers\\SDate' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/SDate.php',
@@ -706,8 +713,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinProcessMaker\\Models\\PmVars' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Models/PmVars.php',
         'BehinUserRoles\\Controllers\\GetMethodsController' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Controllers/GetMethodsController.php',
         'BehinUserRoles\\Controllers\\GetRoleController' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Controllers/GetRoleController.php',
+        'BehinUserRoles\\Controllers\\UserController' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Controllers/UserController.php',
         'BehinUserRoles\\Models\\Method' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/Method.php',
         'BehinUserRoles\\Models\\Role' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/Role.php',
+        'BehinUserRoles\\Models\\User' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/User.php',
         'BehinUserRoles\\UserRolesServiceProvider' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/UserRolesServiceProvider.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',

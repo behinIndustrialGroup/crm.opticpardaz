@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use BehinProcessMaker\Controllers\AuthController;
 use BehinProcessMaker\Controllers\CaseController;
 use BehinProcessMaker\Controllers\CaseTrackerController;
+use BehinProcessMaker\Controllers\ClaimCaseController;
 use BehinProcessMaker\Controllers\CurlRequestController;
 use BehinProcessMaker\Controllers\DeleteCaseController;
 use BehinProcessMaker\Controllers\DeleteVarController;
@@ -68,5 +69,9 @@ Route::name('MkhodrooProcessMaker.')->prefix('pm')->middleware(['web', 'auth', A
         Route::name('process.')->prefix('process')->group(function () {
             Route::get('get-by-id/{process_id}', [ProcessController::class, 'getNameById']);
         });
+    });
+
+    Route::get('test', function(){
+        ClaimCaseController::claim('36482776566abcb93cbd923027187390');
     });
 });

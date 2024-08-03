@@ -105,6 +105,7 @@ return array(
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'BehinUserRoles\\' => array($baseDir . '/packages/behin-user-roles/src'),
     'BehinProcessMaker\\' => array($baseDir . '/packages/behin-process-maker/src'),
+    'BehinProcessMakerAdmin\\' => array($baseDir . '/packages/behin-process-maker-admin/src'),
     'BehinLogging\\' => array($baseDir . '/packages/behin-logging/src'),
     'BehinInit\\' => array($baseDir . '/packages/behin-init/src'),
     'BehinFileControl\\' => array($baseDir . '/packages/behin-file-control/src'),
