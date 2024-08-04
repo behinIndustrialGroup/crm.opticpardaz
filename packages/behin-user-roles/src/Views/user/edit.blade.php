@@ -48,6 +48,11 @@
                             </form>
                         </tr>
                         <tr>
+                            <td colspan="2">
+                                <button class="btn btn-danger" onclick="create_pm_user()">{{ __('Create PM User') }}</button>
+                            </td>
+                        </tr>
+                        <tr>
                             <form method="post" action="{{$user->id}}/changepass">
                                 @csrf
                                 <input type="password" name="pass">
@@ -107,5 +112,20 @@
         $("#check_all").on('click',function(){
             $('#access_tbl input:checkbox').prop('checked', 'true');
         });
+
+        function create_pm_user(){
+            var fd = new FormData();
+            fd.append('username', "{{ $user->pm_username }}");
+            fd.append('firstname', "{{ $user->name }}");
+            fd.append('lastname', "{{ $user->name }}");
+            send_ajax_formdata_request(
+                '{{ route("MkhodrooProcessMaker.api.user.create") }}',
+                fd,
+                function(response){
+                    console.log(response);
+                    
+                }
+            )
+        }
     </script>
 @endsection
