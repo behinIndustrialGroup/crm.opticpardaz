@@ -42,7 +42,9 @@ class SetCaseVarsController extends Controller
 
     function save(Request $r)
     {
+        
         self::$system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
+        Log::info(json_encode(self::$system_vars));
         $sessionId = AuthController::wsdl_login()->message;
         $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')) . '/sysworkflow/en/green/services/wsdl2');
         $vars = $r->except(

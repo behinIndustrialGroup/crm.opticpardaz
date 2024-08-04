@@ -9,18 +9,13 @@ use SoapClient;
 
 class TriggerController extends Controller
 {
-    public static function list(){
-        $sessionId = AuthController::wsdl_login()->message;
-        $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')). '/sysworkflow/en/green/services/wsdl2');
-        
-        $params = array(array('sessionId'=>$sessionId));
-        $params = array(
-            array(
-                'sessionId'=>$sessionId
-            )
+    public static function listOfRoutingTriggers($processId, $taskId){
+        $accessToken = AuthController::getAccessToken();
+
+        return CurlRequestController::send(
+            $accessToken, 
+            "/api/1.0/workflow/project/$processId/activity/$taskId/step/triggers"
         );
-        $result = $client->__SoapCall('triggerList', $params);
-        return $result->triggers;
     }
     
     public static function excute($triggerId, $caseId, $accessToken = null) {

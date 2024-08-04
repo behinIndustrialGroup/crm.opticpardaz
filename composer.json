@@ -7,7 +7,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "melipayamak/php": "1.0.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -31,7 +32,8 @@
             "BehinProcessMaker\\": "packages/behin-process-maker/src/",
             "BehinFileControl\\": "packages/behin-file-control/src/",
             "BehinLogging\\": "packages/behin-logging/src/",
-            "BehinProcessMakerAdmin\\": "packages/behin-process-maker-admin/src/"
+            "BehinProcessMakerAdmin\\": "packages/behin-process-maker-admin/src/",
+            "Behin\\Sms\\": "packages/behin-sms/src/"
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php"

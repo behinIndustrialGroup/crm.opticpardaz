@@ -10,8 +10,15 @@
                     <th>{{__('Case')}}</th>
                     <th>{{__('Customer Fullname')}}</th>
                     <th>{{__('Receive Date')}}</th>
-                    <th>{{__('RepairMan')}}</th>
-                    <th>{{__('Current User')}}</th>
+                    <th>{{__('Repairman')}}</th>
+                    <th>{{__('Repair Is Approved')}}</th>
+                    <th>{{__('Repair Declined Description')}}</th>
+                    <th>{{__('Repair Is Approved 2')}}</th>
+                    <th>{{__('Repair Declined Description 2')}}</th>
+                    <th>{{__('Repair Is Approved 3')}}</th>
+                    <th>{{__('Repair Declined Description 3')}}</th>
+                    <th>{{__('Repair Cost')}}</th>
+                    {{-- <th>{{__('Current User')}}</th> --}}
                     <th>{{__('Status')}}</th>
                 </tr>
             </thead>
@@ -26,11 +33,20 @@
             '{{ route("pmAdmin.api.all") }}',
             [
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
-                {data : 'case_id'},
+                {data : 'case_id',
+                    visible: false
+                },
                 {data : 'customer_fullname'},
                 {data : 'receive_date'},
                 {data : 'repairman'},
-                {data : 'caseInfo.task.currentUser'},
+                {data : 'repair_is_approved'},
+                {data : 'repair_declined_description'},
+                {data : 'repair_is_approved_2'},
+                {data : 'repair_declined_description_2'},
+                {data : 'repair_is_approved_3'},
+                {data : 'repair_declined_description_3'},
+                {data : 'repair_cost'},
+                // {data : 'caseInfo.task.currentUser'},
                 {data : 'status'}
             ],
             function(row){

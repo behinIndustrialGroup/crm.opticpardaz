@@ -1,5 +1,6 @@
 <?php
 
+use Behin\Sms\SmsProvider;
 use BehinFileControl\BehinFileControlProvider;
 use BehinInit\BehinInitProvider;
 use BehinLogging\ServiceProvider;
@@ -16,5 +17,6 @@ return [
     BehinProcessMakerProvider::class,
     BehinFileControlProvider::class,
     ServiceProvider::class,
-    BehinProcessMakerAdminProvider::class
+    BehinProcessMakerAdminProvider::class,
+    SmsProvider::class
 ];

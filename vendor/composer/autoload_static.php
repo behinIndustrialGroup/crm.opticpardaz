@@ -139,6 +139,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             'Monolog\\' => 8,
             'Mockery\\' => 8,
+            'Melipayamak\\' => 12,
         ),
         'L' => 
         array (
@@ -200,6 +201,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'B' => 
         array (
             'Brick\\Math\\' => 11,
+            'Behin\\Sms\\' => 10,
             'BehinUserRoles\\' => 15,
             'BehinProcessMaker\\' => 18,
             'BehinProcessMakerAdmin\\' => 23,
@@ -469,6 +471,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/..' . '/mockery/mockery/library/Mockery',
         ),
+        'Melipayamak\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/melipayamak/php/src',
+        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -609,6 +615,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
+        'Behin\\Sms\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-sms/src',
+        ),
         'BehinUserRoles\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-user-roles/src',
@@ -672,6 +682,11 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinLogging\\Controllers\\LoggingController' => __DIR__ . '/../..' . '/packages/behin-logging/src/Controllers/LoggingController.php',
         'BehinLogging\\Middlewares\\Logging' => __DIR__ . '/../..' . '/packages/behin-logging/src/Middlewares/Logging.php',
         'BehinLogging\\ServiceProvider' => __DIR__ . '/../..' . '/packages/behin-logging/src/ServiceProvider.php',
+        'BehinProcessMakerAdmin\\BehinProcessMakerAdminProvider' => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src/BehinProcessMakerAdminProvider.php',
+        'BehinProcessMakerAdmin\\Controllers\\AllCasesController' => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src/Controllers/AllCasesController.php',
+        'BehinProcessMakerAdmin\\Controllers\\CaseDetailsController' => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src/Controllers/CaseDetailsController.php',
+        'BehinProcessMakerAdmin\\Controllers\\CaseInfoController' => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src/Controllers/CaseInfoController.php',
+        'BehinProcessMakerAdmin\\Models\\PmVars' => __DIR__ . '/../..' . '/packages/behin-process-maker-admin/src/Models/PmVars.php',
         'BehinProcessMaker\\BehinProcessMakerProvider' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/BehinProcessMakerProvider.php',
         'BehinProcessMaker\\Controllers\\AuthController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/AuthController.php',
         'BehinProcessMaker\\Controllers\\CaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/CaseController.php',
@@ -704,6 +719,8 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinProcessMaker\\Controllers\\ToDoCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/ToDoCaseController.php',
         'BehinProcessMaker\\Controllers\\TriggerController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/TriggerController.php',
         'BehinProcessMaker\\Controllers\\UnassignedCaseController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/UnassignedCaseController.php',
+        'BehinProcessMaker\\Controllers\\User\\CreateUserController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/User/CreateUserController.php',
+        'BehinProcessMaker\\Controllers\\User\\GetUserController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/User/GetUserController.php',
         'BehinProcessMaker\\Controllers\\VariableController' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Controllers/VariableController.php',
         'BehinProcessMaker\\Models\\PMCase' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Models/PMCase.php',
         'BehinProcessMaker\\Models\\PMTask' => __DIR__ . '/../..' . '/packages/behin-process-maker/src/Models/PMTask.php',
@@ -718,6 +735,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'BehinUserRoles\\Models\\Role' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/Role.php',
         'BehinUserRoles\\Models\\User' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/Models/User.php',
         'BehinUserRoles\\UserRolesServiceProvider' => __DIR__ . '/../..' . '/packages/behin-user-roles/src/UserRolesServiceProvider.php',
+        'Behin\\Sms\\Controllers\\Melipayamak\\MelipayamakApi' => __DIR__ . '/../..' . '/packages/behin-sms/src/Controllers/Melipayamak/MelipayamakApi.php',
+        'Behin\\Sms\\Controllers\\SendSmsController' => __DIR__ . '/../..' . '/packages/behin-sms/src/Controllers/SendSmsController.php',
+        'Behin\\Sms\\SmsProvider' => __DIR__ . '/../..' . '/packages/behin-sms/src/SmsProvider.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',
         'Brick\\Math\\BigNumber' => __DIR__ . '/..' . '/brick/math/src/BigNumber.php',
@@ -3462,6 +3482,20 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'League\\MimeTypeDetection\\GeneratedExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/GeneratedExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\MimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/MimeTypeDetector.php',
         'League\\MimeTypeDetection\\OverridingExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/OverridingExtensionToMimeTypeMap.php',
+        'Melipayamak\\BaseSms' => __DIR__ . '/..' . '/melipayamak/php/src/BaseSms.php',
+        'Melipayamak\\Branch' => __DIR__ . '/..' . '/melipayamak/php/src/Branch.php',
+        'Melipayamak\\BranchAsync' => __DIR__ . '/..' . '/melipayamak/php/src/BranchAsync.php',
+        'Melipayamak\\Contacts' => __DIR__ . '/..' . '/melipayamak/php/src/Contacts.php',
+        'Melipayamak\\ContactsAsync' => __DIR__ . '/..' . '/melipayamak/php/src/ContactsAsync.php',
+        'Melipayamak\\MelipayamakApi' => __DIR__ . '/..' . '/melipayamak/php/src/MelipayamakApi.php',
+        'Melipayamak\\SmsRest' => __DIR__ . '/..' . '/melipayamak/php/src/SmsRest.php',
+        'Melipayamak\\SmsRestAsync' => __DIR__ . '/..' . '/melipayamak/php/src/SmsRestAsync.php',
+        'Melipayamak\\SmsSoap' => __DIR__ . '/..' . '/melipayamak/php/src/SmsSoap.php',
+        'Melipayamak\\SmsSoapAsync' => __DIR__ . '/..' . '/melipayamak/php/src/SmsSoapAsync.php',
+        'Melipayamak\\Ticket' => __DIR__ . '/..' . '/melipayamak/php/src/Ticket.php',
+        'Melipayamak\\TicketAsync' => __DIR__ . '/..' . '/melipayamak/php/src/TicketAsync.php',
+        'Melipayamak\\Users' => __DIR__ . '/..' . '/melipayamak/php/src/Users.php',
+        'Melipayamak\\UsersAsync' => __DIR__ . '/..' . '/melipayamak/php/src/UsersAsync.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',
         'Mockery\\Adapter\\Phpunit\\MockeryTestCase' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryTestCase.php',
