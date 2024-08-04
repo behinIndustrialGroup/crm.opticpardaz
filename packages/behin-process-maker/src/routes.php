@@ -29,6 +29,7 @@ use BehinProcessMaker\Controllers\StepController;
 use BehinProcessMaker\Controllers\TaskController;
 use BehinProcessMaker\Controllers\ToDoCaseController;
 use BehinProcessMaker\Controllers\TriggerController;
+use BehinProcessMaker\Controllers\User\CreateUserController;
 use BehinProcessMaker\Controllers\VariableController;
 use Illuminate\Http\Request;
 use Mkhodroo\PMReport\Controllers\TableController;
@@ -68,6 +69,9 @@ Route::name('MkhodrooProcessMaker.')->prefix('pm')->middleware(['web', 'auth', A
 
         Route::name('process.')->prefix('process')->group(function () {
             Route::get('get-by-id/{process_id}', [ProcessController::class, 'getNameById']);
+        });
+        Route::name('user.')->prefix('user')->group(function () {
+            Route::post('create', [CreateUserController::class, 'create'])->name('create');
         });
     });
 

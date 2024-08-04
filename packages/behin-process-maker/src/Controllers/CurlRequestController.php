@@ -51,8 +51,10 @@ class CurlRequestController extends Controller
         curl_close($ch);
 
         if ($statusCode != 200) {
-            if (isset($results) and isset($results->error))
+            if (isset($results) and isset($results->error)){
                 Log::info("Error code: {$results->error->code}\nMessage: {$results->error->message}\n");
+                return response($results->error->message, $results->error->code);
+            }
             else
                 Log::info("Error: HTTP status code: $statusCode\n");
         } else {
