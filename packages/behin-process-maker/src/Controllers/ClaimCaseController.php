@@ -17,7 +17,6 @@ class ClaimCaseController extends Controller
             AuthController::getAccessToken(),
             "/api/1.0/workflow/light/case/$app_uid/claim"
         );
-        Log::info($inbox);
         return $inbox;
     }
 
