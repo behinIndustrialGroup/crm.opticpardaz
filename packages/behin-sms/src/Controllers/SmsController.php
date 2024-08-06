@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Melipayamak\MelipayamakApi;
 
-class SendSmsController extends Controller
+class SmsController extends Controller
 {
     private $url;
     private $user;
@@ -16,7 +16,7 @@ class SendSmsController extends Controller
     public function __construct() {
         
     }
-    public function send($to, $text)
+    public static function send($to, $text)
     {
         $username = '09376265059';
         $password = '1566bf7b-70fb-4e41-a635-0ea0612a7d28';
@@ -24,8 +24,6 @@ class SendSmsController extends Controller
         $smsRest = $api->sms();
         $to = '09376922176';
         $from = '50004001265059';
-        $text = [ 'محمدشهاب', '1212' ];
-        $bodyId = 107836;
         $response = $smsRest->send($to, $from, $text, false);
         $json = json_decode($response);
         return $json;

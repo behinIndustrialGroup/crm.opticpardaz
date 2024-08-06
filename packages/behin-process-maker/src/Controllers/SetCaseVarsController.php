@@ -36,8 +36,11 @@ class SetCaseVarsController extends Controller
             }
         }
 
-        return RouteCaseController::next($r->caseId, $r->del_index);
-        return response("انجام شد", 200);
+        $route = RouteCaseController::next($r->caseId, $r->del_index);
+        if(config('pm_config.send_sms_to_next_user')){
+            SendSmsController::toNextUser($r->caseId, $r->del_index);
+        }
+        return true;
     }
 
     function save(Request $r)

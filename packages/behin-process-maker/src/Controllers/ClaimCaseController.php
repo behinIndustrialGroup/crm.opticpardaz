@@ -5,6 +5,7 @@ namespace BehinProcessMaker\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Mkhodroo\PMReport\Controllers\TableController;
 
 class ClaimCaseController extends Controller
@@ -16,6 +17,7 @@ class ClaimCaseController extends Controller
             AuthController::getAccessToken(),
             "/api/1.0/workflow/light/case/$app_uid/claim"
         );
+        Log::info($inbox);
         return $inbox;
     }
 

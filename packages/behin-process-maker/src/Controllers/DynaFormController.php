@@ -15,6 +15,7 @@ class DynaFormController extends Controller
     function get(Request $r)
     {
         $accessToken = AuthController::getAccessToken();
+        ClaimCaseController::claim($r->caseId);
         if($r->taskStatus === "UNASSIGNED"){
             ClaimCaseController::claim($r->caseId);
         }
@@ -31,6 +32,7 @@ class DynaFormController extends Controller
                 }
             }
         }
+        
         if (!$dynaform) {
             return response("شناسه فرم پیدا نشد", 400);
         }

@@ -26,8 +26,6 @@ class TriggerController extends Controller
             $accessToken, 
             "/api/1.0/workflow/cases/$caseId/execute-trigger/$triggerId"
         );
-
-        // Log::info("trigger excute result: $result");
         return $result;
     }
 

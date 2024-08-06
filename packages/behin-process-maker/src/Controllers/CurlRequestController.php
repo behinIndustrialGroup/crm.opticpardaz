@@ -13,7 +13,7 @@ class CurlRequestController extends Controller
     public static function send($accessToken, $url, $data = null)
     {
         self::$apiServer = str_replace('https', 'http', env('PM_SERVER'));
-        Log::info(self::$apiServer . $url);
+        // Log::info(self::$apiServer . $url);
 
         $ch = curl_init(self::$apiServer . $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $accessToken));
@@ -64,7 +64,7 @@ class CurlRequestController extends Controller
 
     public static function put($accessToken, $url, $data = null)
     {
-        Log::info(json_encode($data));
+        // Log::info(json_encode($data));
         self::$apiServer = str_replace('https', 'http', env('PM_SERVER'));
         $ch = curl_init(self::$apiServer . $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $accessToken) );
