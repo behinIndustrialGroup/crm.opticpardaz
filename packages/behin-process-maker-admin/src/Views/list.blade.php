@@ -55,7 +55,8 @@
             ],
             function(row){
                 $(row).css('cursor', 'pointer')
-            }
+            },
+            [ 2, 'desc' ]
         );
         table.on('dblclick', 'tr', function(){
             var data = table.row( this ).data();
