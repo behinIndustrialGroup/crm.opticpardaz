@@ -20,6 +20,7 @@
                     <th>{{__('Repair Cost')}}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
                     <th>{{__('Status')}}</th>
+                    <th>{{__('Delete')}}</th>
                 </tr>
             </thead>
         </table>
@@ -47,7 +48,10 @@
                 {data : 'repair_declined_description_3'},
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
-                {data : 'last_status'}
+                {data : 'status'},
+                {data : 'case_id', render: function(data, type, row){
+                    return `<button class='btn btn-danger' onclick="delete_case_info_from_db('${row.process_id}', '${data}')">delete</button>`;
+                }}
             ],
             function(row){
                 $(row).css('cursor', 'pointer')
@@ -71,15 +75,17 @@
             )
         })
 
-        function delete_case(caseId){
-            url = "{{ route('MkhodrooProcessMaker.api.deleteCase', [ 'caseId' => 'caseId' ]) }}";
-            url = url.replace('caseId', caseId)
-            console.log(url);
-            send_ajax_get_request_with_confirm(
+        function delete_case_info_from_db(processId,caseId){
+            url = "{{ route('pmAdmin.api.deleteCase') }}";
+            var fd = new FormData();
+            fd.append('processId', processId);
+            fd.append('caseId', caseId);
+            send_ajax_formdata_request_with_confirm(
                 url,
+                fd,
                 function(response){
                     console.log(response);
-                    refresh_table()
+                    // refresh_table()
                 },
                 '{{__("Are You Sure For Delete This Item?")}}'
             )
