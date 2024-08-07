@@ -8,7 +8,7 @@ use BehinProcessMaker\Models\PmVars;
 
 class AllCasesController extends Controller
 {
-    public function form(){
+    public function allCasesForm(){
         return view('PMAdminViews::list');
     }
 

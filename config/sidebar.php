@@ -20,6 +20,13 @@ return [
                 'draft' => [ 'fa_name' => 'پیش نویس', 'route-name' => 'MkhodrooProcessMaker.forms.draft', 'route-url' => '' ]
             ]
         ],
+        'cases-report' => [
+            'icon' => 'fa fa-list',
+            'fa_name' => 'گزارشات کارپوشه',
+            'submenu' => [
+                'all' => [ 'fa_name' => 'همه', 'route-name' => 'pmAdmin.form.allCasesForm', 'route-url' => '' ],
+            ]
+        ],
         'users' => [
             'icon' => 'fa fa-user',
             'fa_name' => 'کاربران',
