@@ -21,21 +21,9 @@ class SetCaseVarsController extends Controller
         $this->save($r);
 
         // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
-        $steps = StepController::list(self::$system_vars->PROCESS, self::$system_vars->TASK);
-        foreach ($steps as $step) {
-            $triggers = $step->triggers;
-            foreach ($triggers as $trigger) {
-                if ($trigger->st_type === "AFTER") {
-                    $result = TriggerController::excute($trigger->tri_uid, self::$system_vars->APPLICATION);
-                    if($result?->original){
-                        Log::info("Trigger Executed");
-                        $result = iconv("UTF-8", "ISO-8859-1", $result->original);
-                        $resultText = str_replace("Bad Request: ", "", $result);
-                        $resultText = trans($resultText);
-                        return response($resultText, 400);
-                    }
-                }
-            }
+        $result = DynaFormTriggerController::executeAfterDynaformTriggers(self::$system_vars->PROCESS, self::$system_vars->TASK, self::$system_vars->APPLICATION);
+        if($result){
+            return response($result, 400);
         }
 
         $route = RouteCaseController::next($r->caseId, $r->del_index);
