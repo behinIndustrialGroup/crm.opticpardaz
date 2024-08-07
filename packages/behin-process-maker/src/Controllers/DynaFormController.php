@@ -268,11 +268,15 @@ class DynaFormController extends Controller
                 $field_rows = $local_fields->where('key', $field->name);
                 foreach($field_rows as $field_row){
                     echo "<a target='_blank' href='". url("public/$field_row->value") ."' >$field->name</a> | ";
-                    echo "<i class='fa fa-trash' onclick='delete_doc(
-                        $field_row->id
-                    )'></i> <br>";
+                    if(in_array($field->mode, ['edit'])){
+                        echo "<i class='fa fa-trash' onclick='delete_doc(
+                            $field_row->id
+                        )'></i> ";
+                    }
+                    echo "<br>";
+                    
                 }
-                if(in_array($field->mode, ['parent', 'edit'])){
+                if(in_array($field->mode, ['edit'])){
                     echo "<input id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
                 }
 
