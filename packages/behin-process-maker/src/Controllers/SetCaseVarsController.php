@@ -30,7 +30,9 @@ class SetCaseVarsController extends Controller
                     if($result?->original){
                         Log::info("Trigger Executed");
                         $result = iconv("UTF-8", "ISO-8859-1", $result->original);
-                        return response(str_replace("Bad Request: ", "", $result), 400);
+                        $resultText = str_replace("Bad Request: ", "", $result);
+                        $resultText = trans($resultText);
+                        return response($resultText, 400);
                     }
                 }
             }

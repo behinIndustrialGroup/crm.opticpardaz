@@ -10,7 +10,6 @@ class SyncVarsController extends Controller
     public static function syncServerWithLocal($processId, $caseId) {
         $getCase = new GetCaseVarsController();
         $vars = $getCase->getByCaseId($caseId);
-        Log::info($caseId);
         foreach($vars as $key => $value){
             if(!in_array($key, [ 'USR_USERNAME', 'USER_LOGGED' ])){
                 if(gettype($value) != 'string'){
