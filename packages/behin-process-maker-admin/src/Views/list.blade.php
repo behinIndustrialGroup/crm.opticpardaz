@@ -47,7 +47,7 @@
                 {data : 'repair_declined_description_3'},
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
-                {data : 'status'}
+                {data : 'last_status'}
             ],
             function(row){
                 $(row).css('cursor', 'pointer')
