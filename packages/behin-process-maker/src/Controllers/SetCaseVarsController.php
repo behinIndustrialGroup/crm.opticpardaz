@@ -37,17 +37,21 @@ class SetCaseVarsController extends Controller
         }
 
         $route = RouteCaseController::next($r->caseId, $r->del_index);
+        //ارسال پیامک برای یوزر بعدی 
+        //در صورتی که یوزر بعدی مشخص باشد
         if(config('pm_config.send_sms_to_next_user')){
             SendSmsController::toNextUser($r->caseId, $r->del_index);
         }
+
+        //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
+        SyncVarsController::syncServerWithLocal(self::$system_vars->PROCESS, $r->caseId);
+        
         return true;
     }
 
     function save(Request $r)
     {
-        
-        self::$system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
-        Log::info(json_encode(self::$system_vars));
+        self::getVariableFromPmServer($r->caseId);
         $sessionId = AuthController::wsdl_login()->message;
         $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')) . '/sysworkflow/en/green/services/wsdl2');
         $vars = $r->except(
@@ -88,8 +92,11 @@ class SetCaseVarsController extends Controller
         if ($result->status_code != 0)
             return response($result->message, 400);
 
-
         return response("ok", 200);
+    }
+
+    public static function getVariableFromPmServer($caseId){
+        self::$system_vars = (new GetCaseVarsController())->getByCaseId($caseId);
     }
 }
 
