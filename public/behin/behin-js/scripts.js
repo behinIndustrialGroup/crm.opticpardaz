@@ -1,18 +1,23 @@
 function show_error(er){
+    msg = '';
     if(er.status == 403){
         toastr.error("دسترسی ندارید")
     }
     if(er.responseJSON){
-        toastr.error(er.responseJSON.message)
+        msg = er.responseJSON.message;
     }else if(er.responseText){
-        toastr.error(er.responseText)
+        msg= er.responseText;
     }else if(typeof(er) == "string"){
-        toastr.error(er);
+        msg = er;
     }
     else{
-        toastr.error("خطا");
+        msg = "خطا";
     }
+    toastr.error(msg);
     console.log(er);
+    if(msg.includes('CSRF')){
+        window.reload();
+    }
     hide_loading();
 }
 

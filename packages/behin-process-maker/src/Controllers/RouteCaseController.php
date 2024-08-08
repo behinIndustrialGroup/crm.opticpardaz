@@ -31,7 +31,6 @@ class RouteCaseController extends Controller
             )
         );
 
-        Log::info($result);
         return $result;
     }
 }
