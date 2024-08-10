@@ -19,6 +19,7 @@ class AllCasesController extends Controller
             $search = PmVars::where('case_id', $case->case_id);
 
             $customer_name = PmVars::where('case_id', $case->case_id)->where('key', 'customer_fullname')->first()?->value;
+            $app_number = PmVars::where('case_id', $case->case_id)->where('key', 'app_number')->first()?->value;
             $device_name = PmVars::where('case_id', $case->case_id)->where('key', 'device_name')->first()?->value;
             $receive_date = PmVars::where('case_id', $case->case_id)->where('key', 'receive_date')->first()?->value;
             $customer_mobile = PmVars::where('case_id', $case->case_id)->where('key', 'customer_mobile')->first()?->value;
@@ -38,6 +39,7 @@ class AllCasesController extends Controller
                 'process_id' => $case->process_id,
                 'case_id' => $case->case_id,
                 'customer_fullname' => $customer_name,
+                'app_number' => $app_number,
                 'receive_date' => $receive_date,
                 'repair_report' => $repair_report,
                 'device_name' => $device_name,
