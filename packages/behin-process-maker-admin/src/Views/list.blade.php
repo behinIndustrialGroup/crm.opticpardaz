@@ -10,7 +10,9 @@
                     <th>{{__('Case')}}</th>
                     <th>{{__('Customer Fullname')}}</th>
                     <th>{{__('Receive Date')}}</th>
+                    <th>{{__('Device Name')}}</th>
                     <th>{{__('Repairman')}}</th>
+                    <th>{{__('Repair Report')}}</th>
                     <th>{{__('Repair Is Approved')}}</th>
                     <th>{{__('Repair Declined Description')}}</th>
                     <th>{{__('Repair Is Approved 2')}}</th>
@@ -39,7 +41,9 @@
                 },
                 {data : 'customer_fullname'},
                 {data : 'receive_date'},
+                {data : 'device_name'},
                 {data : 'repairman'},
+                {data : 'repair_report'},
                 {data : 'repair_is_approved'},
                 {data : 'repair_declined_description'},
                 {data : 'repair_is_approved_2'},
