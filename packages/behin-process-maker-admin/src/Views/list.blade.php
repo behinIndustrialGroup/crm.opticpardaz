@@ -8,6 +8,7 @@
                 <tr>
                     {{-- <th>{{__('Id')}}</th> --}}
                     <th>{{__('Case')}}</th>
+                    <th>{{__('Number')}}</th>
                     <th>{{__('Customer Fullname')}}</th>
                     <th>{{__('Receive Date')}}</th>
                     <th>{{__('Device Name')}}</th>
@@ -36,6 +37,7 @@
             '{{ route("pmAdmin.api.all") }}',
             [
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
+                {data : 'app_number'},
                 {data : 'case_id',
                     visible: false
                 },
