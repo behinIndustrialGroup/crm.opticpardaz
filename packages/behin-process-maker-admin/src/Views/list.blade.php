@@ -44,8 +44,10 @@
                 {data : 'device_name'},
                 {data : 'repairman'},
                 {data : 'repair_report', render: function(data){
-                    if(data){
-                        return data.substring(0,10);
+                    if(data.length > 10){
+                        return data.substring(0,10) + '...';
+                    }else{
+                        return data;
                     }
                 }},
                 {data : 'repair_is_approved'},
