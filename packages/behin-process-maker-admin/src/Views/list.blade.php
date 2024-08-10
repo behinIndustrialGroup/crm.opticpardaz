@@ -51,11 +51,29 @@
                     }
                 }},
                 {data : 'repair_is_approved'},
-                {data : 'repair_declined_description'},
+                {data : 'repair_declined_description', render: function(data){
+                    if(data && data.length > 10){
+                        return data.substring(0,10) + '...';
+                    }else{
+                        return data;
+                    }
+                }},
                 {data : 'repair_is_approved_2'},
-                {data : 'repair_declined_description_2'},
+                {data : 'repair_declined_description_2', render: function(data){
+                    if(data && data.length > 10){
+                        return data.substring(0,10) + '...';
+                    }else{
+                        return data;
+                    }
+                }},
                 {data : 'repair_is_approved_3'},
-                {data : 'repair_declined_description_3'},
+                {data : 'repair_declined_description_3', render: function(data){
+                    if(data && data.length > 10){
+                        return data.substring(0,10) + '...';
+                    }else{
+                        return data;
+                    }
+                }},
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
                 {data : 'status'},
