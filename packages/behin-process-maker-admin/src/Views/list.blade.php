@@ -22,6 +22,7 @@
                     <th>{{__('Repair Declined Description 3')}}</th>
                     <th>{{__('Repair Cost')}}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
+                    <th>{{__('Pending')}}</th>
                     <th>{{__('Status')}}</th>
                     <th>{{__('Delete')}}</th>
                 </tr>
@@ -78,6 +79,9 @@
                 }},
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
+                {data : 'case_id', render: function(data){
+                    return `<button onclick='show_pending("${data}")'>show</button>`
+                }},
                 {data : 'status'},
                 {data : 'case_id', render: function(data, type, row){
                     return `<button class='btn btn-danger' onclick="delete_case_info_from_db('${row.process_id}', '${data}')">delete</button>`;
@@ -120,6 +124,14 @@
                 },
                 '{{__("Are You Sure For Delete This Item?")}}'
             )
+        }
+
+        function show_pending(case_id){
+            var url = "{{ route('pmAdmin.api.get', ['caseId' => 'caseId']) }}";
+            url = url.replace('caseId', case_id);
+            send_ajax_get_request(url, function(res){
+                console.log(res);
+            })
         }
     </script>
 @endsection

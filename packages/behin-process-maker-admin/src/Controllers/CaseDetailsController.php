@@ -18,7 +18,7 @@ class CaseDetailsController extends Controller
         $taskId = '41561946766acaed59d0c03042779430';
         $dynaFormId = '24904779066ae0e7a8356a4097559819';
         $caseId = $r->caseId;
-        $caseinfo = CaseInfoController::get($caseId);
+        $caseinfo = CaseInfoController::getLightCaseInfo($caseId);
         if(!$caseinfo){
             return response(trans("Case Doesnt Exsit"), 500);
         }
