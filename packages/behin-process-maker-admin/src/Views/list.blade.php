@@ -80,7 +80,7 @@
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
                 {data : 'case_id', render: function(data){
-                    return `<button onclick='show_history("${data}")'>show</button>`
+                    return `<button class='btn btn-info' onclick='show_history("${data}")'>show</button>`
                 }},
                 {data : 'status'},
                 {data : 'case_id', render: function(data, type, row){
