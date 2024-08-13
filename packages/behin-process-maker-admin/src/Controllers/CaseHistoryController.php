@@ -14,17 +14,8 @@ use BehinProcessMaker\Models\PmVars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-class CaseInfoController extends Controller
+class CaseHistoryController extends Controller
 {
-    public static function getLightCaseInfo($caseId){
-        $accessToken = AuthController::getAccessToken();
-        $info = CurlRequestController::send(
-            $accessToken, 
-            "/api/1.0/workflow/light/participated/case/$caseId"
-        );
-        return $info;
-    }
-
     public static function get($caseId){
         $caseHistory = TaskController::getCaseTasks($caseId);
         $data = [];
@@ -51,5 +42,11 @@ class CaseInfoController extends Controller
         array_multisort($dels, SORT_DESC, $data);
         return $data;
 
+    }
+
+    public static function caseHistoryForm(Request $r){
+        return view('PMAdminViews::case-history')->with([
+            'data' => self::get($r->caseId)
+        ]);
     }
 }

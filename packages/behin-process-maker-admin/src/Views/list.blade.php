@@ -80,7 +80,7 @@
                 {data : 'repair_cost'},
                 // {data : 'caseInfo.task.currentUser'},
                 {data : 'case_id', render: function(data){
-                    return `<button onclick='show_pending("${data}")'>show</button>`
+                    return `<button onclick='show_history("${data}")'>show</button>`
                 }},
                 {data : 'status'},
                 {data : 'case_id', render: function(data, type, row){
@@ -126,12 +126,17 @@
             )
         }
 
-        function show_pending(case_id){
-            var url = "{{ route('pmAdmin.api.get', ['caseId' => 'caseId']) }}";
-            url = url.replace('caseId', case_id);
-            send_ajax_get_request(url, function(res){
-                console.log(res);
-            })
+        function show_history(case_id){
+            var url = "{{ route('pmAdmin.form.caseHistoryForm') }}";
+            var fd = new FormData();
+            fd.append('caseId', case_id);
+            send_ajax_formdata_request(
+                url,
+                fd,
+                function(res){
+                    open_admin_modal_with_data(res)
+                }
+            )
         }
     </script>
 @endsection
