@@ -18,6 +18,7 @@ class CaseHistoryController extends Controller
 {
     public static function get($caseId){
         $caseHistory = TaskController::getCaseTasks($caseId);
+        // return $caseHistory;
         $data = [];
         $i=0;
         foreach($caseHistory as $history){
@@ -25,6 +26,7 @@ class CaseHistoryController extends Controller
                 $data[$i]['task_uid'] = $history->tas_uid;
                 $data[$i]['tas_title'] = $history->tas_title;
                 $data[$i]['status'] = $history->status;
+                $data[$i]['tas_type'] = $history->tas_type;
                 $data[$i]['del_index'] = (int)$historyDelegation?->del_index;
                 $data[$i]['del_init_date'] = $historyDelegation?->del_init_date;
                 $data[$i]['del_finish_date'] = $historyDelegation?->del_finish_date;
@@ -40,11 +42,13 @@ class CaseHistoryController extends Controller
         }
         $dels = array_column($data, 'del_index');
         array_multisort($dels, SORT_DESC, $data);
+        return collect($data)->groupBy('del_index')->toArray();
         return $data;
 
     }
 
     public static function caseHistoryForm(Request $r){
+        // return self::get($r->caseId);
         return view('PMAdminViews::case-history')->with([
             'data' => self::get($r->caseId)
         ]);
