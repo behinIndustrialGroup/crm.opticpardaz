@@ -90,7 +90,7 @@
             function(row){
                 $(row).css('cursor', 'pointer')
             },
-            [ 2, 'desc' ]
+            [ 3, 'desc' ]
         );
         table.on('dblclick', 'tr', function(){
             var data = table.row( this ).data();
