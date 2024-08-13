@@ -16,7 +16,7 @@ class SendSmsController extends Controller
     public static function toNextUser($app_uid, $del_index)
     {        
         $info = CaseController::getCaseInfo($app_uid, $del_index);
-        $user_uid = $info->currentUsers?->userId;
+        $user_uid = $info?->currentUsers?->userId;
         if($user_uid){
             $user = GetUserController::getUserLocalInfoByPmUserId($user_uid);
             SmsController::send($user->email, config('pm_config.send_sms_to_next_user_text'));
