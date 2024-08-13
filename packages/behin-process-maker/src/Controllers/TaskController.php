@@ -28,5 +28,13 @@ class TaskController extends Controller
             ]
         );
     }
+
+    public static function getCaseTasks($caseId) {
+        $accessToken = AuthController::getAccessToken();
+        return CurlRequestController::send(
+            $accessToken, 
+            "/api/1.0/workflow/cases/$caseId/tasks"
+        );
+    }
     
 }
