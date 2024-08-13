@@ -14,6 +14,10 @@
     <button class="btn btn-default m-1" onclick="save()">{{ __('save') }}</button>
 </div>
 <script>
+    
+
+    
+
     function save_and_next() {
         var fd = new FormData($("#main-form")[0]);
         fd.append('caseId', '{{ $caseId }}')
@@ -30,6 +34,11 @@
                 show_message("ذخیره و ارسال شد");
                 refresh_table();
                 close_admin_modal();
+            },
+            function(er) {
+                console.log(er);
+                show_error(er);
+                open_case_dynaform()
             }
         )
     }
@@ -48,10 +57,13 @@
             function(response) {
                 console.log(response);
                 show_message("ذخیره شد");
+                open_case_dynaform()
+                refresh_table();
             },
             function(er) {
                 console.log(er);
                 show_error(er);
+                open_case_dynaform()
             }
         )
     }
@@ -71,7 +83,7 @@
         var input = $(`input[name="${$(this).attr('name')}"]`)
         if (this.checked) {
             input.val('on')
-        }else{
+        } else {
             input.val('off')
         }
     });
