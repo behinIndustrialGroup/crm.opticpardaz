@@ -53,24 +53,24 @@
                         return data;
                     }
                 }},
-                {data : 'repair_is_approved'},
-                {data : 'repair_declined_description', render: function(data){
+                {data : 'repair_is_approved', visible: false},
+                {data : 'repair_declined_description', visible: false, render: function(data){
                     if(data && data.length > 10){
                         return data.substring(0,10) + '...';
                     }else{
                         return data;
                     }
                 }},
-                {data : 'repair_is_approved_2'},
-                {data : 'repair_declined_description_2', render: function(data){
+                {data : 'repair_is_approved_2', visible: false},
+                {data : 'repair_declined_description_2', visible: false, render: function(data){
                     if(data && data.length > 10){
                         return data.substring(0,10) + '...';
                     }else{
                         return data;
                     }
                 }},
-                {data : 'repair_is_approved_3'},
-                {data : 'repair_declined_description_3', render: function(data){
+                {data : 'repair_is_approved_3', visible: false},
+                {data : 'repair_declined_description_3', visible: false, render: function(data){
                     if(data && data.length > 10){
                         return data.substring(0,10) + '...';
                     }else{
