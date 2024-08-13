@@ -12,7 +12,6 @@
                     <th>{{__('status')}}</th>
                     <th>{{__('del_finish_date')}}</th>
                     <th>{{__('usr_firstname')}}</th>
-                    <th>{{__('usr_lastname')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,8 +36,7 @@
                         <td>{{$item[0]['tas_title']}}</td>
                         <td>{{$item[0]['status']}}</td>
                         <td>{{$item[0]['del_finish_date']}}</td>
-                        <td>{{$item[0]['usr_firstname']}}</td>
-                        <td>{{$item[0]['usr_lastname']}}</td>
+                        <td>{{$item[0]['usr_firstname']}} {{$item[0]['usr_lastname']}}</td>
                     </tr>
                 @endforeach
             </tbody>
