@@ -22,7 +22,7 @@
                     <th>{{__('Repair Declined Description 3')}}</th>
                     <th>{{__('Repair Cost')}}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
-                    <th>{{__('Pending')}}</th>
+                    <th>{{__('Case History')}}</th>
                     <th>{{__('Status')}}</th>
                     <th>{{__('Delete')}}</th>
                 </tr>
