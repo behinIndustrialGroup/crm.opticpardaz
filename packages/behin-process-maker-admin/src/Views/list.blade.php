@@ -25,6 +25,7 @@
                     <th>{{__('Case History')}}</th>
                     <th>{{__('Status')}}</th>
                     <th>{{__('Delete')}}</th>
+                    <th>{{__('Reassign')}}</th>
                 </tr>
             </thead>
         </table>
@@ -85,6 +86,9 @@
                 {data : 'status'},
                 {data : 'case_id', render: function(data, type, row){
                     return `<button class='btn btn-danger' onclick="delete_case_info_from_db('${row.process_id}', '${data}')">delete</button>`;
+                }},
+                {data : 'case_id', render: function(data, type, row){
+                    return `<button class='btn btn-danger' onclick="reassign('${data}')">reassign</button>`;
                 }}
             ],
             function(row){
@@ -114,6 +118,22 @@
             url = "{{ route('pmAdmin.api.deleteCase') }}";
             var fd = new FormData();
             fd.append('processId', processId);
+            fd.append('caseId', caseId);
+            send_ajax_formdata_request_with_confirm(
+                url,
+                fd,
+                function(response){
+                    console.log(response);
+                    refresh_table()
+                },
+                '{{__("Are You Sure For Delete This Item?")}}'
+            )
+        }
+
+        function reassign(caseId){
+            url = "{{ route('pmAdmin.api.reassign') }}";
+            var fd = new FormData();
+            // fd.append('processId', processId);
             fd.append('caseId', caseId);
             send_ajax_formdata_request_with_confirm(
                 url,
