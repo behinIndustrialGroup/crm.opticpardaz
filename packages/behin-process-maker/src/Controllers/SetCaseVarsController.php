@@ -13,29 +13,27 @@ class SetCaseVarsController extends Controller
     private $accessToken;
     private static $system_vars;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
     function saveAndNext(Request $r)
     {
         $this->save($r);
 
         // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
         $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
-        if($result){
+        if ($result) {
             return response($result, 400);
         }
 
         $route = RouteCaseController::next($r->caseId, $r->del_index);
         //ارسال پیامک برای یوزر بعدی 
         //در صورتی که یوزر بعدی مشخص باشد
-        if(config('pm_config.send_sms_to_next_user')){
+        if (config('pm_config.send_sms_to_next_user')) {
             SendSmsController::toNextUser($r->caseId, $r->del_index);
         }
 
         //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
         SyncVarsController::syncServerWithLocal($r->processId, $r->caseId);
-        
+
         return true;
     }
 
@@ -46,7 +44,15 @@ class SetCaseVarsController extends Controller
             'taskId' => 'required',
             'caseId' => 'required',
         ]);
-        self::getVariableFromPmServer($r->caseId);
+        // self::getVariableFromPmServer($r->caseId);
+        //اجرای تریگرهای بعد از دینامیک فرم در هنگام ذخیره فرم
+        // در صورتی که در فایل کانفیگ مقدار درست ذخیره شده باشد
+        if (config('pm_config.execute_after_dynaform_triggers_in_save_form')) {
+            $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
+            if ($result) {
+                return response($result, 400);
+            }
+        }
         $sessionId = AuthController::wsdl_login()->message;
         $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')) . '/sysworkflow/en/green/services/wsdl2');
         $vars = $r->except(
@@ -69,11 +75,11 @@ class SetCaseVarsController extends Controller
             if (gettype($val) == 'object') {
                 $field_name = explode("-", $key)[0];
                 $fileId = explode("-", $key)[1];
-                InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, self::$system_vars->USER_LOGGED, $field_name );
-            }elseif(gettype($val) == 'array'){
-                foreach($val as $pic){
+                InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, self::$system_vars->USER_LOGGED, $field_name);
+            } elseif (gettype($val) == 'array') {
+                foreach ($val as $pic) {
                     $saveDoc = SaveVarsController::saveDoc($r->processId, $r->caseId, $key, $pic);
-                    if($saveDoc){
+                    if ($saveDoc) {
                         return $saveDoc;
                     }
                 }
@@ -93,7 +99,8 @@ class SetCaseVarsController extends Controller
         return response("ok", 200);
     }
 
-    public static function getVariableFromPmServer($caseId){
+    public static function getVariableFromPmServer($caseId)
+    {
         self::$system_vars = (new GetCaseVarsController())->getByCaseId($caseId);
     }
 }
