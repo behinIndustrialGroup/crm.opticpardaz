@@ -33,7 +33,7 @@ function create_datatable(element_id, url = '', cols, rowCallback = null, order 
         ],
         "displayLength": 25,
         language: {
-            url: '../resources/lang/fa.json'
+            url: '/public/behin/behin-js/fa.json'
         },
         "rowCallback": rowCallback
     });
