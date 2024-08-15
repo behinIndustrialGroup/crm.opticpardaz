@@ -94,7 +94,10 @@
             ],
             function(row) {
                 $(row).css('cursor', 'pointer')
-            }
+            },
+            [
+                6, 'desc'
+            ]
         );
         var APP_UID = PRO_TITLE = TAS_UID = DEL_TITLE = PRO_UID = DEL_INDEX = TAS_STATUS = '';
         table.on('dblclick', 'tr', function() {
