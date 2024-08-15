@@ -16,7 +16,10 @@ class SetCaseVarsController extends Controller
     public function __construct() {}
     function saveAndNext(Request $r)
     {
-        $this->save($r);
+        $save = $this->save($r);
+        if(!is_array($save)){
+            return $save;
+        }
 
         // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
         $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
@@ -96,7 +99,10 @@ class SetCaseVarsController extends Controller
         if ($result->status_code != 0)
             return response($result->message, 400);
 
-        return response("ok", 200);
+        return [
+            'code' => 200,
+            'message' => 'ok'
+        ];
     }
 
     public static function getVariableFromPmServer($caseId)
