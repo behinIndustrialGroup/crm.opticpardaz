@@ -22,6 +22,8 @@
         var fd = new FormData($("#main-form")[0]);
         fd.append('caseId', '{{ $caseId }}')
         fd.append('taskId', '{{ $taskId }}')
+        fd.append('processId', '{{ $processId }}')
+
         // fd.append('del_index', '')
         // fd.append('task', '')
         // fd.append('user_logged', '')
@@ -47,6 +49,7 @@
         var fd = new FormData($("#main-form")[0]);
         fd.append('caseId', '{{ $caseId }}')
         fd.append('taskId', '{{ $taskId }}')
+        fd.append('processId', '{{ $processId }}')
         // fd.append('del_index', '')
         // fd.append('task', '')
         // fd.append('user_logged', '')
