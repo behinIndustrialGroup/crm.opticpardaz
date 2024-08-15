@@ -21,7 +21,7 @@ class SetCaseVarsController extends Controller
         $this->save($r);
 
         // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
-        $result = DynaFormTriggerController::executeAfterDynaformTriggers(self::$system_vars->PROCESS, self::$system_vars->TASK, self::$system_vars->APPLICATION);
+        $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
         if($result){
             return response($result, 400);
         }
@@ -34,7 +34,7 @@ class SetCaseVarsController extends Controller
         }
 
         //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
-        SyncVarsController::syncServerWithLocal(self::$system_vars->PROCESS, $r->caseId);
+        SyncVarsController::syncServerWithLocal($r->proccessId, $r->caseId);
         
         return true;
     }
@@ -67,7 +67,10 @@ class SetCaseVarsController extends Controller
                 InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, self::$system_vars->USER_LOGGED, $field_name );
             }elseif(gettype($val) == 'array'){
                 foreach($val as $pic){
-                    SaveVarsController::saveDoc(self::$system_vars->PROCESS, $r->caseId, $key, $pic);
+                    $saveDoc = SaveVarsController::saveDoc(self::$system_vars->PROCESS, $r->caseId, $key, $pic);
+                    if($saveDoc){
+                        return $saveDoc;
+                    }
                 }
             } else {
                 $obj = new variableListStruct();
