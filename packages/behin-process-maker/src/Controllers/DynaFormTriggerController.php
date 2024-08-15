@@ -15,6 +15,8 @@ class DynaFormTriggerController extends Controller
             foreach ($triggers as $trigger) {
                 if ($trigger->st_type === "AFTER") {
                     $result = TriggerController::excute($trigger->tri_uid, $caseId);
+                    Log::info('test');
+                    Log::info(json_encode($result));
                     if($result?->original){
                         Log::info("Trigger Executed");
                         $result = iconv("UTF-8", "ISO-8859-1", $result->original);
