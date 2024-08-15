@@ -21,7 +21,7 @@ class SetCaseVarsController extends Controller
         // $system_vars = (new GetCaseVarsController())->getByCaseId($r->caseId);
         $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
         if ($result) {
-            return response($result, 400);
+            return response($result, 402);
         }
 
         $route = RouteCaseController::next($r->caseId, $r->del_index);
@@ -50,7 +50,7 @@ class SetCaseVarsController extends Controller
         if (config('pm_config.execute_after_dynaform_triggers_in_save_form')) {
             $result = DynaFormTriggerController::executeAfterDynaformTriggers($r->processId, $r->taskId, $r->caseId);
             if ($result) {
-                return response($result, 400);
+                return response($result, 402);
             }
         }
         $sessionId = AuthController::wsdl_login()->message;
