@@ -34,13 +34,18 @@ class SetCaseVarsController extends Controller
         }
 
         //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
-        SyncVarsController::syncServerWithLocal($r->proccessId, $r->caseId);
+        SyncVarsController::syncServerWithLocal($r->processId, $r->caseId);
         
         return true;
     }
 
     function save(Request $r)
     {
+        $r->validate([
+            'processId' => 'required',
+            'taskId' => 'required',
+            'caseId' => 'required',
+        ]);
         self::getVariableFromPmServer($r->caseId);
         $sessionId = AuthController::wsdl_login()->message;
         $client = new SoapClient(str_replace('https', 'http', env('PM_SERVER')) . '/sysworkflow/en/green/services/wsdl2');
@@ -59,7 +64,7 @@ class SetCaseVarsController extends Controller
             'PIN'
         );
         $variables = array();
-        $local_fields = GetCaseVarsController::getVarsFromLocal(self::$system_vars->PROCESS, $r->caseId);
+        $local_fields = GetCaseVarsController::getVarsFromLocal($r->processId, $r->caseId);
         foreach ($vars as $key => $val) {
             if (gettype($val) == 'object') {
                 $field_name = explode("-", $key)[0];
@@ -67,7 +72,7 @@ class SetCaseVarsController extends Controller
                 InputDocController::upload($r->file($key), $r->taskId, $r->caseId, $fileId, self::$system_vars->USER_LOGGED, $field_name );
             }elseif(gettype($val) == 'array'){
                 foreach($val as $pic){
-                    $saveDoc = SaveVarsController::saveDoc(self::$system_vars->PROCESS, $r->caseId, $key, $pic);
+                    $saveDoc = SaveVarsController::saveDoc($r->processId, $r->caseId, $key, $pic);
                     if($saveDoc){
                         return $saveDoc;
                     }
@@ -77,7 +82,7 @@ class SetCaseVarsController extends Controller
                 $obj->name = $key;
                 $obj->value = $val;
                 $variables[] = $obj;
-                SaveVarsController::save(self::$system_vars->PROCESS, $r->caseId, $key, $val);
+                SaveVarsController::save($r->processId, $r->caseId, $key, $val);
             }
         }
         $params = array(array('sessionId' => $sessionId, 'caseId' => $r->caseId, 'variables' => $variables));
