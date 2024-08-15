@@ -30,13 +30,18 @@ class SaveVarsController extends Controller
             $value,
             'pm-docs'
         );
-        PmVars::create(
-            [
-                'process_id' => $process_id,
-                'case_id' => $case_id,
-                'key' => $key,
-                'value' => $value['dir']
-            ]
+        if($value['status'] == 200){
+            PmVars::create(
+                [
+                    'process_id' => $process_id,
+                    'case_id' => $case_id,
+                    'key' => $key,
+                    'value' => $value['dir']
+                ]
             );
+            return ;
+        }
+        return response($value['message'], $value['status']);
+        
     }
 }
