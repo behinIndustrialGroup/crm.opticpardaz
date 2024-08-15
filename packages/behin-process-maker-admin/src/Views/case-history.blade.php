@@ -17,7 +17,7 @@
             <tbody>
                 @foreach ($data as $item)
                 @php
-                    if($item[0]['status'] == 'TASK_IN_PROGRESS'){
+                    if($item[0]['status'] == 'TASK_IN_PROGRESS' and $item[0]['del_finish_date'] == 'Not finished'){
                         $color = 'red';
                     }else{
                         $color = 'green';
