@@ -17,6 +17,7 @@ class DynaFormTriggerController extends Controller
                     $result = TriggerController::excute($trigger->tri_uid, $caseId);
                     if($result?->original){
                         Log::info("Trigger Executed");
+                        Log::info($trigger->tri_uid);
                         $result = iconv("UTF-8", "ISO-8859-1", $result->original);
                         $resultText = str_replace("Bad Request: ", "", $result);
                         $resultText = trans($resultText);
