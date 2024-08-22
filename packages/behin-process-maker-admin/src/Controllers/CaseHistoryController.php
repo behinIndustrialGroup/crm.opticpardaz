@@ -16,11 +16,8 @@ use Illuminate\Support\Arr;
 
 class CaseHistoryController extends Controller
 {
-    public static function get($caseId){
-        $caseHistory = TaskController::getCaseTasks($caseId);
-        if(!$caseHistory){
-            return response(trans("there is a issue on this case"), 300);
-        }
+    public static function get($caseHistory){
+        
         // return $caseHistory;
         $data = [];
         $i=0;
@@ -51,9 +48,12 @@ class CaseHistoryController extends Controller
     }
 
     public static function caseHistoryForm(Request $r){
-        // return self::get($r->caseId);
+        $caseHistory = TaskController::getCaseTasks($r->caseId);
+        if(!$caseHistory){
+            return response(trans("there is a issue on this case"), 300);
+        }
         return view('PMAdminViews::case-history')->with([
-            'data' => self::get($r->caseId)
+            'data' => self::get($caseHistory)
         ]);
     }
 }
