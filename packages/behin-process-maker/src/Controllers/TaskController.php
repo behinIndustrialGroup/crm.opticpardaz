@@ -5,6 +5,7 @@ namespace BehinProcessMaker\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use BehinProcessMaker\Models\PMTask;
+use Illuminate\Support\Facades\Log;
 use SoapClient;
 
 class TaskController extends Controller
@@ -31,10 +32,12 @@ class TaskController extends Controller
 
     public static function getCaseTasks($caseId) {
         $accessToken = AuthController::getAccessToken();
-        return CurlRequestController::send(
+        $result =  CurlRequestController::send(
             $accessToken, 
             "/api/1.0/workflow/cases/$caseId/tasks"
         );
+        Log::info($result);
+        return $result;
     }
     
 }

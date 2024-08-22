@@ -18,6 +18,9 @@ class CaseHistoryController extends Controller
 {
     public static function get($caseId){
         $caseHistory = TaskController::getCaseTasks($caseId);
+        if(!$caseHistory){
+            return response(trans("there is a issue on this case"), 300);
+        }
         // return $caseHistory;
         $data = [];
         $i=0;
