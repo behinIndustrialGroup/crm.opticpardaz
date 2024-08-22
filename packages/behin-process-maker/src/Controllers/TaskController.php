@@ -36,7 +36,7 @@ class TaskController extends Controller
             $accessToken, 
             "/api/1.0/workflow/cases/$caseId/tasks"
         );
-        Log::info($result);
+        // Log::info($result);
         return $result;
     }
     
