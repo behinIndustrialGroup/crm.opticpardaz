@@ -33,7 +33,8 @@
             "BehinFileControl\\": "packages/behin-file-control/src/",
             "BehinLogging\\": "packages/behin-logging/src/",
             "BehinProcessMakerAdmin\\": "packages/behin-process-maker-admin/src/",
-            "Behin\\Sms\\": "packages/behin-sms/src/"
+            "Behin\\Sms\\": "packages/behin-sms/src/",
+            "Behin\\PMCaseNumbering\\": "packages/behin-pm-case-numbering/src/"
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php"

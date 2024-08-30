@@ -1,5 +1,6 @@
 <?php
 
+use Behin\PMCaseNumbering\PackageServiceProvider;
 use Behin\Sms\SmsProvider;
 use BehinFileControl\BehinFileControlProvider;
 use BehinInit\BehinInitProvider;
@@ -18,5 +19,6 @@ return [
     BehinFileControlProvider::class,
     ServiceProvider::class,
     BehinProcessMakerAdminProvider::class,
-    SmsProvider::class
+    SmsProvider::class,
+    PackageServiceProvider::class
 ];
