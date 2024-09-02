@@ -15,7 +15,7 @@ class ApiKeyController extends Controller
         }
         return response()->json([
             'status' => 403,
-            'msg' => 'asd'
+            'msg' => 'api key is not valid'
         ], 403);
     }
 
