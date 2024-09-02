@@ -7,7 +7,8 @@
             <thead>
                 <tr>
                     {{-- <th>{{__('Id')}}</th> --}}
-                    <th>{{__('Case')}}</th>
+                    <th>{{__('Case ID')}}</th>
+                    <th>{{__('Case Number')}}</th>
                     <th>{{__('Number')}}</th>
                     <th>{{__('Customer Fullname')}}</th>
                     <th>{{__('Receive Date')}}</th>
@@ -40,6 +41,7 @@
             [
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
                 {data : 'app_number'},
+                {data : 'case_number'},
                 {data : 'case_id',
                     visible: false
                 },
