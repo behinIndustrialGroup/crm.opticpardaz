@@ -41,7 +41,7 @@ class AllCasesController extends Controller
                 'case_id' => $case->case_id,
                 'customer_fullname' => $customer_name,
                 'app_number' => $app_number,
-                'case_number' => $app_number,
+                'case_number' => $case_number,
                 'receive_date' => $receive_date,
                 'repair_report' => $repair_report,
                 'device_name' => $device_name,
