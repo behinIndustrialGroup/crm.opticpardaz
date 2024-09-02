@@ -9,7 +9,14 @@ class ApiKeyController extends Controller
 {
     public static function checkApiKey($pro_id, $api_key)
     {
-        
+        $row = CaseNumberingController::getOrCreate($pro_id);
+        if($row->api_key === $api_key){
+            return  null;
+        }
+        return response()->json([
+            'status' => 403,
+            'msg' => 'asd'
+        ], 403);
     }
 
 }

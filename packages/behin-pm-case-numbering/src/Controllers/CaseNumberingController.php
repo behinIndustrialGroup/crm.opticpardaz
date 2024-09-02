@@ -20,4 +20,15 @@ class CaseNumberingController extends Controller
         ]);
     }
 
+    public static function getOrCreate($pro_id){
+        $row = PMCaseNumbering::where('process_id', $pro_id)->first();
+        if($row){
+            return $row;
+        }
+        return PMCaseNumbering::create([
+            'process_id' => $pro_id,
+            'api_key' => Str::random(32)
+        ]);
+    }
+
 }
