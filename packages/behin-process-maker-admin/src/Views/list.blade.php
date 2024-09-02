@@ -40,7 +40,9 @@
             '{{ route("pmAdmin.api.all") }}',
             [
                 // {data : 'APP_UID', render: function(APP_UID){return APP_UID.substr(APP_UID.length - 8)}},
-                {data : 'app_number'},
+                {data : 'app_number',
+                    @if(auth()->user()->name != 'admin') visible: false @endif
+                },
                 {data : 'case_number'},
                 {data : 'case_id',
                     visible: false
