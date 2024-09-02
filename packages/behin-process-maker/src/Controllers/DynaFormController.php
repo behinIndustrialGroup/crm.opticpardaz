@@ -19,6 +19,10 @@ class DynaFormController extends Controller
         if($r->taskStatus === "UNASSIGNED"){
             ClaimCaseController::claim($r->caseId);
         }
+        
+        //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
+        SyncVarsController::syncServerWithLocal($r->processId, $r->caseId);
+
         $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $accessToken);
         $steps = StepController::list($r->processId, $r->taskId, $accessToken);
         foreach($steps as $step){
