@@ -13,13 +13,14 @@ use Illuminate\Http\Request;
 
 class CaseDetailsController extends Controller
 {
-    public function caseDetails(Request $r, DynaFormController $dynaform){
+    public function caseDetails(Request $r, DynaFormController $dynaform)
+    {
         $processId = $r->processId;
         $taskId = '41561946766acaed59d0c03042779430';
         $dynaFormId = '24904779066ae0e7a8356a4097559819';
         $caseId = $r->caseId;
         $caseinfo = CaseInfoController::getLightCaseInfo($caseId);
-        if(!$caseinfo){
+        if (!$caseinfo) {
             return response(trans("Case Doesnt Exsit"), 500);
         }
         $r = new Request([
@@ -29,14 +30,19 @@ class CaseDetailsController extends Controller
             'processTitle' => $caseinfo->case->processTitle,
             'caseTitle' => $caseinfo->case->caseTitle
         ]);
-        $dynaform->getHtml(
-                $processId, 
-                $caseId, 
-                $dynaFormId, 
-                $caseinfo->case->processTitle, 
-                $caseinfo->case->caseTitle,
-                null, 
-                AuthController::getAccessToken()
-        );
+        return view("PMAdminViews::case-details")->with([
+            'html' => $dynaform->getHtml(
+                    $processId,
+                    $caseId,
+                    $dynaFormId,
+                    $caseinfo->case->processTitle,
+                    $caseinfo->case->caseTitle,
+                    null,
+                    AuthController::getAccessToken()
+            ),
+            'processId' => $processId,
+            'taskId' => $taskId,
+            'caseId' => $caseId
+        ]);
     }
 }

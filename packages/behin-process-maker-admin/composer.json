@@ -1,7 +1,7 @@
 {
     "name": "behin/process-maker-admin",
     "description": "connect to process maker",
-    "version": "1.1",
+    "version": "1.2",
     "autoload": {
         "psr-4": {
             "BehinProcessMakerAdmin\\": "src/"
