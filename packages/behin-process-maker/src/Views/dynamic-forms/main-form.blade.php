@@ -1,6 +1,6 @@
 @extends('PMViews::dyna-form-layout')
 @section('content')
-    {{ $html }}
+    {!! $html !!}
 @endsection
 
 @section('script')
