@@ -33,6 +33,14 @@ function camaSeprator(className){
     })
 }
 
+function camaSepratorById(elementId){
+    $('#'+ elementId).on('keyup', function(){
+        if($(this).val()){
+            $(this).val(parseInt($(this).val().replace(/,/g, '')).toLocaleString())
+        }
+    })
+}
+
 function runCamaSeprator(className){
     $('.'+ className).each(function(){
         if($(this).val()){
