@@ -1,8 +1,8 @@
 body {
     width: 100%;
     height: 100%;
-    background: #ffffff;
-    background: url('../../../bg.jpeg');
+    background: #02336d;
+    /* background: url('../../../bg.jpeg'); */
     background-size:100% 100%;
   }
 
@@ -80,7 +80,7 @@ legend {
 }
 
 #alert-success .modal-content{
-  background-color: green; 
+  background-color: green;
   color: white;
 }
 
@@ -89,7 +89,7 @@ legend {
 }
 
 #alert-error .modal-content{
-  background-color: rgb(166, 41, 41); 
+  background-color: rgb(166, 41, 41);
   color: white;
 }
 
@@ -175,8 +175,8 @@ legend {
   }
 
 .dv-header{
-  background: #3d98c2; 
-  padding: 10px; 
+  background: #3d98c2;
+  padding: 10px;
   margin: 0px 0 20px 0
 }
 

@@ -23,9 +23,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', Access::class
 });
 
 Route::get('build-app', function(){
-    // Artisan::call('cache:clear');
-    // Artisan::call('config:clear');
-    // Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
     Artisan::call('migrate');
     return redirect()->back();
 });
