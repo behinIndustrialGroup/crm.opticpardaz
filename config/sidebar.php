@@ -25,6 +25,7 @@ return [
             'fa_name' => 'گزارشات کارپوشه',
             'submenu' => [
                 'all' => [ 'fa_name' => 'همه', 'route-name' => 'pmAdmin.form.allCasesForm', 'route-url' => '' ],
+                'filter-by-last-status' => [ 'fa_name' => 'دسته بندی', 'route-name' => 'pmAdmin.form.casesByLastStatusView', 'route-url' => '' ],
             ]
         ],
         'users' => [
