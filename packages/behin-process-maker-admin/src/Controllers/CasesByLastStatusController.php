@@ -25,6 +25,7 @@ class CasesByLastStatusController extends Controller
         $searchQuery = DB::table('pm_vars')
             ->select(
                 'case_id',
+                'process_id',
                 DB::raw("MAX(CASE WHEN `key` = 'last_status' THEN value END) as last_status"),
                 DB::raw("MAX(CASE WHEN `key` = 'customer_fullname' THEN value END) as customer_fullname"),
                 DB::raw("MAX(CASE WHEN `key` = 'case_number' THEN value END) as case_number"),

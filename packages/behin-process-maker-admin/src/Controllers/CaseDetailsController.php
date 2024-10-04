@@ -45,4 +45,37 @@ class CaseDetailsController extends Controller
             'caseId' => $caseId
         ]);
     }
+
+    public function caseFinDetails(Request $r, DynaFormController $dynaform)
+    {
+        $processId = $r->processId;
+        $taskId = '14337181366fffa7f28f745097573607';
+        $dynaFormId = '19420627666fffb08b95485042818790';
+        $caseId = $r->caseId;
+        $caseinfo = CaseInfoController::getLightCaseInfo($caseId);
+        if (!$caseinfo) {
+            return response(trans("Case Doesnt Exsit"), 500);
+        }
+        $r = new Request([
+            'processId' => $processId,
+            'taskId' => $taskId,
+            'caseId' => $caseId,
+            'processTitle' => $caseinfo->case->processTitle,
+            'caseTitle' => $caseinfo->case->caseTitle
+        ]);
+        return view("PMAdminViews::case-details-without-edit")->with([
+            'html' => $dynaform->getHtml(
+                    $processId,
+                    $caseId,
+                    $dynaFormId,
+                    $caseinfo->case->processTitle,
+                    $caseinfo->case->caseTitle,
+                    null,
+                    AuthController::getAccessToken()
+            ),
+            'processId' => $processId,
+            'taskId' => $taskId,
+            'caseId' => $caseId
+        ]);
+    }
 }
