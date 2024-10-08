@@ -82,7 +82,7 @@
                         return data;
                     }
                 }},
-                {data : 'repair_cost'},
+                {data : 'payment_amount'},
                 // {data : 'caseInfo.task.currentUser'},
                 {data : 'case_id', render: function(data){
                     return `<button class='btn btn-info' onclick='show_history("${data}")'>show</button>`
@@ -159,7 +159,7 @@
                 fd,
                 function(res){
                     console.log(res);
-                    
+
                     open_admin_modal_with_data(res)
                 }
             )

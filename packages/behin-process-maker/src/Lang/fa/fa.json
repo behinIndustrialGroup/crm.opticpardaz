@@ -104,6 +104,8 @@
     "Customer Mobile Must Be 11 Digits":"موبایل مشتری باید 11 رقمی باشد",
     "Customer Mobile Must Be 11 English Digits":"موبایل مشتری باید با اعداد انگلیسی وارد شود",
     "Customer Mobile Is Wrong": "موبایل مشتری باید با 09 شروع شود",
-    "Customer Specification Is Empty": "مشخصات دستگاه خالی است"
+    "Customer Specification Is Empty": "مشخصات دستگاه خالی است",
+    "Initial Device Pic": "تصاویر اولیه دستگاه",
+    "Invoice Image": "تصویر فاکتور صادر شده"
 
 }

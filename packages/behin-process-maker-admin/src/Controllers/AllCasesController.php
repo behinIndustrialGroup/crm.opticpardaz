@@ -32,6 +32,7 @@ class AllCasesController extends Controller
             $repair_is_approved_3 = PmVars::where('case_id', $case->case_id)->where('key', 'repair_is_approved_3')->first()?->value;
             $repair_declined_description_3 = PmVars::where('case_id', $case->case_id)->where('key', 'repair_declined_description_3')->first()?->value;
             $repair_cost = PmVars::where('case_id', $case->case_id)->where('key', 'repair_cost')->first()?->value;
+            $payment_amount = PmVars::where('case_id', $case->case_id)->where('key', 'payment_amount')->first()?->value;
             $repairman_id = PmVars::where('case_id', $case->case_id)->where('key', 'repairman')->first()?->value;
             $repairman = PMUserController::getUserByPmUserId($repairman_id);
             $status = PmVars::where('case_id', $case->case_id)->where('key', 'last_status')->first()?->value;
