@@ -54,6 +54,7 @@ class AllCasesController extends Controller
                 'repair_is_approved_3' => $repair_is_approved_3,
                 'repair_declined_description_3' => $repair_declined_description_3,
                 'repair_cost' => $repair_cost,
+                'payment_amount' => $payment_amount,
                 // 'caseInfo' => $caseinfo,
                 'status' => $status,
             ];
