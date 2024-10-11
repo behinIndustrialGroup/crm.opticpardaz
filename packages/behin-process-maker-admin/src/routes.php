@@ -8,6 +8,7 @@ use BehinProcessMakerAdmin\Controllers\CaseDetailsController;
 use BehinProcessMakerAdmin\Controllers\CaseFinListController;
 use BehinProcessMakerAdmin\Controllers\CaseHistoryController;
 use BehinProcessMakerAdmin\Controllers\CaseInfoController;
+use BehinProcessMakerAdmin\Controllers\CaseReportController;
 use BehinProcessMakerAdmin\Controllers\CasesByLastStatusController;
 use BehinProcessMakerAdmin\Controllers\DeleteCaseController;
 use BehinProcessMakerAdmin\Controllers\ReassignCaseController;
@@ -31,6 +32,8 @@ Route::name('pmAdmin.')->prefix('pm-admin')->middleware(['web', 'auth'])->group(
         Route::post('reassign-case', [ReassignCaseController::class, 'reassign'])->name('reassign');
 
         Route::post('cases-by-last-status', [CasesByLastStatusController::class, 'casesByLastStatus'])->name('casesByLastStatus');
+        Route::get('cases-report-by-customer', [CaseReportController::class, 'numberOfCaseByCustomer'])->name('numberOfCaseByCustomer');
+        Route::get('cases-report-by-last-status', [CaseReportController::class, 'numberOfCaseByLastStatus'])->name('numberOfCaseByLastStatus');
 
     });
 

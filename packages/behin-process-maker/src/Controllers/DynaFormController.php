@@ -25,7 +25,7 @@ class DynaFormController extends Controller
         if($r->taskStatus === "UNASSIGNED"){
             ClaimCaseController::claim($r->caseId);
         }
-        
+
         //همگام سازی متغیرهای لوکال با متغیرهای روی پراسس میکر
         SyncVarsController::syncServerWithLocal($r->processId, $r->caseId);
 
@@ -42,19 +42,19 @@ class DynaFormController extends Controller
                 }
             }
         }
-        
+
         if (!$dynaform) {
             return response("شناسه فرم پیدا نشد", 400);
         }
         // $variables = VariableController::getByProcessId($r->processId);
         return view("PMViews::dynamic-forms.main-form")->with([
             'html' => DynaFormController::getHtml(
-                $r->processId, 
-                $r->caseId, 
-                $dynaform, 
-                $r->processTitle, 
-                $r->caseTitle, 
-                $variable_values, 
+                $r->processId,
+                $r->caseId,
+                $dynaform,
+                $r->processTitle,
+                $r->caseTitle,
+                $variable_values,
                 $accessToken
             ),
             // 'vars' => $variables,
@@ -80,7 +80,7 @@ class DynaFormController extends Controller
     }
 
     public static function getHtml($processId, $caseId, $dynaId, $processTitle, $caseTitle, $variable_values = null, $accessToken = null)
-    {   
+    {
         $json =  CurlRequestController::send(
             $accessToken,
             "/api/1.0/workflow/project/$processId/dynaform/$dynaId"
@@ -106,7 +106,10 @@ class DynaFormController extends Controller
         foreach ($fields as $rows) {
             self::$body .= "<div class='row p-2' style='margin-bottom: 10px'>";
             foreach ($rows as $field) {
-                if($field->type === 'form'){
+                if(!isset($field->type)){
+                    self::$body .= "<div class='$field->colSpan'></div>";
+                }
+                elseif($field->type === 'form'){
                     $scripts[] = self::getFormScriptCode($field->script);
                     $parent_mode = $field->mode;
                     self::createForm($field, $local_fields, $parent_mode);
@@ -122,7 +125,7 @@ class DynaFormController extends Controller
         foreach($scripts as $script){
         self::$body .= "<script>$script</script>";
         }
-        if (config('pm_config.debug')){
+        if (true/*config('pm_config.debug')*/){
             $data = json_encode($content);
             self::$body .= "<script>console.log($data)</script>";
         }
@@ -190,7 +193,7 @@ class DynaFormController extends Controller
                     $date = new SDate();
                     // $field_value = $date->toGrDate($field_value);
                 }
-                
+
                 self::$body .=  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 self::$body .=  trans($field->label) . ": <input type='text' name='$field->name' id='$field->name' class='form-control persian-date' value='$field_value' $field_required $field_mode>";
                 self::$body .=  "</div>";
@@ -237,7 +240,7 @@ class DynaFormController extends Controller
                     }
                     $field->sql_options = $options;
                 }
-                
+
                 self::$body .= "</select>";
                 self::$body .= "</div>";
                 self::$body .=  "</div>";
@@ -259,7 +262,7 @@ class DynaFormController extends Controller
                 //         self::$body .= "<input id='$field->inp_doc_uid' type='file' name='$field->name-$field->inp_doc_uid' class='form-control' >";
                 //     }
                 //     self::$body .= "<a href='https://pmaker.altfuel.ir/sysworkflow/en/neoclassic/$doc?->app_doc_link' >$doc?->app_doc_filename</a>";
-                    
+
 
                 // } else {
                 //     if($field->mode != 'view'){
@@ -284,13 +287,13 @@ class DynaFormController extends Controller
                         )'></i> ";
                     }
                     self::$body .= "<br>";
-                    
+
                 }
                 if(in_array($field->mode, ['edit'])){
                     self::$body .= "<input id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
                 }
 
-                
+
                 self::$body .= "</div>";
                 self::$body .= "</div>";
 
