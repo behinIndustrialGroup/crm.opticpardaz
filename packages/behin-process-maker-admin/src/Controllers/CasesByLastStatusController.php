@@ -13,7 +13,8 @@ class CasesByLastStatusController extends Controller
     public function casesByLastStatusView()
     {
         return view('PMAdminViews::cases-by-last-status.list')->with([
-            'last_statuses' => CaseLastStatusController::getAllStatus()
+            'last_statuses' => CaseLastStatusController::getAllStatus(),
+            'repairmans' => CaseRepairmanController::getAllRepairman()
         ]);
     }
 
@@ -21,6 +22,7 @@ class CasesByLastStatusController extends Controller
     {
         $last_status = $request->last_status;
         $repair_report = $request->repair_report;
+        $repairman = $request->repairman;
 
         $searchQuery = DB::table('pm_vars')
             ->select(
@@ -42,7 +44,12 @@ class CasesByLastStatusController extends Controller
         if($repair_report){
             $searchQuery = $searchQuery->having('repair_report', 'like', '%' .$repair_report . '%');
         }
-        $searchResults = $searchQuery->get();
+        if($repairman){
+            $searchQuery = $searchQuery->having('repairman', $repairman);
+        }
+        $searchResults = $searchQuery->get()->each(function($row){
+            $row->repairman_name = PMUserController::getUserByPmUserId($row->repairman)->name;
+        });
         return $searchResults;
     }
 }

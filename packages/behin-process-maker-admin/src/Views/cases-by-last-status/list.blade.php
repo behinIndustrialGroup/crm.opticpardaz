@@ -11,6 +11,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group mb-2">
+                <label for="repairman" class="mr-2">{{ trans('Repairman') }}</label>
+                <select name="repairman" id="repairman" class="form-control mr-3">
+                    @foreach ($repairmans as $repairman)
+                        <option value="{{ $repairman->value }}">{{ $repairman->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <div class="form-group mb-2">
                 <label for="repair_report" class="mr-2">{{ trans('Repair Report') }}</label>
@@ -89,7 +97,7 @@
                         data: 'device_name'
                     },
                     {
-                        data: 'repairman'
+                        data: 'repairman_name'
                     },
                     {
                         data: 'repair_report',
