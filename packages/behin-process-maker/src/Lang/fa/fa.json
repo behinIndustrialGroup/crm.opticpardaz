@@ -106,6 +106,15 @@
     "Customer Mobile Is Wrong": "موبایل مشتری باید با 09 شروع شود",
     "Customer Specification Is Empty": "مشخصات دستگاه خالی است",
     "Initial Device Pic": "تصاویر اولیه دستگاه",
-    "Invoice Image": "تصویر فاکتور صادر شده"
+    "Invoice Image": "تصویر فاکتور صادر شده",
+    "Device Brand": "برند دستگاه",
+    "Device Power": "توان دستگاه",
+    "Device Serial No": "سریال نامبر دستگاه",
+    "Device Brand Name": "برند دستگاه",
+    "Device Power Amount": "مقدار توان دستگاه",
+    "Device Plaque Image": "تصویر پلاک دستگاه",
+    "Device Packaging Type": "نوع بسته بندی دستگاه",
+    "Device Accessories": "لوزام همراه دستگاه",
+    "Customer Address": "آدرس مشتری"
 
 }
