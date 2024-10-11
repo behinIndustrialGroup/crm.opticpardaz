@@ -8,6 +8,8 @@ use BehinLogging\ServiceProvider;
 use BehinProcessMaker\BehinProcessMakerProvider;
 use BehinProcessMakerAdmin\BehinProcessMakerAdminProvider;
 use BehinUserRoles\UserRolesServiceProvider;
+use FileService\FileServiceProvider;
+use TodoList\TodoListProvider;
 use UserProfile\UserProfileProvider;
 
 return [
@@ -20,5 +22,7 @@ return [
     ServiceProvider::class,
     BehinProcessMakerAdminProvider::class,
     SmsProvider::class,
-    PackageServiceProvider::class
+    PackageServiceProvider::class,
+    TodoListProvider::class,
+    FileServiceProvider::class
 ];

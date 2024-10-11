@@ -34,7 +34,9 @@
             "BehinLogging\\": "packages/behin-logging/src/",
             "BehinProcessMakerAdmin\\": "packages/behin-process-maker-admin/src/",
             "Behin\\Sms\\": "packages/behin-sms/src/",
-            "Behin\\PMCaseNumbering\\": "packages/behin-pm-case-numbering/src/"
+            "Behin\\PMCaseNumbering\\": "packages/behin-pm-case-numbering/src/",
+            "TodoList\\": "packages/behin-todo-list/src/",
+            "FileService\\": "packages/behin-file-service/src/"
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php"
