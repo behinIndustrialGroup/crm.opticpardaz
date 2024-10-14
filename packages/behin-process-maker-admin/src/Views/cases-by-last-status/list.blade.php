@@ -6,6 +6,7 @@
             <div class="form-group mb-2">
                 <label for="last_status" class="mr-2">{{ trans('Last Status') }}</label>
                 <select name="last_status" id="last_status" class="form-control mr-3">
+                    <option value="">{{ trans('All') }}</option>
                     @foreach ($last_statuses as $status)
                         <option value="{{ $status->value }}">{{ $status->value }}</option>
                     @endforeach
@@ -45,6 +46,7 @@
                     <th>{{ __('Repairman') }}</th>
                     <th>{{ __('Repair Report') }}</th>
                     <th>{{ __('Repair Cost') }}</th>
+                    <th>{{ __('Last Status') }}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
                     <th>{{ __('Case History') }}</th>
                 </tr>
@@ -112,6 +114,9 @@
                     },
                     {
                         data: 'repair_cost'
+                    },
+                    {
+                        data: 'last_status'
                     },
                     {
                         data: 'case_id',
