@@ -6,15 +6,11 @@
             <div class="form-group mb-2">
                 <label for="last_status" class="mr-2">{{ trans('Last Status') }}</label>
                 <select name="last_status" id="last_status" class="form-control mr-3">
+                    <option value="">{{ trans('All') }}</option>
                     @foreach ($last_statuses as $status)
                         <option value="{{ $status->value }}">{{ $status->value }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="form-group mb-2">
-                <label for="repair_report" class="mr-2">{{ trans('Repair Report') }}</label>
-                <input type="text" name="repair_report" class="form-control mr-3">
             </div>
 
             <div class="form-group mb-2">
@@ -37,6 +33,7 @@
                     <th>{{ __('Repairman') }}</th>
                     <th>{{ __('Repair Report') }}</th>
                     <th>{{ __('Repair Cost') }}</th>
+                    <th>{{ __('Last Status') }}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
                     <th>{{ __('Case History') }}</th>
                 </tr>
@@ -52,7 +49,7 @@
         function filter() {
             var fd = new FormData($('#filter_form')[0]);
             send_ajax_formdata_request(
-                "{{ route('pmAdmin.api.casesByLastStatus') }}",
+                "{{ route('pmAdmin.api.getDataOfFinReport') }}",
                 fd,
                 function(response) {
                     console.log(response);
@@ -89,7 +86,7 @@
                         data: 'device_name'
                     },
                     {
-                        data: 'repairman'
+                        data: 'repairman_name'
                     },
                     {
                         data: 'repair_report',
@@ -103,7 +100,16 @@
                         }
                     },
                     {
-                        data: 'repair_cost'
+                        data: 'repair_cost', render: function(data){
+                            // const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                            // if(data){
+                            //     return parseInt(p2e(data).replace(/,/g, '')).toLocaleString()
+                            // }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'last_status'
                     },
                     {
                         data: 'case_id',

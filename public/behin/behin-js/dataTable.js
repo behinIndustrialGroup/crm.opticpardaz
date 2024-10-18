@@ -19,13 +19,14 @@ function create_datatable(element_id, url = '', cols, rowCallback = null, order 
             url: url,
         },
         columns: cols,
+
         buttons: [
             {
                 extend: 'excelHtml5',
                 exportOptions: {
                     columns: ':visible'
                 },
-                className: 'btn btn-danger',
+                className: 'btn btn-default',
                 attr: {
                     style: 'direction: ltr'
                 }

@@ -22,7 +22,7 @@ class DynaFormController extends Controller
     {
         $accessToken = AuthController::getAccessToken();
         ClaimCaseController::claim($r->caseId);
-        if($r->taskStatus === "UNASSIGNED"){
+        if ($r->taskStatus === "UNASSIGNED") {
             ClaimCaseController::claim($r->caseId);
         }
 
@@ -31,13 +31,13 @@ class DynaFormController extends Controller
 
         $variable_values = (new GetCaseVarsController())->getByCaseId($r->caseId, $accessToken);
         $steps = StepController::list($r->processId, $r->taskId, $accessToken);
-        foreach($steps as $step){
-            if($step->step_type_obj === "DYNAFORM"){
+        foreach ($steps as $step) {
+            if ($step->step_type_obj === "DYNAFORM") {
                 $dynaform = $step->step_uid_obj;
             }
             $triggers = $step->triggers;
-            foreach($triggers as $trigger){
-                if($trigger->st_type === "BEFORE"){
+            foreach ($triggers as $trigger) {
+                if ($trigger->st_type === "BEFORE") {
                     TriggerController::excute($trigger->tri_uid, $r->caseId, $accessToken);
                 }
             }
@@ -93,27 +93,26 @@ class DynaFormController extends Controller
         // $docs = collect(InputDocController::list($caseId));
         self::$body .= "<form action='javascript:void(0)' id='main-form' enctype='multipart/form-data'>";
         self::$body .= "<div class='row p-1' style='color: white; background: darkolivegreen; margin: 0; border-bottom: solid 1px black'>";
-            self::$body .= "<div class='col-sm-9'>";
-                self::$body .= "<h4>" . trans("Case") . ": " . str_replace('"', "", $caseTitle) . " </h4>";
-                self::$body .= "<h5>" . trans('Task') . ": $task_title </h5>";
-                self::$body .= "<h6>" . trans("Process") . ": $processTitle</h6>";
-            self::$body .= "</div>";
-            self::$body .= "<div class='col-sm-3'>";
-                self::$body .= "<button type='button' style='color: white; float:left; flex: auto; text-align: left' class='close' data-dismiss='modal'
+        self::$body .= "<div class='col-sm-9'>";
+        self::$body .= "<h4>" . trans("Case") . ": " . str_replace('"', "", $caseTitle) . " </h4>";
+        self::$body .= "<h5>" . trans('Task') . ": $task_title </h5>";
+        self::$body .= "<h6>" . trans("Process") . ": $processTitle</h6>";
+        self::$body .= "</div>";
+        self::$body .= "<div class='col-sm-3'>";
+        self::$body .= "<button type='button' style='color: white; float:left; flex: auto; text-align: left' class='close' data-dismiss='modal'
                             aria-hidden='true'>&times;</button>";
-            self::$body .= "</div>";
+        self::$body .= "</div>";
         self::$body .= "</div>";
         foreach ($fields as $rows) {
             self::$body .= "<div class='row p-2' style='margin-bottom: 10px'>";
             foreach ($rows as $field) {
-                if(!isset($field->type)){
+                if (!isset($field->type)) {
                     self::$body .= "<div class='$field->colSpan'></div>";
-                }
-                elseif($field->type === 'form'){
+                } elseif ($field->type === 'form') {
                     $scripts[] = self::getFormScriptCode($field->script);
                     $parent_mode = $field->mode;
                     self::createForm($field, $local_fields, $parent_mode);
-                }else{
+                } else {
                     $parent_mode = isset($field->mode) ? $field->mode : '';
 
                     self::createField($field, $local_fields, $parent_mode);
@@ -122,21 +121,22 @@ class DynaFormController extends Controller
             self::$body .= "</div>";
         }
         self::$body .= '</form>';
-        foreach($scripts as $script){
-        self::$body .= "<script>$script</script>";
+        foreach ($scripts as $script) {
+            self::$body .= "<script>$script</script>";
         }
-        if (true/*config('pm_config.debug')*/){
-            $data = json_encode($content);
+        if (true/*config('pm_config.debug')*/) {
+            $data = json_encode($json);
             self::$body .= "<script>console.log($data)</script>";
         }
         return self::$body;
     }
 
-    public static function createForm($field, $local_fields, $parent_mode){
-        foreach($field->items as $subFormRows){
+    public static function createForm($field, $local_fields, $parent_mode)
+    {
+        foreach ($field->items as $subFormRows) {
             self::$body .= "<div class='row col-sm-12' style='margin-bottom: 10px'>";
-            foreach($subFormRows as $field){
-                if($field->type == 'form'){
+            foreach ($subFormRows as $field) {
+                if ($field->type == 'form') {
                     self::createForm($field, $local_fields, $field->mode);
                 }
                 self::createField($field, $local_fields, $parent_mode);
@@ -145,7 +145,8 @@ class DynaFormController extends Controller
         }
     }
 
-    public static function createField($field, $local_fields, $parent_mode){
+    public static function createField($field, $local_fields, $parent_mode)
+    {
         $field_name = isset($field->name) ? $field->name : '';
         // $field_value = isset($variable_values->$field_name) ? $variable_values->$field_name : '';
         $field_value = $local_fields->where('key', $field_name)->first()?->value;
@@ -153,9 +154,9 @@ class DynaFormController extends Controller
         if (isset($field->mode)) {
             switch ($field->mode) {
                 case "parent":
-                    if($parent_mode === 'parent'){
+                    if ($parent_mode === 'parent') {
                         $field_mode = '';
-                    }else{
+                    } else {
                         $field_mode = $parent_mode;
                     }
                     break;
@@ -189,7 +190,7 @@ class DynaFormController extends Controller
                 self::$body .=  "</div>";
             }
             if ($field->type == "datetime") {
-                if($field_value){
+                if ($field_value) {
                     $date = new SDate();
                     // $field_value = $date->toGrDate($field_value);
                 }
@@ -218,7 +219,7 @@ class DynaFormController extends Controller
             if ($field->type == 'checkbox') {
                 self::$body .=  "<div class='col-sm-$field->colSpan' id='$field->name-div'>";
                 $check = $field_value == 'on' ? 'checked' : '';
-                self::$body .=  "<input type='checkbox' name='$field->name' $check $field_mode>". trans($field->label) . "<br>";
+                self::$body .=  "<input type='checkbox' name='$field->name' $check $field_mode>" . trans($field->label) . "<br>";
                 self::$body .=  "<input type='hidden' name='$field->name' value='$field_value'>";
 
                 self::$body .=  "</div>";
@@ -232,7 +233,7 @@ class DynaFormController extends Controller
                     $selected = $field_value == $opt->value ? 'selected' : '';
                     self::$body .=  "<option value='$opt->value' name='$field->name' $selected>$opt->label</option>";
                 }
-                if($field->sql){
+                if ($field->sql) {
                     $options = DB::select($field->sql);
                     foreach ($options as $opt) {
                         $selected = $field_value == $opt->value ? 'selected' : '';
@@ -279,31 +280,28 @@ class DynaFormController extends Controller
                 self::$body .= "<div style='text-align: center'>";
 
                 $field_rows = $local_fields->where('key', $field->name);
-                foreach($field_rows as $field_row){
-                    self::$body .= "<a target='_blank' href='". url("public/$field_row->value") ."' >$field->name</a> | ";
-                    if(in_array($field->mode, ['edit'])){
+                foreach ($field_rows as $field_row) {
+                    self::$body .= "<a target='_blank' href='" . url("public/$field_row->value") . "' >$field->name</a> | ";
+                    if (in_array($field->mode, ['edit'])) {
                         self::$body .= "<i class='fa fa-trash' onclick='delete_doc(
                             $field_row->id
                         )'></i> ";
                     }
                     self::$body .= "<br>";
-
                 }
-                if(in_array($field->mode, ['edit'])){
+                if (in_array($field->mode, ['edit'])) {
                     self::$body .= "<input id='$field->name' multiple='multiple' type='file' name='$field->name[]' class='form-control' >";
                 }
 
 
                 self::$body .= "</div>";
                 self::$body .= "</div>";
-
             }
         }
     }
 
-    public static function getFormScriptCode($script){
+    public static function getFormScriptCode($script)
+    {
         return is_string($script) ? '' : $script->code;
     }
 }
-
-

@@ -31,6 +31,7 @@ Route::name('pmAdmin.')->prefix('pm-admin')->middleware(['web', 'auth'])->group(
         Route::post('delete-case', [DeleteCaseController::class, 'delete'])->name('deleteCase');
         Route::post('reassign-case', [ReassignCaseController::class, 'reassign'])->name('reassign');
 
+        Route::post('fin-report', [CaseFinListController::class, 'getData'])->name('getDataOfFinReport');
         Route::post('cases-by-last-status', [CasesByLastStatusController::class, 'casesByLastStatus'])->name('casesByLastStatus');
         Route::get('cases-report-by-customer', [CaseReportController::class, 'numberOfCaseByCustomer'])->name('numberOfCaseByCustomer');
         Route::get('cases-report-by-last-status', [CaseReportController::class, 'numberOfCaseByLastStatus'])->name('numberOfCaseByLastStatus');

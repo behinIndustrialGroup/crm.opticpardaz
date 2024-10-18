@@ -35,8 +35,10 @@ function camaSeprator(className){
 
 function camaSepratorById(elementId){
     $('#'+ elementId).on('keyup', function(){
-        if($(this).val()){
-            $(this).val(parseInt($(this).val().replace(/,/g, '')).toLocaleString())
+        var val = $(this).val();
+        if(val){
+            val = convertToEnDigit(val)
+            $(this).val(parseInt(val.replace(/,/g, '')).toLocaleString())
         }
     })
 }
@@ -45,6 +47,16 @@ function runCamaSeprator(className){
     $('.'+ className).each(function(){
         if($(this).val()){
             $(this).val(parseInt($(this).val().replace(/,/g, '')).toLocaleString())
+        }
+    })
+}
+
+function convertToEnDigit(persianDigit){
+    const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    return p2e(persianDigit);
+    $('#'+ elementId).on('keyup', function(){
+        if($(this).val()){
+            $(this).val(p2e($(this).val().replace(/,/g, '')).toLocaleString())
         }
     })
 }
