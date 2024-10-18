@@ -3,9 +3,9 @@
     @csrf
     <input type="hidden" name="id" id="" value="{{ $task->id }}">
     <div class="col-sm-12 mt-3">
-        <input type="checkbox" id="done" name="done" class="col-sm-2"
+        <input type="checkbox" id="done" name="done"
             @if ($task->done) checked @endif>
-        <label for="done">کار انجام شد</label class="col-sm-10">
+        <span>کار انجام شد</span>
     </div>
     <div class="col-sm-12 mt-2">
         <label for="task" class="col-sm-12">کار :</label>
@@ -37,9 +37,9 @@
         <input type="hidden" id="edit_due_date" name="due_date" value="{{ $task->due_date }}">
         <input type="text" id="edit_due_date_view" class="col-sm-12 form-control m-1">
     </div>
-    <button type="submit" onclick="update()" class="col-sm-12 mt-2 btn btn-primary">بروزرسانی</button>
+    <button type="submit" onclick="update()" class="mt-2 mr-2 btn btn-primary">بروزرسانی</button>
     @if ($task->creator == Auth::id())
-    <button type="submit" onclick="destroy()" class="col-sm-12 mt-2 btn btn-danger">حذف</button>
+    <button type="submit" onclick="destroy()" class="mt-2 ml-2 btn btn-danger" style="float: left">حذف</button>
     @endif
 </form>
 
@@ -62,7 +62,7 @@
     function destroy() {
         fd = new FormData($('#task-detail')[0])
         fd.append('_method', 'DELETE')
-        send_ajax_formdata_request(
+        send_ajax_formdata_request_with_confirm(
             "{{ route('todoList.delete') }}",
             fd,
             function(res) {

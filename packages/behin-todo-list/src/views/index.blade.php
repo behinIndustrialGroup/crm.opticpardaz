@@ -26,8 +26,11 @@
                     <button class="btn btn-default m-2" onclick="show_element('due_date_view')"><i
                             class="fa fa-calendar"></i>{{ __('Due Date') }}</button>
 
-                    <button class="btn btn-default m-2" onclick="show_element('assign_to')"><i
-                            class="fa fa-user"></i>{{ __('Assign To') }}</button>
+                    @if (auth()->user()->access('Assign task to others'))
+                        <button class="btn btn-default m-2" onclick="show_element('assign_to')"><i
+                                class="fa fa-user"></i>{{ __('Assign To') }}</button>
+                    @endif
+
                 </div>
                 <div class="col-sm-12 mt-2">
                     <textarea name="description" id="description" class="form-control m-1" placeholder="{{ __('Description') }}"></textarea>
@@ -47,9 +50,9 @@
                 </div>
             </div>
         </form>
-        <button type="button" class="btn btn-primary m-1" onclick="all_task()">{{ __("all tasks") }}</button>
-        <button type="button" class="btn btn-info m-1" onclick="today_task()">{{ __("today tasks") }}</button>
-        <button type="button" class="btn btn-danger m-1" onclick="expired_task()">{{ __("expired tasks") }}</button>
+        <button type="button" class="btn btn-primary m-1" onclick="all_task()">{{ __('all tasks') }}</button>
+        <button type="button" class="btn btn-info m-1" onclick="today_task()">{{ __('today tasks') }}</button>
+        <button type="button" class="btn btn-danger m-1" onclick="expired_task()">{{ __('expired tasks') }}</button>
     </div>
     <hr>
     <div class="table-responsive">
@@ -73,8 +76,7 @@
         var table = create_datatable(
             'todos-table',
             "{{ route('todoList.list') }}",
-            [
-                {
+            [{
                     data: 'task'
                 },
                 {
