@@ -121,7 +121,7 @@
                     {
                         data: 'case_id',
                         render: function(data) {
-                            return `<button class='btn btn-info' onclick='show_history("${data}")'>show</button>`
+                            return `<a onclick='show_history("${data}")'>{{ __('show details') }}</a>`
                         }
                     }
                 ],
