@@ -115,7 +115,8 @@
                         data: 'case_id',
                         render: function(data) {
                             return `<button class='btn btn-info' onclick='show_history("${data}")'>show</button>`
-                        }
+                        },
+                        visible: false
                     }
                 ],
                 function(row) {
