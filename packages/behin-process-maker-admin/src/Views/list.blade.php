@@ -41,7 +41,9 @@
                 {
                     data: 'app_number',
                     @if (auth()->user()->id != 1)
-                        true visible: false
+                        visible: true
+                    @else
+                        visible: false
                     @endif
                 },
                 {
