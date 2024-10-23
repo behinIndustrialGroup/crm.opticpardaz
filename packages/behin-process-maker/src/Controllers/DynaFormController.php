@@ -136,7 +136,7 @@ class DynaFormController extends Controller
         foreach ($field->items as $subFormRows) {
             self::$body .= "<div class='row col-sm-12' style='margin-bottom: 10px'>";
             foreach ($subFormRows as $field) {
-                if ($field->type == 'form') {
+                if ($field?->type == 'form') {
                     self::createForm($field, $local_fields, $field->mode);
                 }
                 self::createField($field, $local_fields, $parent_mode);
