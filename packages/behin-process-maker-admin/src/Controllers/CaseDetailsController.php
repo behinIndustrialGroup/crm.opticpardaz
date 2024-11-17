@@ -63,7 +63,7 @@ class CaseDetailsController extends Controller
             'processTitle' => $caseinfo->case->processTitle,
             'caseTitle' => $caseinfo->case->caseTitle
         ]);
-        return view("PMAdminViews::case-details-without-edit")->with([
+        return view("PMAdminViews::case-details")->with([
             'html' => $dynaform->getHtml(
                     $processId,
                     $caseId,
