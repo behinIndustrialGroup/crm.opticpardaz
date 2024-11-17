@@ -1,17 +1,14 @@
-
 {!! $html !!}
 
+@if (auth()->user()->access('ذخیره اطلاعات در فرم های گزارشات کارپوشه'))
+    <div class="row form-group">
+        <button class="btn btn-primary m-1" onclick="save_and_next()">{{ __('save and next') }}</button>
 
-<div class="row form-group">
-    <button class="btn btn-primary m-1" onclick="save_and_next()">{{ __('save and next') }}</button>
+        <button class="btn btn-default m-1" onclick="save()">{{ __('save') }}</button>
+    </div>
+@endif
 
-    <button class="btn btn-default m-1" onclick="save()">{{ __('save') }}</button>
-</div>
 <script>
-
-
-
-
     function save_and_next() {
         var fd = new FormData($("#main-form")[0]);
         fd.append('caseId', '{{ $caseId }}')
