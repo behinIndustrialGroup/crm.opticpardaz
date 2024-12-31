@@ -31,7 +31,7 @@ class CaseFinListController extends Controller
                 DB::raw("MAX(CASE WHEN `key` = 'receive_date' THEN value END) as receive_date"),
                 DB::raw("MAX(CASE WHEN `key` = 'device_name' THEN value END) as device_name"),
                 DB::raw("MAX(CASE WHEN `key` = 'repairman' THEN value END) as repairman"),
-                DB::raw("MAX(CASE WHEN `key` = 'repair_cost' THEN value END) as repair_cost"),
+                DB::raw("MAX(CASE WHEN `key` = 'payment_amount' THEN value END) as payment_amount"),
                 DB::raw("MAX(CASE WHEN `key` = 'repair_report' THEN value END) as repair_report"),
             )
             ->groupBy('case_id');

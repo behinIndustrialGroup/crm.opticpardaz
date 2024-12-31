@@ -28,7 +28,7 @@ class SetCaseVarsController extends Controller
         }
 
         $route = RouteCaseController::next($r->caseId, $r->del_index);
-        //ارسال پیامک برای یوزر بعدی 
+        //ارسال پیامک برای یوزر بعدی
         //در صورتی که یوزر بعدی مشخص باشد
         if (config('pm_config.send_sms_to_next_user')) {
             SendSmsController::toNextUser($r->caseId, $r->del_index);

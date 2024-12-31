@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace BehinProcessMaker\Controllers;
 
@@ -37,11 +37,11 @@ class RestApiController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postParams);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
+
         $oToken = json_decode(curl_exec($ch));
         $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
+
         if ($httpStatus != 200) {
             Log::info("Error in HTTP status code: $httpStatus\n");
             return false;
@@ -56,7 +56,7 @@ class RestApiController extends Controller
             // Log::info($oToken->access_token);
             return $oToken->access_token;
         }
-        
+
         return $oToken;
     }
 
@@ -68,7 +68,7 @@ class RestApiController extends Controller
             'usr_new_pass'      => $newPass,
             'usr_cnf_pass' => $newPass
           );
-          
+
           $ch = curl_init(self::$pmServer . "/api/1.0/workflow/user/" . $userId);
           curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer $accessToken"));
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -81,7 +81,7 @@ class RestApiController extends Controller
           $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
           curl_close($ch);
 
-          
+
           if (isset($oResult) and isset($oResult->error)) {
              print "Error in ".self::$pmServer.": \nCode: {$oResult->error->code}\nMessage: {$oResult->error->message}\n";
              return null;
@@ -146,7 +146,7 @@ class RestApiController extends Controller
             'usr_new_pass'   => "$pass",
             'usr_cnf_pass'   => "$pass",
          );
-         
+
          $ch = curl_init(self::$pmServer . "/api/1.0/workflow/user");
          curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer $accessToken"));
          curl_setopt($ch, CURLOPT_HEADER, false);
@@ -159,7 +159,7 @@ class RestApiController extends Controller
 
          $oUser = json_decode(curl_exec($ch));
         //  Log::info($oUser);
-         
+
          if (!isset($oUser)) {
             print "Error accessing ".self::$pmServer .": \n" . curl_error($ch);
             return false;

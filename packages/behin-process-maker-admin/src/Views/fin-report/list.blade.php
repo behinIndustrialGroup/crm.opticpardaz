@@ -32,7 +32,7 @@
                     <th>{{ __('Device Name') }}</th>
                     <th>{{ __('Repairman') }}</th>
                     <th>{{ __('Repair Report') }}</th>
-                    <th>{{ __('Repair Cost') }}</th>
+                    <th>{{ __('Price') }}</th>
                     <th>{{ __('Last Status') }}</th>
                     {{-- <th>{{__('Current User')}}</th> --}}
                     <th>{{ __('Case History') }}</th>
@@ -100,7 +100,7 @@
                         }
                     },
                     {
-                        data: 'repair_cost', render: function(data){
+                        data: 'payment_amount', render: function(data){
                             // const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
                             // if(data){
                             //     return parseInt(p2e(data).replace(/,/g, '')).toLocaleString()
