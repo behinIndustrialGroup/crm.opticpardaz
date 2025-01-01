@@ -36,10 +36,13 @@
             "Behin\\Sms\\": "packages/behin-sms/src/",
             "Behin\\PMCaseNumbering\\": "packages/behin-pm-case-numbering/src/",
             "TodoList\\": "packages/behin-todo-list/src/",
-            "FileService\\": "packages/behin-file-service/src/"
+            "FileService\\": "packages/behin-file-service/src/",
+            "Behin\\SimpleWorkflow\\": "packages/behin-simple-workflow/src/",
+            "MyFormBuilder\\": "packages/behin-form-builder/src/"
         },
         "files": [
-            "packages/behin-init/src/App/Helpers/behin-helpers.php"
+            "packages/behin-init/src/App/Helpers/behin-helpers.php",
+            "packages/behin-simple-workflow/src/Helper/behin-simple-workflow.php"
         ]
     },
     "autoload-dev": {

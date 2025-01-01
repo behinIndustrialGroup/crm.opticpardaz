@@ -24,5 +24,7 @@ return [
     SmsProvider::class,
     PackageServiceProvider::class,
     TodoListProvider::class,
-    FileServiceProvider::class
+    FileServiceProvider::class,
+    Behin\SimpleWorkflow\SimpleWorkflowProvider::class,
+    MyFormBuilder\FormBuilderServiceProvider::class,
 ];

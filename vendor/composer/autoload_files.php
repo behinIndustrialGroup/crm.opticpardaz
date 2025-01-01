@@ -43,4 +43,5 @@ return array(
     'd634523d799d97a8ab4807b650bf5cea' => $vendorDir . '/pestphp/pest-plugin-laravel/src/Autoload.php',
     '320163ac6b93aebe3dc25b60a0533d56' => $vendorDir . '/spatie/laravel-ignition/src/helpers.php',
     '1dd62bb642d9cb89aae0bb1db4f26894' => $baseDir . '/packages/behin-init/src/App/Helpers/behin-helpers.php',
+    'ade6dd009455de1483bf74c79d14a58e' => $baseDir . '/packages/behin-simple-workflow/src/Helper/behin-simple-workflow.php',
 );
