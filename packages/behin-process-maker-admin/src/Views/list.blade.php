@@ -13,6 +13,7 @@
                     <th>{{ __('Customer Fullname') }}</th>
                     <th>{{ __('Receive Date') }}</th>
                     <th>{{ __('Device Name') }}</th>
+                    <th>{{ __('Device Serial No') }}</th>
                     <th>{{ __('Repairman') }}</th>
                     {{-- <th>{{ __('Repair Report') }}</th> --}}
                     <th>{{ __('Repair Is Approved') }}</th>
@@ -61,6 +62,9 @@
                 },
                 {
                     data: 'device_name'
+                },
+                {
+                    data: 'device_serial_no'
                 },
                 {
                     data: 'repairman'

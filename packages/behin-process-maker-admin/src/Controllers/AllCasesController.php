@@ -36,6 +36,7 @@ class AllCasesController extends Controller
             $repairman_id = PmVars::where('case_id', $case->case_id)->where('key', 'repairman')->first()?->value;
             $repairman = PMUserController::getUserByPmUserId($repairman_id);
             $status = PmVars::where('case_id', $case->case_id)->where('key', 'last_status')->first()?->value;
+            $device_serial_no = PmVars::where('case_id', $case->case_id)->where('key', 'device_serial_no')->first()?->value;
             // $caseinfo = CaseInfoController::get($case->case_id);
             $data[]= [
                 'process_id' => $case->process_id,
@@ -57,6 +58,7 @@ class AllCasesController extends Controller
                 'payment_amount' => $payment_amount,
                 // 'caseInfo' => $caseinfo,
                 'status' => $status,
+                'device_serial_no' => $device_serial_no
             ];
         }
         return [
