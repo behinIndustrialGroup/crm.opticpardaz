@@ -214,6 +214,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'BehinLogging\\' => 13,
             'BehinInit\\' => 10,
             'BehinFileControl\\' => 17,
+            'Barryvdh\\TranslationManager\\' => 28,
         ),
         'A' => 
         array (
@@ -669,6 +670,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-file-control/src',
         ),
+        'Barryvdh\\TranslationManager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -695,6 +700,18 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'Barryvdh\\TranslationManager\\Console\\CleanCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/CleanCommand.php',
+        'Barryvdh\\TranslationManager\\Console\\ExportCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/ExportCommand.php',
+        'Barryvdh\\TranslationManager\\Console\\FindCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/FindCommand.php',
+        'Barryvdh\\TranslationManager\\Console\\ImportCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/ImportCommand.php',
+        'Barryvdh\\TranslationManager\\Console\\ResetCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/ResetCommand.php',
+        'Barryvdh\\TranslationManager\\Controller' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Controller.php',
+        'Barryvdh\\TranslationManager\\Events\\TranslationsExportedEvent' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Events/TranslationsExportedEvent.php',
+        'Barryvdh\\TranslationManager\\Manager' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Manager.php',
+        'Barryvdh\\TranslationManager\\ManagerServiceProvider' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/ManagerServiceProvider.php',
+        'Barryvdh\\TranslationManager\\Models\\Translation' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Models/Translation.php',
+        'Barryvdh\\TranslationManager\\TranslationServiceProvider' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/TranslationServiceProvider.php',
+        'Barryvdh\\TranslationManager\\Translator' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Translator.php',
         'BehinFileControl\\BehinFileControlProvider' => __DIR__ . '/../..' . '/packages/behin-file-control/src/BehinFileControlProvider.php',
         'BehinFileControl\\Controllers\\FileController' => __DIR__ . '/../..' . '/packages/behin-file-control/src/Controllers/FileController.php',
         'BehinInit\\App\\Http\\Controllers\\AccessController' => __DIR__ . '/../..' . '/packages/behin-init/src/App/Http/Controllers/AccessController.php',
@@ -790,8 +807,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Behin\\SimpleWorkflow\\Controllers\\Core\\TaskActorController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/TaskActorController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\TaskController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/TaskController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\VariableController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/VariableController.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatus' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatus.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\DefineManager' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/DefineManager.php',
-        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\SendSmsToCustomer' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/SendSmsToCustomer.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\EmptyScript' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/EmptyScript.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\SendSmsToExpert' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/SendSmsToExpert.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\SendValidationSmsToCustomer' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/SendValidationSmsToCustomer.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\StartRepairInMapaProcess' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/StartRepairInMapaProcess.php',
