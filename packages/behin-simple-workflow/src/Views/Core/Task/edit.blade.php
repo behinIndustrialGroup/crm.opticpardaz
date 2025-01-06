@@ -127,7 +127,7 @@
                         <td>{{ $value->id }}</td>
                         <td>{{ $value->task->name }}</td>
                         <td>{{ $value->task->assignment_type }}</td>
-                        <td>{{ getUserInfo($value->actor)->name }}</td>
+                        <td>{{ is_int($value->actor) ? getUserInfo($value->actor)->name : $value->actor }}</td>
                         <td>{{ $value->created_at }}</td>
                         <td>
                             <form action="{{ route('simpleWorkflow.task-actors.destroy', $value->id) }}" method="POST">
@@ -151,7 +151,14 @@
                         </td>
                         <td></td>
                         <td>
-                            <input type="text" name="actor" id="">
+                            <input type="text" name="actor" id="" list="actors">
+                            
+
+                            <datalist id="actors">
+                                @foreach (App\Models\User::all() as $actor)
+                                    <option value="{{ $actor->id }}">{{ $actor->name }}</option>
+                                @endforeach
+                            </datalist>
                         </td>
                         <td><button>{{ trans('Create') }}</button></td>
                     </tr>
