@@ -10,7 +10,8 @@
     <div class="row bg-dark p-2">
         <div class="col-md-12">
             <h2>{{ $task->name }} - {{ $inbox->case_name }}</h2>
-            {{ $case->id }}
+        {{ trans('Case Number') }}: {{ $case->number }}
+            <span class="badge color-dark" style="float: left; color: dark">{{ $case->id }}</span>
         </div>
     </div>
     @if ($errors->any())
