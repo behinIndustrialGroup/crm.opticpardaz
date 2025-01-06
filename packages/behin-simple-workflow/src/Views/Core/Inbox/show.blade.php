@@ -40,9 +40,9 @@
 
     <div class="row bg-white p-2 mt-2">
         <button class="btn btn-primary btn-sm m-1"
-            onclick="saveForm()">{{ trans('SimpleWorkflowLang::fields.Save') }}</button>
+            onclick="saveForm()">{{ trans('fields.Save') }}</button>
         <button class="btn btn-danger btn-sm m-1"
-            onclick="saveAndNextForm()">{{ trans('SimpleWorkflowLang::fields.Save and next') }}</button>
+            onclick="saveAndNextForm()">{{ trans('fields.Save and next') }}</button>
     </div>
 @endsection
 
