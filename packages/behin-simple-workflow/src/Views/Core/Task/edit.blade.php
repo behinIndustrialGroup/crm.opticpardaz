@@ -107,7 +107,7 @@
 
         </div>
     </form>
-    <div class="row card p-4">
+    <div class="panel-heading p-4 bg-white mt-3">
         <table class="table table-stripped">
             <thead>
                 <tr>
