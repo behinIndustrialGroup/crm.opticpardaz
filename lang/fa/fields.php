@@ -17,4 +17,6 @@ return array (
   'device_accessories' => 'لوازم همراه دستگاه',
   'device_packaging_type' => 'نوع بسته بندی دستگاه',
   'case_number' => 'شماره پرونده',
+  'Save' => 'ذخیره',
+  'Save and next' => 'ذخیره و مرحله بعدی',
 );
