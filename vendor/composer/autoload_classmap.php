@@ -120,6 +120,8 @@ return array(
     'Behin\\PMCaseNumbering\\Controllers\\NewNummberController' => $baseDir . '/packages/behin-pm-case-numbering/src/Controllers/NewNummberController.php',
     'Behin\\PMCaseNumbering\\Models\\PMCaseNumbering' => $baseDir . '/packages/behin-pm-case-numbering/src/Models/PMCaseNumbering.php',
     'Behin\\PMCaseNumbering\\PackageServiceProvider' => $baseDir . '/packages/behin-pm-case-numbering/src/PackageServiceProvider.php',
+    'Behin\\SimpleWorkflowReport\\Controllers\\Core\\ReportController' => $baseDir . '/packages/behin-simple-workflow-report/src/Controllers/Core/ReportController.php',
+    'Behin\\SimpleWorkflowReport\\SimpleWorkflowReportProvider' => $baseDir . '/packages/behin-simple-workflow-report/src/SimpleWorkflowReportProvider.php',
     'Behin\\SimpleWorkflow\\Controllers\\Core\\CaseController' => $baseDir . '/packages/behin-simple-workflow/src/Controllers/Core/CaseController.php',
     'Behin\\SimpleWorkflow\\Controllers\\Core\\ConditionController' => $baseDir . '/packages/behin-simple-workflow/src/Controllers/Core/ConditionController.php',
     'Behin\\SimpleWorkflow\\Controllers\\Core\\FieldController' => $baseDir . '/packages/behin-simple-workflow/src/Controllers/Core/FieldController.php',

@@ -28,7 +28,7 @@
                                 <tbody>
                                 @foreach($variables as $variable)
                                     <tr>
-                                        <td>{{ trans( 'SimpleWorkflowLang::fields.'. $variable->key) }}</td>
+                                        <td>{{ trans( 'fields.'. $variable->key) }}</td>
                                         <td>{{ $variable->value }}</td>
 
                                     </tr>

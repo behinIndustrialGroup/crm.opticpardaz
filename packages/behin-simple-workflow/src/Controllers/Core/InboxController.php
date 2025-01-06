@@ -8,6 +8,7 @@ use Behin\SimpleWorkflow\Models\Core\Inbox;
 use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\TaskActor;
+use BehinProcessMaker\Controllers\ToDoCaseController;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -49,8 +50,9 @@ class InboxController extends Controller
 
     public function index(): View
     {
+        $rows = self::getUserInbox(Auth::id());
         return view('SimpleWorkflowView::Core.Inbox.list')->with([
-            'rows' => self::getUserInbox(Auth::id())
+            'rows' => $rows
         ]);
     }
 

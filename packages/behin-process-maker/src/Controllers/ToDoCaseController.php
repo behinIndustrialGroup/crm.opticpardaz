@@ -11,7 +11,7 @@ use Mkhodroo\PMReport\Controllers\TableController;
 class ToDoCaseController extends Controller
 {
 
-    function getMyCase()
+    public static function getMyCase()
     {        
         $inbox =  CurlRequestController::send(
             AuthController::getAccessToken(),

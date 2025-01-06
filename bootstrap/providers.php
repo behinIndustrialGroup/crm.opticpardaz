@@ -26,5 +26,6 @@ return [
     TodoListProvider::class,
     FileServiceProvider::class,
     Behin\SimpleWorkflow\SimpleWorkflowProvider::class,
+    Behin\SimpleWorkflowReport\SimpleWorkflowReportProvider::class,
     MyFormBuilder\FormBuilderServiceProvider::class,
 ];

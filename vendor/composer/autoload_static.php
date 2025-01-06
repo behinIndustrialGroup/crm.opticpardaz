@@ -207,6 +207,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'Brick\\Math\\' => 11,
             'Behin\\Sms\\' => 10,
             'Behin\\SimpleWorkflow\\' => 21,
+            'Behin\\SimpleWorkflowReport\\' => 27,
             'Behin\\PMCaseNumbering\\' => 22,
             'BehinUserRoles\\' => 15,
             'BehinProcessMaker\\' => 18,
@@ -642,6 +643,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src',
         ),
+        'Behin\\SimpleWorkflowReport\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src',
+        ),
         'Behin\\PMCaseNumbering\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src',
@@ -796,6 +801,8 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Behin\\PMCaseNumbering\\Controllers\\NewNummberController' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/Controllers/NewNummberController.php',
         'Behin\\PMCaseNumbering\\Models\\PMCaseNumbering' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/Models/PMCaseNumbering.php',
         'Behin\\PMCaseNumbering\\PackageServiceProvider' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/PackageServiceProvider.php',
+        'Behin\\SimpleWorkflowReport\\Controllers\\Core\\ReportController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src/Controllers/Core/ReportController.php',
+        'Behin\\SimpleWorkflowReport\\SimpleWorkflowReportProvider' => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src/SimpleWorkflowReportProvider.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\CaseController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/CaseController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\ConditionController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/ConditionController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\FieldController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/FieldController.php',
