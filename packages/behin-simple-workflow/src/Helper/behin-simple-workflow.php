@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Behin\SimpleWorkflow\Controllers\Core\ConditionController;
 use Behin\SimpleWorkflow\Controllers\Core\FieldController;
 use Behin\SimpleWorkflow\Controllers\Core\FormController;
@@ -60,6 +61,12 @@ if (!function_exists('previewForm')) {
 if (!function_exists('taskHasError')) {
     function taskHasError($taskId) {
         return TaskController::TaskHasError($taskId);
+    }
+}
+
+if (!function_exists('getUserInfo')) {
+    function getUserInfo($userId) {
+        return User::find($userId);
     }
 }
 
