@@ -71,9 +71,9 @@
 
 
 
-        <footer class="main-footer">
+        {{-- <footer class="main-footer"> --}}
             {{-- <strong> &copy; 2018 <a href="http://github.com/hesammousavi/">حسام موسوی</a>.</strong> --}}
-        </footer>
+        {{-- </footer> --}}
 
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
