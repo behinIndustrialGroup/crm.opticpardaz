@@ -127,7 +127,7 @@
                         <td>{{ $value->id }}</td>
                         <td>{{ $value->task->name }}</td>
                         <td>{{ $value->task->assignment_type }}</td>
-                        <td>{{ is_int($value->actor) ? getUserInfo($value->actor)->name : $value->actor }}</td>
+                        <td>{{ is_numeric($value->actor) ? getUserInfo($value->actor)->name : $value->actor }}</td>
                         <td>{{ $value->created_at }}</td>
                         <td>
                             <form action="{{ route('simpleWorkflow.task-actors.destroy', $value->id) }}" method="POST">
