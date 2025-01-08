@@ -36,17 +36,17 @@
                             <td>{{ $row->case_name }}</td>
                             <td>
                                 @if ($row->status == 'new')
-                                    <span class="badge bg-primary">{{ trans('New') }}</span>
+                                    <span class="badge bg-primary">{{ trans('fields.New') }}</span>
                                 @elseif($row->status == 'in_progress')
-                                    <span class="badge bg-warning">{{ trans('In Progress') }}</span>
+                                    <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
                                 @else
-                                    <span class="badge bg-success">{{ trans('Completed') }}</span>
+                                    <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
                                 @endif
                             </td>
                             <td>{{ $row->created_at->format('Y-m-d H:i') }}</td>
                             <td>
                                 <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
-                                    class="btn btn-sm btn-primary">{{ trans('View') }}</a>
+                                    class="btn btn-sm btn-primary">{{ trans('fields.View') }}</a>
                             </td>
                         </tr>
                     @endforeach

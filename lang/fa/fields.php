@@ -76,4 +76,7 @@ return array (
   'Start from task' => 'اولین وظیفه',
   'Start' => 'شروع',
   'Start Process' => 'شروع فرایند',
+  'Completed' => 'انجام شده',
+  'In Progress' => 'در حال انجام',
+  'New' => 'جدید',
 );
