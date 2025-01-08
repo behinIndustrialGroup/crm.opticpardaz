@@ -171,6 +171,10 @@ class RoutingController extends Controller
                 if ((bool)$nextTask) {
                     self::executeNextTask($nextTask, $caseId);
                 } else {
+                    if ($task->next_element_id) {
+                        $nextTask = TaskController::getById($task->next_element_id);
+                        self::executeNextTask($nextTask, $caseId);
+                    }
                     $taskChildren = $task->children();
                     foreach ($taskChildren as $task) {
                         // print($task->name);
