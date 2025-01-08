@@ -23,6 +23,7 @@ return [
             'fa_name' => 'گزارشات کارتابل',
             'submenu' => [
                 'list' => [ 'fa_name' => 'لیست', 'route-name' => 'simpleWorkflowReport.index' ],
+                'fin-report' => [ 'fa_name' => 'مالی', 'route-name' => 'simpleWorkflowReport.fin-report.index' ],
             ]
         ],
         'workflow' => [
