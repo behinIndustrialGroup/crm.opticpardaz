@@ -19,10 +19,10 @@ class ChangeLastStatus extends Controller
 
     public function execute()
     {
-        $last_status = $this->case->variables()->where('key', 'last_status')->frist()->value;
-        VariableController::save(
-            $this->case->process_id, $this->case->id, 'last_status', $last_status
-        );
+        // $last_status = $this->case->variables()->where('key', 'last_status')->frist()->value;
+        // VariableController::save(
+        //     $this->case->process_id, $this->case->id, 'last_status', $last_status
+        // );
     }
 
 }
