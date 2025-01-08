@@ -97,15 +97,17 @@ class InboxController extends Controller
 
         // جایگزینی متغیرها در عنوان
         $patterns = [
-            '/@customer_name/',
-            '/@customer_city/',
-            '/@customer_mobile/'
+            '/@customer_fullname/',
+            '/@device_name/',
+            '/@customer_mobile/',
+            '/@device_serial_no/'
         ];
 
         $replacements = [
-            $variables['customer_name'] ?? '-',
-            $variables['customer_city'] ?? '-',
-            $variables['customer_mobile'] ?? '-'
+            $variables['customer_fullname'] ?? '-',
+            $variables['device_name'] ?? '-',
+            $variables['customer_mobile'] ?? '-',
+            $variables['device_serial_no'] ?? '-'
         ];
 
         $title = preg_replace($patterns, $replacements, $title);
