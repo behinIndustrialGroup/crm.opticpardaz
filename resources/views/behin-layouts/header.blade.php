@@ -47,9 +47,9 @@ use App\CustomClasses\Access;
                 <a href="{{ url('admin/messages/list') }}" class="dropdown-item dropdown-footer">نمایش تماام پیام ها</a>
             </div>
         </li> --}}
-        <li class="nav-item">
-            <a href="{{ url('admin') }}" class="nav-link btn btn-danger p-0 m-0" style="height: auto">
-                داشبورد
+        <li class="mr-4">
+            <a href="{{ url('admin') }}" class="">
+                <i class="fa fa-home"></i>
             </a>
         </li>
 
