@@ -93,14 +93,14 @@ class RoutingController extends Controller
             }
             self::executeNextTask($nextTask, $caseId);
         } else {
-            foreach ($taskChildren as $task) {
-                if ($error = taskHasError($task->id)) {
+            foreach ($taskChildren as $childTask) {
+                if ($error = taskHasError($childTask->id)) {
                     return response()->json([
                         'status' => 400,
                         'msg' => 'next task error:' . $error['descriptions']
                     ]);
                 }
-                $result = self::executeNextTask($task, $caseId);
+                $result = self::executeNextTask($childTask, $caseId);
                 if ($result == 'break') {
                     break;
                 }
