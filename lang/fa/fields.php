@@ -19,4 +19,7 @@ return array (
   'case_number' => 'شماره پرونده',
   'Save' => 'ذخیره',
   'Save and next' => 'ذخیره و مرحله بعدی',
+  'Created At' => 'ایجاد شده در',
+  'Creator' => 'ایجاد کننده',
+  'Case Number' => 'شماره پرونده',
 );
