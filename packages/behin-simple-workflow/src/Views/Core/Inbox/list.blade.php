@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container table-responsive card p-2">
-        <h2>{{ trans('User Inbox') }}</h2>
+        <h2>{{ trans('fields.User Inbox') }}</h2>
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -17,13 +17,13 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>{{ trans('Process Title') }}</th>
-                        <th>{{ trans('Task Title') }}</th>
-                        <th>{{ trans('Case Number') }}</th>
-                        <th>{{ trans('Case Title') }}</th>
-                        <th>{{ trans('Status') }}</th>
-                        <th>{{ trans('Received At') }}</th>
-                        <th>{{ trans('Actions') }}</th>
+                        <th>{{ trans('fields.Process Title') }}</th>
+                        <th>{{ trans('fields.Task Title') }}</th>
+                        <th>{{ trans('fields.Case Number') }}</th>
+                        <th>{{ trans('fields.Case Title') }}</th>
+                        <th>{{ trans('fields.Status') }}</th>
+                        <th>{{ trans('fields.Received At') }}</th>
+                        <th>{{ trans('fields.Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +56,7 @@
         
     </div>
     <div class="container table-responsive card">
-        <div class="alert alert-info">کارتابل قدیم</div>
+        <div class="alert alert-warning">کارتابل قدیم</div>
         <table class="table table-striped " id="draft-list">
             <thead>
                 <tr>
@@ -79,7 +79,7 @@
     <script>
         $('#inbox-list').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
+                "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
             }
         });
         var table = create_datatable(

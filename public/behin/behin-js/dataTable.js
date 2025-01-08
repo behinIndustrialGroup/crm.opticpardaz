@@ -18,11 +18,16 @@ function create_datatable(element_id, url = '', cols, rowCallback = null, order 
         ajax: {
             url: url,
         },
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json'
+        },
         columns: cols,
 
         buttons: [
             {
                 extend: 'excelHtml5',
+                text: 'خروجی اکسل',
+                titleAttr: 'خروجی اکسل',
                 exportOptions: {
                     columns: ':visible'
                 },
@@ -33,9 +38,6 @@ function create_datatable(element_id, url = '', cols, rowCallback = null, order 
             }
         ],
         "displayLength": 25,
-        language: {
-            url: '/public/behin/behin-js/fa.json'
-        },
         "rowCallback": rowCallback
     });
 
@@ -59,6 +61,9 @@ function create_empty_datatable(element_id, cols, rowCallback = null, order = [0
         order: [order],
         processing: true,
         data: [],
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json'
+        },
         columns: cols,
         buttons: [
             {
