@@ -14,7 +14,7 @@
                 @csrf
                 <div class="row col-sm-12">
                     <input type="text" id="task" name="task" placeholder="{{ __('Task Title') }}"
-                        class="form-control col-sm-11 m-1">
+                        class="form-control col-sm-11 m-1" required>
                     <button type="button" class="btn btn-primary m-1" onclick="register()"><i
                             class="fa fa-paper-plane"></i></button>
                 </div>
