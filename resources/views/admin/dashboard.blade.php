@@ -4,7 +4,7 @@
 @section('content')
     <div class="row">
         @if (auth()->user()->access('منو >>کارتابل>>فرایند جدید'))
-            <div class="col-lg-3 col-6">
+            <div class="col-sm-3 ">
                 <!-- small box -->
                 <div class="small-box bg-primary">
                     <div class="inner">
@@ -21,7 +21,7 @@
             </div>
         @endauth
         @if (auth()->user()->access('منو >>کارتابل>>کارتابل'))
-            <div class="col-lg-3 col-6">
+            <div class="col-sm-3 ">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
@@ -38,7 +38,7 @@
             </div>
         @endauth
 
-        <div class="col-lg-3 col-6">
+        <div class="col-sm-3 ">
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
@@ -54,7 +54,7 @@
             </div>
         </div>
         @if (auth()->user()->access('منو >>گزارشات کارتابل>>لیست'))
-            <div class="col-lg-3 col-6">
+            <div class="col-sm-3 ">
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
@@ -72,7 +72,7 @@
         @endif
 
         @if (auth()->user()->access('منو >>گزارشات کارتابل>>مالی'))
-            <div class="col-lg-3 col-6">
+            <div class="col-sm-3 ">
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
