@@ -28,7 +28,7 @@
             </select>
         </div>
         <div class="col-sm-4">
-            <button class="btn btn-default">{{ trans('Create') }}</button>
+            <button class="btn btn-default">{{ trans('fields.Create') }}</button>
         </div>
 
     </form>

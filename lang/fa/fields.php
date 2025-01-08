@@ -79,4 +79,9 @@ return array (
   'Completed' => 'انجام شده',
   'In Progress' => 'در حال انجام',
   'New' => 'جدید',
+  'Create' => 'ایجاد',
+  'Type' => 'نوع',
+  'Name' => 'نام',
+  'Edit' => 'ویرایش',
+  'Delete' => 'حذف',
 );
