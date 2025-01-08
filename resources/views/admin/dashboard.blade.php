@@ -2,18 +2,68 @@
 
 
 @section('content')
-    <div class="row col-sm-12">
-        <div class="alert alert-danger col-sm-2 mt-3">
-            <a href="{{ route('MkhodrooProcessMaker.forms.todo') }}">
-                {{ trans('کارتابل من') }}
-            </a>
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ trans('کارتابل من') }}</h3>
+
+                    <p>{{ trans('لیست پرونده هایی که باید انجام دهید') }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="{{ route('simpleWorkflow.inbox.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
+            </div>
         </div>
-    </div>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ trans('لیست کارها') }}</h3>
+
+                    <p>{{ trans('لیست کارهایی که ابلاغ شده است') }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{{ route('todoList.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ trans('گزارش پرونده ها') }}</h3>
+
+                    <p>{{ trans('گزارش پرونده ها بر اساس وضعیت') }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('simpleWorkflowReport.report.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ trans('گزارش مالی') }}</h3>
+
+                    <p>{{ trans('گزارش مالی بر اساس وضعیت') }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('simpleWorkflowReport.fin-report.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
+            </div>
+        </div>
+    {{-- <div id="piechart" style="width: 900px; height: 500px;"></div> --}}
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {
             'packages': ['corechart']
@@ -55,5 +105,5 @@
 
 
         }
-    </script>
+    </script> --}}
 @endsection

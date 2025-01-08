@@ -1,76 +1,87 @@
 @extends('behin-layouts.app')
 
 @section('content')
-<div class="container table-responsive">
-    <h2>{{ trans('User Inbox') }}</h2>
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    @if($rows->isEmpty())
-        {{-- <div class="alert alert-info">
+    <div class="container table-responsive card p-2">
+        <h2>{{ trans('User Inbox') }}</h2>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if ($rows->isEmpty())
+            {{-- <div class="alert alert-info">
             {{ trans('You have no items in your inbox.') }}
         </div> --}}
-    @else
-        <table class="table table-striped">
+        @else
+            <table class="table table-striped" id="inbox-list">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{{ trans('Process Title') }}</th>
+                        <th>{{ trans('Task Title') }}</th>
+                        <th>{{ trans('Case Number') }}</th>
+                        <th>{{ trans('Case Title') }}</th>
+                        <th>{{ trans('Status') }}</th>
+                        <th>{{ trans('Received At') }}</th>
+                        <th>{{ trans('Actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($rows as $index => $row)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $row->task->process->name }}</td>
+                            <td>{{ $row->task->name }}</td>
+                            <td>{{ $row->case->number }}</td>
+                            <td>{{ $row->case_name }}</td>
+                            <td>
+                                @if ($row->status == 'new')
+                                    <span class="badge bg-primary">{{ trans('New') }}</span>
+                                @elseif($row->status == 'in_progress')
+                                    <span class="badge bg-warning">{{ trans('In Progress') }}</span>
+                                @else
+                                    <span class="badge bg-success">{{ trans('Completed') }}</span>
+                                @endif
+                            </td>
+                            <td>{{ $row->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
+                                    class="btn btn-sm btn-primary">{{ trans('View') }}</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+        
+    </div>
+    <div class="container table-responsive card">
+        <div class="alert alert-info">کارتابل قدیم</div>
+        <table class="table table-striped " id="draft-list">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>{{ trans('Process Title') }}</th>
-                    <th>{{ trans('Task Title') }}</th>
-                    <th>{{ trans('Case Title') }}</th>
-                    <th>{{ trans('Status') }}</th>
-                    <th>{{ trans('Received At') }}</th>
-                    <th>{{ trans('Actions') }}</th>
+                    {{-- <th>{{__('Id')}}</th> --}}
+                    <th>{{ __('Number') }}</th>
+                    <th>{{ __('Process Name') }}</th>
+                    <th>{{ __('Task Title') }}</th>
+                    <th>{{ __('Case') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th>{{ __('Send By') }}</th>
+                    <th style="text-align: center; direction: ltr">{{ __('Send Date') }}</th>
+                    <th style="text-align: center; direction: ltr">{{ __('Delay/Deadline') }}</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($rows as $index => $row)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $row->task->process->name }}</td>
-                        <td>{{ $row->task->name }}</td>
-                        <td>{{ $row->case_name }}</td>
-                        <td>
-                            @if($row->status == 'new')
-                                <span class="badge bg-primary">{{ trans('New') }}</span>
-                            @elseif($row->status == 'in_progress')
-                                <span class="badge bg-warning">{{ trans('In Progress') }}</span>
-                            @else
-                                <span class="badge bg-success">{{ trans('Completed') }}</span>
-                            @endif
-                        </td>
-                        <td>{{ $row->created_at->format('Y-m-d H:i') }}</td>
-                        <td>
-                            <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}" class="btn btn-sm btn-primary">{{ trans('View') }}</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
         </table>
-    @endif
-    <div class="alert alert-info">کارتابل قدیم</div>
-    <table class="table table-striped " id="draft-list">
-        <thead>
-            <tr>
-                {{-- <th>{{__('Id')}}</th> --}}
-                <th>{{ __('Number') }}</th>
-                <th>{{ __('Process Name') }}</th>
-                <th>{{ __('Task Title') }}</th>
-                <th>{{ __('Case') }}</th>
-                <th>{{ __('Status') }}</th>
-                <th>{{ __('Send By') }}</th>
-                <th style="text-align: center; direction: ltr">{{ __('Send Date') }}</th>
-                <th style="text-align: center; direction: ltr">{{ __('Delay/Deadline') }}</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+    </div>
 @endsection
 
 @section('script')
     <script>
+        $('#inbox-list').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
+            }
+        });
         var table = create_datatable(
             'draft-list',
             '{{ route('MkhodrooProcessMaker.api.todo') }}',
@@ -180,7 +191,7 @@
                 fd,
                 function(response) {
                     // console.log(response);
-                    
+
                     open_admin_modal_with_data(response, '', function() {
                         initial_view()
                     })
@@ -188,7 +199,7 @@
             )
         }
 
-        
+
 
         function delete_case(caseId) {
             url = "{{ route('MkhodrooProcessMaker.api.deleteCase', ['caseId' => 'caseId']) }}";

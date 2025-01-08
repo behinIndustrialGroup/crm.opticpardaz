@@ -66,7 +66,11 @@ if (!function_exists('taskHasError')) {
 
 if (!function_exists('getUserInfo')) {
     function getUserInfo($userId) {
-        return User::find($userId);
+        $user = User::find($userId);
+        if($user){
+            return $user;
+        }
+        return User::where('pm_user_uid', $userId)->first();
     }
 }
 
