@@ -55,7 +55,7 @@ class RoutingController extends Controller
                 return
                     [
                         'status' => 400,
-                        'msg' => trans('SimpleWorkflowLang::fields.' . $field) . ': ' . trans('SimpleWorkflowLang::fields.Required')
+                        'msg' => trans('fields.' . $field) . ': ' . trans('fields.Required')
                     ];
             }
         }
