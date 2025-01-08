@@ -4,7 +4,7 @@
 <div class="container table-responsive">
     <div class="row">
         <div class="col-md-12">
-            <h3>{{ trans('feilds.Start Process') }}</h3>
+            <h3>{{ trans('fields.Start Process') }}</h3>
             <hr>
         </div>
     </div>
