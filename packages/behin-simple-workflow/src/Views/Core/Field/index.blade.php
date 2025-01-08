@@ -53,6 +53,7 @@
                 <tr>
                     <th>{{ trans('ID') }}</th>
                     <th class="text-left">{{ trans('fields.Name') }}</th>
+                    <th class="text-left">{{ trans('fields.Name') }}</th>
                     <th class="text-left">{{ trans('fields.Type') }}</th>
                     <th>{{ trans('fields.Actions') }}</th>
                 </tr>
@@ -64,6 +65,7 @@
                     @endphp
                     <tr>
                         <td>{{ $key }}</td>
+                        <td class="text-left">{{ trans("fields.".$field->name) }}</td>
                         <td class="text-left">{{ $field->name }}</td>
                         <td class="text-left">{{ $field->type }}</td>
 
