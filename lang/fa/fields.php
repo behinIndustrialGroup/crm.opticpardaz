@@ -73,4 +73,7 @@ return array (
   'Task Title' => 'عنوان وظیفه',
   'Process Title' => 'عنوان فرایند',
   'User Inbox' => 'کارتابل کاربر',
+  'Start from task' => 'اولین وظیفه',
+  'Start' => 'شروع',
+  'Start Process' => 'شروع فرایند',
 );
