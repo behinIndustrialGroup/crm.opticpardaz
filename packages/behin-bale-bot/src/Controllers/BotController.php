@@ -59,7 +59,7 @@ class BotController extends Controller
 
     }
 
-    public static function sendMessage($chat_id = 681208098, $text)
+    public static function sendMessage($chat_id = 681208098, $text = 'test')
     {
         $telegram = new TelegramController(config('bale_bot_config.TOKEN'));
         $telegram->sendMessage(
