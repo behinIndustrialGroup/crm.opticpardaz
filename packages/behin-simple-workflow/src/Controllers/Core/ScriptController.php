@@ -61,10 +61,11 @@ class ScriptController extends Controller
 
     public static function runScript($id, $caseId)
     {
+        
         $script = self::getById($id);
         $case = CaseController::getById($caseId);
         $executiveFile = "\\Behin\SimpleWorkflow\Controllers\Scripts\\$script->executive_file";
         $script = new $executiveFile($case);
-        $script->execute();
+        return $script->execute();
     }
 }

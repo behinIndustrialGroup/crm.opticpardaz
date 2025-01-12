@@ -21,8 +21,8 @@ class EmptyScript extends Controller
 
     public function execute()
     {
-
-
+        // throw new \Exception("test2");
+        // return "test";
     }
 
 }
