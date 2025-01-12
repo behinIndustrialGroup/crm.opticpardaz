@@ -65,7 +65,7 @@
                     console.log(er);
                     result = er.responseJSON.message
                     if(result){
-                        $('#result').html();
+                        $('#result').html(result);
                     }else{
                         $('#result').html('{{ trans('fields.True') }}')
                     }
