@@ -6,4 +6,5 @@ use BaleBot\Controllers\BotController;
 
 Route::name('baleBot.')->prefix('bale-bot')->group(function(){
     Route::post('/chat', [BotController::class, 'chat'])->name('chat');
+    Route::get('/send-message', [BotController::class, 'sendMessage'])->name('send.message');
 });
