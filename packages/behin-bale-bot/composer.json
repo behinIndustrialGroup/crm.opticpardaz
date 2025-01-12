@@ -1,0 +1,16 @@
+{
+    "name": "behin/bale-bot",
+    "description": "",
+    "authors": [
+        {
+            "name": "Amirali-Hosseini",
+            "email": "amiralihosseini216@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BaleBot\\": "src/"
+        }
+    },
+    "require": {}
+}

@@ -217,6 +217,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'BehinInit\\' => 10,
             'BehinFileControl\\' => 17,
             'Barryvdh\\TranslationManager\\' => 28,
+            'BaleBot\\' => 8,
         ),
         'A' => 
         array (
@@ -684,6 +685,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src',
         ),
+        'BaleBot\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-bale-bot/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -710,6 +715,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'BaleBot\\BaleBotProvider' => __DIR__ . '/../..' . '/packages/behin-bale-bot/src/BaleBotProvider.php',
+        'BaleBot\\Controllers\\BotController' => __DIR__ . '/../..' . '/packages/behin-bale-bot/src/Controllers/BotController.php',
+        'BaleBot\\Controllers\\TelegramController' => __DIR__ . '/../..' . '/packages/behin-bale-bot/src/Controllers/TelegramController.php',
         'Barryvdh\\TranslationManager\\Console\\CleanCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/CleanCommand.php',
         'Barryvdh\\TranslationManager\\Console\\ExportCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/ExportCommand.php',
         'Barryvdh\\TranslationManager\\Console\\FindCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/FindCommand.php',
