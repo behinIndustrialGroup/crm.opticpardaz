@@ -84,4 +84,9 @@ return array (
   'Name' => 'نام',
   'Edit' => 'ویرایش',
   'Delete' => 'حذف',
+  'Actor' => 'اقدام کننده',
+  'Case ID' => 'شناسه پرونده',
+  'Case Name' => 'نام پرنده',
+  'Inbox updated successfully' => 'کارتابل بروز شد',
+  'Done' => 'انجام شده',
 );
