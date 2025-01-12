@@ -3,7 +3,7 @@
 @section('content')
     <h1>Edit Script</h1>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 card">
             <form action="{{ route('simpleWorkflow.scripts.update', $script->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -29,5 +29,49 @@
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
+        <div class="col-md-6 card">
+            <form action="javascript:void(0)" method="POST" id="test-form" class="form-inline">
+                @csrf
+                <div class="form-group">
+                    <label for="caseId">{{ trans('fields.Case') }}</label>
+                    <select name="caseId" id="" class="form-control select2">
+                        <option value="">{{ trans('fields.Choose') }}</option>
+                        @foreach (getCases() as $case)
+                            <option value="{{ $case->id }}">{{ $case->id }} {{ $case->name }} </option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary ml-2" onclick="test()">{{ trans('fields.Test') }}</button>
+            </form>
+            <h5 class="mt-3">{{ trans('fields.Result') }}</h5>
+            <div id="result"></div>
+        </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        function test() {
+            var form = $('#test-form')[0];
+            var fd = new FormData(form);
+            send_ajax_formdata_request(
+                "{{ route('simpleWorkflow.scripts.test', $script->id) }}",
+                fd,
+                function(response) {
+                    console.log(response);
+                    $('#result').html(response);
+                },
+                function(er) {
+                    console.log(er);
+                    result = er.responseJSON.message
+                    if(result){
+                        $('#result').html();
+                    }else{
+                        $('#result').html('{{ trans('fields.True') }}')
+                    }
+                    hide_loading();
+                }
+            )
+        }
+    </script>
 @endsection

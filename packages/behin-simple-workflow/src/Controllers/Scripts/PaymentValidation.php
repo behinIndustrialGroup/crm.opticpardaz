@@ -9,24 +9,17 @@ use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\Variable;
 use Illuminate\Http\Request;
 
-class EmptyScript extends Controller
+class PaymentValidation extends Controller
 {
     protected $case;
     public function __construct($case) {
         $this->case = $case;
-        // return VariableController::save(
-        //     $this->case->process_id, $this->case->id, 'manager', 2
-        // );
+        
     }
 
     public function execute()
     {
-        // throw new \Exception("test2");
-        // VariableController::save(
-        //         $this->case->process_id, $this->case->id, 'testasad', 2
-        //     );
-        // return $this->case->id;
-        // return "test";
+        return "test";
     }
 
 }
