@@ -19,9 +19,9 @@
                         <th>#</th>
                         <th>{{ trans('fields.Process Title') }}</th>
                         <th>{{ trans('fields.Task Title') }}</th>
-                        <th>{{ trans('fields.Case ID') }}</th>
                         <th>{{ trans('fields.Case Number') }}</th>
                         <th>{{ trans('fields.Case Title') }}</th>
+                        <th>{{ trans('fields.Actor') }}</th>
                         <th>{{ trans('fields.Status') }}</th>
                         <th>{{ trans('fields.Received At') }}</th>
                         <th>{{ trans('fields.Actions') }}</th>
@@ -33,9 +33,9 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $row->task->process->name }}</td>
                             <td>{{ $row->task->name }}</td>
-                            <td>{{ $row->case_id }}</td>
                             <td>{{ $row->case->number }}</td>
                             <td>{{ $row->case_name }}</td>
+                            <td>{{ getUserInfo($row->actor)?->name }}</td>
                             <td>
                                 @if ($row->status == 'new')
                                     <span class="badge bg-primary">{{ trans('fields.New') }}</span>
@@ -64,7 +64,10 @@
         $('#inbox-list').DataTable({
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
-            }
+            },
+            order: [
+                [6, 'desc']
+            ]
         });
     </script>
 @endsection
