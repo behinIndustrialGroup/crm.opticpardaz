@@ -71,6 +71,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
             'Tests\\' => 6,
             'Termwind\\' => 9,
+            'TelegramBot\\' => 12,
         ),
         'S' => 
         array (
@@ -261,6 +262,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Termwind\\' => 
         array (
             0 => __DIR__ . '/..' . '/nunomaduro/termwind/src',
+        ),
+        'TelegramBot\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/behin-telegram-bot/src',
         ),
         'Symfony\\Polyfill\\Uuid\\' => 
         array (
@@ -801,6 +806,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Behin\\PMCaseNumbering\\Controllers\\NewNummberController' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/Controllers/NewNummberController.php',
         'Behin\\PMCaseNumbering\\Models\\PMCaseNumbering' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/Models/PMCaseNumbering.php',
         'Behin\\PMCaseNumbering\\PackageServiceProvider' => __DIR__ . '/../..' . '/packages/behin-pm-case-numbering/src/PackageServiceProvider.php',
+        'Behin\\SimpleWorkflowReport\\Controllers\\Core\\FinReportController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src/Controllers/Core/FinReportController.php',
         'Behin\\SimpleWorkflowReport\\Controllers\\Core\\ReportController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src/Controllers/Core/ReportController.php',
         'Behin\\SimpleWorkflowReport\\SimpleWorkflowReportProvider' => __DIR__ . '/../..' . '/packages/behin-simple-workflow-report/src/SimpleWorkflowReportProvider.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\CaseController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/CaseController.php',
@@ -815,6 +821,16 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Behin\\SimpleWorkflow\\Controllers\\Core\\TaskController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/TaskController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Core\\VariableController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/VariableController.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatus' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatus.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForDeviceDelivery' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForDeviceDelivery.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForIssueInvoce' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForIssueInvoce.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairApproval_1' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairApproval_1.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairApproval_2' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairApproval_2.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairApproval_3' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairApproval_3.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairPayment' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairPayment.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairReport' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairReport.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForRepairReview' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForRepairReview.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForSetRepairCost' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForSetRepairCost.php',
+        'Behin\\SimpleWorkflow\\Controllers\\Scripts\\ChangeLastStatusToWaitingForSetRepairman' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/ChangeLastStatusToWaitingForSetRepairman.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\DefineManager' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/DefineManager.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\EmptyScript' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/EmptyScript.php',
         'Behin\\SimpleWorkflow\\Controllers\\Scripts\\SendSmsToExpert' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Scripts/SendSmsToExpert.php',
@@ -3817,6 +3833,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'MyFormBuilder\\Fields\\FileField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/FileField.php',
         'MyFormBuilder\\Fields\\LocationField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/LocationField.php',
         'MyFormBuilder\\Fields\\SelectField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/SelectField.php',
+        'MyFormBuilder\\Fields\\SelectMultipleField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/SelectMultipleField.php',
         'MyFormBuilder\\Fields\\SubmitField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/SubmitField.php',
         'MyFormBuilder\\Fields\\TextField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/TextField.php',
         'MyFormBuilder\\Fields\\TextareaField' => __DIR__ . '/../..' . '/packages/behin-form-builder/src/Fields/TextareaField.php',
@@ -7179,6 +7196,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
         'Symfony\\Polyfill\\Uuid\\Uuid' => __DIR__ . '/..' . '/symfony/polyfill-uuid/Uuid.php',
+        'TelegramBot\\Controllers\\BotController' => __DIR__ . '/../..' . '/packages/behin-telegram-bot/src/Controllers/BotController.php',
+        'TelegramBot\\Controllers\\TelegramController' => __DIR__ . '/../..' . '/packages/behin-telegram-bot/src/Controllers/TelegramController.php',
+        'TelegramBot\\TelegramBotProvider' => __DIR__ . '/../..' . '/packages/behin-telegram-bot/src/TelegramBotProvider.php',
         'Termwind\\Actions\\StyleToMethod' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Actions/StyleToMethod.php',
         'Termwind\\Components\\Anchor' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/Anchor.php',
         'Termwind\\Components\\BreakLine' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/BreakLine.php',

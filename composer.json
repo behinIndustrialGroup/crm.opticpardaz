@@ -40,7 +40,8 @@
             "FileService\\": "packages/behin-file-service/src/",
             "Behin\\SimpleWorkflow\\": "packages/behin-simple-workflow/src/",
             "Behin\\SimpleWorkflowReport\\": "packages/behin-simple-workflow-report/src/",
-            "MyFormBuilder\\": "packages/behin-form-builder/src/"
+            "MyFormBuilder\\": "packages/behin-form-builder/src/",
+            "TelegramBot\\": "packages/behin-telegram-bot/src/"
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php",

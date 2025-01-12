@@ -1,0 +1,16 @@
+{
+    "name": "behin/telegram-bot",
+    "description": "",
+    "authors": [
+        {
+            "name": "Amirali-Hosseini",
+            "email": "amiralihosseini216@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TelegramBot\\": "src/"
+        }
+    },
+    "require": {}
+}
