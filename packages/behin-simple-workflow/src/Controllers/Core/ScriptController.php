@@ -84,7 +84,11 @@ class ScriptController extends Controller
 
     public static function test(Request $request,$id)
     {
-        $result = self::runScript($id, $request->caseId, true);
-        return redirect()->back()->with('result', $result);
+        try {
+            $result = self::runScript($id, $request->caseId, true);
+        } catch (\Exception $e) {
+            $result = $e->getMessage();
+        }
+        return $result;
     }
 }
