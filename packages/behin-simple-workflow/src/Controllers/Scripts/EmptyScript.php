@@ -22,11 +22,11 @@ class EmptyScript extends Controller
     public function execute()
     {
         // throw new \Exception("test2");
-        VariableController::save(
-                $this->case->process_id, $this->case->id, 'seda', 2
-            );
-        return $this->case->id;
-        return "test";
+        // VariableController::save(
+        //         $this->case->process_id, $this->case->id, 'seda', 2
+        //     );
+        // return $this->case->id;
+        // return "test";
     }
 
 }
