@@ -43,7 +43,7 @@ class FinReportController extends Controller
             }
             $ar[] = $var;
         }
-        return $ar;
+        return $sum;
     }
 
 }
