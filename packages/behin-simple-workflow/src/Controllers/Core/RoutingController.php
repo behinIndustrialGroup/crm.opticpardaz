@@ -21,7 +21,6 @@ class RoutingController extends Controller
     {
         $request->validate([
             'processId' => 'required',
-            'taskId' => 'required',
             'caseId' => 'required',
         ]);
 
@@ -34,7 +33,7 @@ class RoutingController extends Controller
         // }
 
         $processId = $request->processId;
-        $taskId = $request->taskId;
+        // $taskId = $request->taskId;
         $caseId = $request->caseId;
 
         $vars = $request->all();
@@ -51,17 +50,17 @@ class RoutingController extends Controller
                 VariableController::save($processId, $caseId, $key, $value);
             }
         }
-        Log::info("test");
-        foreach ($requiredFields as $field) {
-            $var = VariableController::getVariable($processId, $caseId, $field);
-            if (!$var?->value) {
-                return
-                    [
-                        'status' => 400,
-                        'msg' => trans('fields.' . $field) . ': ' . trans('fields.Required')
-                    ];
-            }
-        }
+        // Log::info("test");
+        // foreach ($requiredFields as $field) {
+        //     $var = VariableController::getVariable($processId, $caseId, $field);
+        //     if (!$var?->value) {
+        //         return
+        //             [
+        //                 'status' => 400,
+        //                 'msg' => trans('fields.' . $field) . ': ' . trans('fields.Required')
+        //             ];
+        //     }
+        // }
         return
             [
                 'status' => 200,

@@ -16,7 +16,7 @@
                     <select name="executive_file" class="form-control">
                         @foreach (File::files(base_path('packages/behin-simple-workflow/src/Controllers/Scripts')) as $file)
                             <option value="{{ str_replace('.php', '', $file->getFilename()) }}"
-                                {{ $script->executive_file == $file->getFilename() ? 'selected' : '' }}>
+                                {{ $script->executive_file . '.php' == $file->getFilename() ? 'selected' : '' }}>
                                 {{ $file->getFilename() }}
                             </option>
                         @endforeach
@@ -34,12 +34,13 @@
                 @csrf
                 <div class="form-group">
                     <label for="caseId">{{ trans('fields.Case') }}</label>
-                    <select name="caseId" id="" class="form-control select2">
+                    <input type="text" name="caseId" id="caseId" class="form-control" list="cases">
+                    <datalist id="cases">
                         <option value="">{{ trans('fields.Choose') }}</option>
                         @foreach (getCases() as $case)
-                            <option value="{{ $case->id }}">{{ $case->id }} {{ $case->name }} </option>
+                            <option value="{{ $case->id }}">{{ $case->number }} {{ $case->name }} </option>
                         @endforeach
-                    </select>
+                    </datalist>
                 </div>
                 <button type="submit" class="btn btn-primary ml-2" onclick="test()">{{ trans('fields.Test') }}</button>
             </form>

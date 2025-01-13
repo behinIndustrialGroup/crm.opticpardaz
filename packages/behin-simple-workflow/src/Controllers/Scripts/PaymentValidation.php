@@ -19,7 +19,21 @@ class PaymentValidation extends Controller
 
     public function execute()
     {
-        return "test";
+        $variables = VariableController::getVariablesByCaseId($this->case->id);
+
+        $payment_amount = $variables->where('key', 'payment_amount')->first()?->value;
+        $payment_amount = str_replace(',', '', $payment_amount);
+        $payment_amount = str_replace('/', '', $payment_amount);
+        $payment_amount = str_replace('.', '', $payment_amount);
+        $payment_amount = str_replace(' ', '', $payment_amount);
+        $payment_amount = str_replace('ریال', '', $payment_amount);
+        if(str_contains($payment_amount, 'تومان')){
+            return trans('fields.مبلغ را به ریال وارد کنید');
+        }
+        if(!is_numeric($payment_amount)){
+            return trans('fields.payment_amount_is_not_numeric');
+        }
+        
     }
 
 }
