@@ -3,6 +3,35 @@
 
 @section('content')
     <div class="row">
+        @if (auth()->user()->access("مجموع دریافتی ها"))
+                <div class="col-sm-3 ">
+                    <!-- small box -->
+                    <div class="small-box bg-light">
+                        <div class="inner">
+                            <h3>{{ trans('مجموع دریافتی ها') }}</h3>
+
+                            <p id="total-receivables" class="total-receivables"></p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#"
+                        class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
+                        <script>
+                            send_ajax_get_request(
+                                "{{ route('simpleWorkflowReport.totalPayment') }}",
+                                function(response) {
+
+                                    $('#total-receivables').text(parseInt(response.replace(/,/g, '')).toLocaleString() + ' ریال');
+                                    // runCamaSeprator('total-receivables');
+
+                                }
+                            )
+                        </script>
+                    </div>
+
+                </div>
+            @endif
         @if (auth()->user()->access('منو >>کارتابل>>فرایند جدید'))
             <div class="col-sm-3 ">
                 <!-- small box -->
@@ -88,35 +117,7 @@
                 </div>
             </div>
         @endif
-            @if (auth()->user()->access("مجموع دریافتی ها"))
-                <div class="col-sm-3 ">
-                    <!-- small box -->
-                    <div class="small-box bg-light">
-                        <div class="inner">
-                            <h3>{{ trans('مجموع دریافتی ها') }}</h3>
-
-                            <p id="total-receivables" class="total-receivables"></p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#"
-                        class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
-                        <script>
-                            send_ajax_get_request(
-                                "{{ route('simpleWorkflowReport.totalPayment') }}",
-                                function(response) {
-
-                                    $('#total-receivables').text(parseInt(response.replace(/,/g, '')).toLocaleString() + ' ریال');
-                                    // runCamaSeprator('total-receivables');
-
-                                }
-                            )
-                        </script>
-                    </div>
-
-                </div>
-            @endif
+            
     </div>
 
         {{-- <div id="piechart" style="width: 900px; height: 500px;"></div> --}}
