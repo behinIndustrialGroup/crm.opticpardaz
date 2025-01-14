@@ -48,9 +48,9 @@ class SaveVarsController extends Controller
                 Variable::create($var);
             }
         }
-        $processId_in_simpleWorkflow = Variable::where('key', $case_number)->first()?->process_id;
+        // $processId_in_simpleWorkflow = Variable::where('key', $case_number)->first()?->process_id;
         if($caseId_in_simpleWorkflow){
-            VariableController::save($processId_in_simpleWorkflow, $caseId_in_simpleWorkflow, $key, $value);
+            VariableController::save('879e001c-59d5-4afb-958c-15ec7ff269d1', $caseId_in_simpleWorkflow, $key, $value);
         }
     }
 
