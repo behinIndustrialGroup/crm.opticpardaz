@@ -50,9 +50,11 @@ class SaveVarsController extends Controller
         //     }
         // }
         // // $processId_in_simpleWorkflow = Variable::where('key', $case_number)->first()?->process_id;
-        // if($caseId_in_simpleWorkflow){
-        //     VariableController::save('879e001c-59d5-4afb-958c-15ec7ff269d1', $caseId_in_simpleWorkflow, $key, $value);
-        // }
+        if($caseId_in_simpleWorkflow){
+            Log::info($key);    
+            Log::info($value);
+            // VariableController::save('879e001c-59d5-4afb-958c-15ec7ff269d1', $caseId_in_simpleWorkflow, $key, $value);
+        }
     }
 
 
