@@ -41,29 +41,52 @@ class StartRepairInMapaProcess extends Controller
         Log::info($this->case->variables()->where('key', 'customer_name'));
         $task = TaskController::getById("9f6b7b5c-155e-4698-8b05-26ebb061bb7d");
         $newInbox = ProcessController::start($task->id, true, false);
+        $parent_case_number = $this->case->number;
+        $newCaseId = $newInbox->case->id;
+        $newCaseNumber = $newInbox->case->number;
+        $mapa_expert = $this->case->variables()->where('key', 'mapa_expert')->first()->value ?? '';
+        $mapa_expert_name = getUserInfo($mapa_expert)?->name;
+        $customer_workshop_or_ceo_name = $this->case->variables()->where('key', 'customer_workshop_or_ceo_name')->first()->value ?? '';
+        InboxController::editCaseName($newInbox->id, "پذیرش دستگاه از پرونده " . $parent_case_number);
         VariableController::save(
             $newInbox->case->process_id,
             $newInbox->case->id,
-            'customer_name',
-            $this->case->variables()->where('key', 'customer_name')->first()->value
+            'customer_workshop_or_ceo_name',
+            $customer_workshop_or_ceo_name
         );
         VariableController::save(
             $newInbox->case->process_id,
             $newInbox->case->id,
             'customer_nid',
-            $this->case->variables()->where('key', 'customer_nid')->first()->value
+            $this->case->variables()->where('key', 'customer_nid')->first()->value ?? ''
         );
         VariableController::save(
             $newInbox->case->process_id,
             $newInbox->case->id,
             'customer_mobile',
-            $this->case->variables()->where('key', 'customer_mobile')->first()->value
+            $this->case->variables()->where('key', 'customer_mobile')->first()->value ?? ''
         );
+        $initial_description = "ارجاع شده از فرایند تعمیر در محل به شماره پرونده " . $parent_case_number . '. \n';
+        $initial_description .= "این پرونده توسط " . $mapa_expert_name . " انجام شده است. \n";
+        $initial_description .= "سایر توضیحات: \n";
+        $initial_description .= $this->case->variables()->where('key', 'next_visit_description')->first()->value ?? '';
         VariableController::save(
             $newInbox->case->process_id,
             $newInbox->case->id,
             'initial_description',
-            "ارجاع شده از فرایند تعمیر در محل"
+            $initial_description
+        );
+        VariableController::save(
+            $newInbox->case->process_id,
+            $newInbox->case->id,
+            'parent_case_numner',
+            $parent_case_number
+        );
+        VariableController::save(
+            $newInbox->case->process_id,
+            $newInbox->case->id,
+            'parent_case_id',
+            $this->case->id
         );
         // Log::info('newInbox');
         // Log::info($newInbox);

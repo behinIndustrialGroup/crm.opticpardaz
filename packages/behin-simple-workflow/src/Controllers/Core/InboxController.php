@@ -21,19 +21,30 @@ class InboxController extends Controller
         return Inbox::find($id);
     }
 
-    public static function create($taskId, $caseId, $actor, $status = 'new')
+    public static function create($taskId, $caseId, $actor, $status = 'new', $caseName = null)
     {
         $task = TaskController::getById($taskId);
-        $createCaseName = self::createCaseName($task, $caseId);
+        if($caseName == null)
+            $createCaseName = self::createCaseName($task, $caseId);
+        else
+            $createCaseName = $caseName;
 
-
-        return Inbox::create([
+        $inbox = Inbox::create([
             'task_id' => $taskId,
             'case_id' => $caseId,
             'actor' => $actor,
             'status' => $status,
-            'case_name' => $createCaseName
+            // 'case_name' => $createCaseName
         ]);
+        self::editCaseName($inbox->id, $createCaseName);
+        return $inbox;
+    }
+
+    public static function editCaseName($inboxId, $caseName)
+    {
+        $inbox = InboxController::getById($inboxId);
+        $inbox->case_name = $caseName;
+        $inbox->save();
     }
 
     public static function getAllByTaskId($taskId): Collection
@@ -67,10 +78,18 @@ class InboxController extends Controller
         return $rows;
     }
 
-    public function getAllInbox(): View
+    public function showCases(): View
     {
-        $rows = self::getAll();
-        return view('SimpleWorkflowView::Core.Inbox.all')->with([
+        $rows = Inbox::groupBy('case_id')->with('task')->orderBy('created_at', 'desc')->get();
+        return view('SimpleWorkflowView::Core.Inbox.cases')->with([
+            'rows' => $rows
+        ]);
+    }
+
+    public function showInboxes($caseId): View
+    {
+        $rows = Inbox::where('case_id', $caseId)->with('task')->orderBy('created_at', 'desc')->get();
+        return view('SimpleWorkflowView::Core.Inbox.inboxes')->with([
             'rows' => $rows
         ]);
     }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class CaseController extends Controller
 {
-    public static function getById($id) {
+    public static function getById($id): Cases {
         return Cases::find($id);
     }
 
