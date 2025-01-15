@@ -26,7 +26,8 @@ class SaveVarsController extends Controller
                 'value' => $value
             ]
             );
-        // $case_number = PmVars::where('process_id', $process_id)->where('case_id', $case_id)->where('key', 'case_number')->first()?->value;
+        $case_number = PmVars::where('process_id', $process_id)->where('case_id', $case_id)->where('key', 'case_number')->first()?->value;
+        Log::info($case_number);;
         // $caseId_in_simpleWorkflow = Variable::where('key', $case_number)->first()?->case_id;
         // if(!$caseId_in_simpleWorkflow){
         //     $creator = PmVars::where('case_id', $case_id)->where('key', 'crm_user_creator')->first()?->value;
