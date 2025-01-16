@@ -4,6 +4,7 @@ namespace BehinUserRoles\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use BehinInit\App\Http\Controllers\AccessController;
 use Illuminate\Http\Request;
 use BehinInit\App\Models\Access;
 use BehinUserRoles\Models\Role;
@@ -11,7 +12,10 @@ use BehinUserRoles\Models\Role;
 class GetRoleController extends Controller
 {
     function listForm() {
-        return view('URPackageView::roles.list');
+        $access = new AccessController('Access to user roles');
+        if($access->check()){
+            return view('URPackageView::roles.list');
+        }
     }
 
     function list() {
