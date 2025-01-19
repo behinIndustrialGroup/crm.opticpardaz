@@ -31,5 +31,11 @@ class ResetChangeRepairmanRequest extends Controller
             'change_repairman_request',
             ''
         );
+        VariableController::save(
+            $this->case->process_id,
+            $this->case->id,
+            'change_repairman_request_description',
+            ''
+        );
     }
 }
