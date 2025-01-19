@@ -25,7 +25,7 @@ class ResetChangeRepairmanRequest extends Controller
 
     public function execute()
     {
-        return VariableController::save(
+        VariableController::save(
             $this->case->process_id,
             $this->case->id,
             'change_repairman_request',
