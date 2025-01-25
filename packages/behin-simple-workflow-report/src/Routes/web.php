@@ -22,6 +22,31 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     Route::resource('report', ReportController::class);
     Route::resource('fin-report', FinReportController::class);
     Route::get('total-payment', [FinReportController::class, 'totalPayment'])->name('totalPayment');
+    Route::get('test', function(){
+        $cases = Variable::groupBy('case_id')->get();
+        echo "<table>";
+        echo "<tr>";
+        echo "<td>case_id</td>";
+        echo "<td>device_name</td>";
+        echo "<td>device_model</td>";
+        echo "<td>initial_description</td>";
+        echo "<td>repair_report</td>";
+        echo "</tr>";
+        foreach ($cases as $case) {
+            $device_name = Variable::where('case_id', $case->case_id)->where('key', 'device_name')->first()?->value;
+            $device_model = Variable::where('case_id', $case->case_id)->where('key', 'device_model')->first()?->value;
+            $initial_description = Variable::where('case_id', $case->case_id)->where('key', 'initial_description')->first()?->value;
+            $repair_report = Variable::where('case_id', $case->case_id)->where('key', 'repair_report')->first()?->value;
+            echo "<tr>";
+            echo "<td>$case->case_id</td>";
+            echo "<td>$device_name</td>";
+            echo "<td>$device_model</td>";
+            echo "<td>$initial_description</td>";
+            echo "<td>$repair_report</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    });
     Route::get('import', function () {
         $cases = PmVars::groupBy('case_id')->get();
         foreach ($cases as $case) {
