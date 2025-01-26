@@ -28,27 +28,35 @@
                 </thead>
                 <tbody>
                     @foreach ($rows as $index => $row)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $row->task->process->name }}</td>
-                            <td>{{ $row->task->name }}</td>
-                            <td>{{ $row->case->number }}</td>
-                            <td>{{ $row->case_name }}</td>
-                            <td>
-                                @if ($row->status == 'new')
-                                    <span class="badge bg-primary">{{ trans('fields.New') }}</span>
-                                @elseif($row->status == 'in_progress')
-                                    <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
-                                @else
-                                    <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
-                                @endif
-                            </td>
-                            <td>{{ $row->created_at->format('Y-m-d H:i') }}</td>
-                            <td>
-                                <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
-                                    class="btn btn-sm btn-primary">{{ trans('fields.View') }}</a>
-                            </td>
-                        </tr>
+                    <tr ondblclick="window.location.href = '{{ route('simpleWorkflow.inbox.view', $row->id) }}'">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $row->task->process->name }}</td>
+                        <td>{{ $row->task->name }}</td>
+                        <td>{{ $row->case->number }}</td>
+                        <td>{{ $row->case_name }}</td>
+                        <td>
+                            @if ($row->status == 'new')
+                                <span class="badge bg-primary">{{ trans('fields.New') }}</span>
+                            @elseif($row->status == 'in_progress')
+                                <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
+                            @elseif($row->status == 'draft')
+                                <span class="badge bg-info">{{ trans('fields.Draft') }}</span>
+                            @else
+                                <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
+                            @endif
+                        </td>
+                        <td dir="ltr">{{ toJalali($row->created_at)->format('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
+                                class="btn btn-sm btn-primary">{{ trans('fields.View') }}<i
+                                    class="fa fa-external-link"></i></a>
+                            @if ($row->status == 'draft')
+                                <a href="{{ route('simpleWorkflow.inbox.delete', $row->id) }}"
+                                    class="btn btn-sm btn-danger">{{ trans('fields.Delete') }}
+                                <i class="fa fa-trash"></i></a>
+                            @endif
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
