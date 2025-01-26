@@ -1,6 +1,7 @@
 <?php
 
 use Behin\SimpleWorkflow\Controllers\Core\ConditionController;
+use Behin\SimpleWorkflow\Controllers\Core\DoneInboxController;
 use Behin\SimpleWorkflow\Controllers\Core\EntityController;
 use Behin\SimpleWorkflow\Controllers\Core\FieldController;
 use Behin\SimpleWorkflow\Controllers\Core\FormController;
@@ -18,7 +19,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::get('create', [ ProcessController::class, 'create' ])->name('create');
         Route::post('store', [ ProcessController::class, 'store' ])->name('store');
         Route::get('start-list', [ ProcessController::class, 'startListView' ])->name('startListView');
-        Route::get('start/{taskId}', [ ProcessController::class, 'start' ])->name('start');
+        Route::get('start/{taskId}/{force?}/{redirect?}/{inDraft}', [ ProcessController::class, 'start' ])->name('start');
         Route::get('check-error/{processId}', [ ProcessController::class, 'processHasError' ])->name('processHasError');
     });
 
@@ -36,6 +37,8 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::get('index', [ FormController::class, 'index' ])->name('index');
         Route::get('edit/{id}', [ FormController::class, 'edit' ])->name('edit');
         Route::post('update', [ FormController::class, 'update' ])->name('update');
+        Route::get('edit-content/{id}', [ FormController::class, 'editContent' ])->name('editContent');
+        Route::post('updateContent', [ FormController::class, 'updateContent' ])->name('updateContent');
         Route::post('store', [ FormController::class, 'store' ])->name('store');
         Route::post('create', [ FormController::class, 'createForm' ])->name('create');
         Route::post('copy', [ FormController::class, 'copy' ])->name('copy');
@@ -44,6 +47,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 
     Route::resource('scripts', ScriptController::class);
     Route::post('scripts/{id}/test', [ ScriptController::class, 'test' ])->name('scripts.test');
+    Route::get('scripts/{id}/run/{caseId}', [ ScriptController::class, 'runScript' ])->name('scripts.run');
 
     Route::resource('conditions', ConditionController::class);
     Route::resource('task-actors', TaskActorController::class);
@@ -51,15 +55,18 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 
     Route::name('inbox.')->prefix('inbox')->group(function(){
         Route::get('', [ InboxController::class, 'index' ])->name('index');
+        Route::get('done-inbox', [ DoneInboxController::class, 'index' ])->name('done');
         // Route::get('all-inbox', [ InboxController::class, 'getAllInbox' ])->name('getAllInbox');
         Route::get('cases', [ InboxController::class, 'showCases' ])->name('cases.list');
         Route::get('cases/{caseId}/inboxes', [ InboxController::class, 'showInboxes' ])->name('cases.inboxes');
         Route::get('view/{inboxId}', [ InboxController::class, 'view' ])->name('view');
         Route::get('edit/{inboxId}', [ InboxController::class, 'edit' ])->name('edit');
         Route::put('update/{inboxId}', [ InboxController::class, 'update' ])->name('update');
+        Route::get('delete/{inboxId}', [ InboxController::class, 'delete' ])->name('delete');
     });
 
     Route::name('routing.')->prefix('routing')->group(function(){
+        Route::post('create-case-number-and-save', [ RoutingController::class, 'createCaseNumberAndSave' ])->name('createCaseNumberAndSave');
         Route::post('save', [ RoutingController::class, 'save' ])->name('save');
         Route::post('save-and-next', [ RoutingController::class, 'saveAndNext' ])->name('saveAndNext');
         Route::get('view/{inboxId}', [ InboxController::class, 'view' ])->name('view');

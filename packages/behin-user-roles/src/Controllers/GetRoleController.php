@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace BehinUserRoles\Controllers;
 
@@ -11,11 +11,19 @@ use BehinUserRoles\Models\Role;
 
 class GetRoleController extends Controller
 {
-    function listForm() {
-        $access = new AccessController('Access to user roles');
+    public static function hasNotAccess(){
+        $access = new AccessController('User Roles');
         if($access->check()){
-            return view('URPackageView::roles.list');
+            return false;
         }
+        return true;
+    }
+    function listForm() {
+        if(self::hasNotAccess()){
+            abort(403, 'Access denied');
+        }
+        $roles = self::getAll();
+        return view('URPackageView::roles.list', compact('roles'));
     }
 
     function list() {
@@ -28,6 +36,15 @@ class GetRoleController extends Controller
         return Role::get();
     }
 
+    public function show($id) {
+        if(self::hasNotAccess()){
+            abort(403, 'Access denied');
+        }
+        $role = self::getById($id);
+        $methods = GetMethodsController::getByRoleAccess($role->id);
+        return view('URPackageView::roles.show', compact('role', 'methods'));
+    }
+
 
     function get(Request $r) {
         return view('URPackageView::roles.edit')->with([
@@ -37,6 +54,9 @@ class GetRoleController extends Controller
     }
 
     function edit(Request $r) {
+        Role::where('id', $r->role_id)->update([
+            'name' => $r->name,
+        ]);
         foreach(GetMethodsController::getAll() as $method){
             Access::updateOrCreate(
                 [
@@ -48,17 +68,48 @@ class GetRoleController extends Controller
                 ]
             );
         }
+        return redirect()->back()->with('success', 'Role updated successfully');
         return response('ok');
     }
 
     function changeUserRole(Request $r) {
-        User::where('id', $r->user_id)->update([
+        User::where('id', $r->id)->update([
             'role_id' => $r->role_id
         ]);
-        return response('ok');
+        return redirect()->back()->with('success', 'User role updated successfully');
     }
 
     public static function getByName($name){
         return Role::where('name', $name)->first();
+    }
+
+    public static function getById($id){
+        return Role::find($id);
+    }
+
+    
+    public static function getRoleAccess($role_id){
+        return Access::where('role_id', $role_id)->get();
+    }
+    
+
+
+    public static function copy($id){
+        $role = self::getById($id);
+        $newRole = $role->replicate();
+        $newRole->save();
+
+        foreach (self::getRoleAccess($role->id) as $access) {
+            Access::updateOrCreate(
+                [
+                    'role_id' => $newRole->id,
+                    'method_id' => $access->method_id
+                ],
+                [
+                    'access' => $access->access
+                ]
+            );
+        }
+        return redirect()->back()->with('success', 'Role copied successfully');
     }
 }
