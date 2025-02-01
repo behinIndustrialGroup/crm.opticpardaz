@@ -13,6 +13,8 @@ use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Variable;
 use Behin\SimpleWorkflowReport\Controllers\Core\FinReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\ReportController;
+use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
+use Behin\SimpleWorkflowReport\Controllers\Core\SummaryReportController;
 use BehinProcessMaker\Models\PMVariable;
 use BehinProcessMaker\Models\PmVars;
 use Illuminate\Support\Facades\Route;
@@ -20,33 +22,10 @@ use Illuminate\Support\Facades\Route;
 Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['web', 'auth'])->group(function () {
     Route::get('index', [ReportController::class, 'index'])->name('index');
     Route::resource('report', ReportController::class);
+    Route::resource('summary-report', SummaryReportController::class);
+    Route::resource('role', RoleReportFormController::class);
     Route::resource('fin-report', FinReportController::class);
     Route::get('total-payment', [FinReportController::class, 'totalPayment'])->name('totalPayment');
-    Route::get('test', function(){
-        $cases = Variable::groupBy('case_id')->get();
-        echo "<table>";
-        echo "<tr>";
-        echo "<td>case_id</td>";
-        echo "<td>device_name</td>";
-        echo "<td>device_model</td>";
-        echo "<td>initial_description</td>";
-        echo "<td>repair_report</td>";
-        echo "</tr>";
-        foreach ($cases as $case) {
-            $device_name = Variable::where('case_id', $case->case_id)->where('key', 'device_name')->first()?->value;
-            $device_model = Variable::where('case_id', $case->case_id)->where('key', 'device_model')->first()?->value;
-            $initial_description = Variable::where('case_id', $case->case_id)->where('key', 'initial_description')->first()?->value;
-            $repair_report = Variable::where('case_id', $case->case_id)->where('key', 'repair_report')->first()?->value;
-            echo "<tr>";
-            echo "<td>$case->case_id</td>";
-            echo "<td>$device_name</td>";
-            echo "<td>$device_model</td>";
-            echo "<td>$initial_description</td>";
-            echo "<td>$repair_report</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-    });
     Route::get('import', function () {
         $cases = PmVars::groupBy('case_id')->get();
         foreach ($cases as $case) {
