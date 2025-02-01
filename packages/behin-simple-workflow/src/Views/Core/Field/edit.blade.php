@@ -1,5 +1,9 @@
 @extends('behin-layouts.app')
 
+@section('title')
+    {{ trans('fields.Edit Field') . ' - ' . $field->name }}
+@endsection
+
 @section('content')
     <h1>Edit Field</h1>
     <a href="{{ route('simpleWorkflow.fields.index') }}" class="btn btn-secondary mb-3">
@@ -78,6 +82,7 @@
 
             <div class="mb-3">
                 <label for="script" class="form-label">Script</label>
+                <span>نیازی به تگ script نیست</span>
                 <textarea name="script" id="script" class="form-control" rows="4" dir="ltr">{{ isset($attributes->script) && is_string($attributes?->script) ? $attributes?->script : '' }}</textarea>
             </div>
 
