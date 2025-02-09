@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <table class="table">
+    <div class="container table-responsive card p-2">
+        <table class="table table-striped" id="form-list">
             <thead>
                 <tr>
                     <th>{{ trans('Id') }}</th>
@@ -24,7 +24,7 @@
                                     href="{{ route('simpleWorkflow.form.edit', ['id' => $form->id]) }}">{{ trans('Edit') }}</a>
                                     <a class="btn btn-sm btn-success"
                                     href="{{ route('simpleWorkflow.form.editContent', ['id' => $form->id]) }}">{{ trans('Edit Content') }}</a>
-                                    <button class="btn btn-sm btn-info"><i class="fa fa-copy" onclick="copyForm('{{ $form->id }}')"></i></button>
+                                    <button class="btn btn-sm btn-info" onclick="copyForm('{{ $form->id }}')"><i class="fa fa-copy" ></i></button>
                                     <button class="btn btn-sm btn-danger" onclick="deleteForm('{{ $form->id }}')"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
@@ -47,6 +47,11 @@
 
 @section('script')
     <script>
+        $('#form-list').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
+            }
+        });
         function create_process() {
             var form = $('#create-process-form')[0];
             var fd = new FormData(form);
