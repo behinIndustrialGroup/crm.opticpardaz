@@ -3,6 +3,7 @@
 namespace MyFormBuilder\Services;
 
 use MyFormBuilder\Contracts\FormBuilderInterface;
+use MyFormBuilder\Fields\ButtonField;
 use MyFormBuilder\Fields\DateField;
 use MyFormBuilder\Fields\TextField;
 use MyFormBuilder\Fields\EmailField;
@@ -13,6 +14,7 @@ use MyFormBuilder\Fields\FieldFactory;
 use MyFormBuilder\Fields\FileField;
 use MyFormBuilder\Fields\CheckboxField;
 use MyFormBuilder\Fields\DivField;
+use MyFormBuilder\Fields\EntityField;
 use MyFormBuilder\Fields\LocationField;
 use MyFormBuilder\Fields\TitleField;
 use MyFormBuilder\Renderers\FormRenderer;
@@ -48,6 +50,15 @@ class FormBuilder
         $attributes = $attributes ?? [];
         // $field = $this->fieldFactory->create('text', $name, $attributes);
         return (new TitleField($name, $attributes))->render();
+        return $this;
+    }
+
+    public function button(string $name, array $attributes = null)
+    {
+
+        $attributes = $attributes ?? [];
+        // $field = $this->fieldFactory->create('text', $name, $attributes);
+        return (new ButtonField($name, $attributes))->render();
         return $this;
     }
 
@@ -133,6 +144,14 @@ class FormBuilder
 
         $this->fields[] = new TextareaField($name, $field);
         return $this;
+    }
+
+    public function entity($name, $attributes = [])
+    {
+        $attributes = $attributes ?? [];
+
+
+        return (new EntityField($name, $attributes))->render();
     }
 
     public function select($name, $options, $attributes = [])
