@@ -11,3 +11,9 @@
     'required' => false,
     'dir' => 'ltr'
 ]) !!}
+
+{!! Form::textarea('script', [
+    'value' => $attributes?->script ?? null,
+    'required' => false,
+    'dir' => 'ltr'
+]) !!}
