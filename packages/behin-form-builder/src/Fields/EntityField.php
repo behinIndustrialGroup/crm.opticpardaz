@@ -24,6 +24,7 @@ class EntityField extends AbstractField
         }
         $s .= '</tr>';
         $s .= '</thead>';
+        $s .= '<tbody></tbody>';
         $query = $this->attributes['query'] ?? null;
         if($query){
             $rows = DB::select($query);
