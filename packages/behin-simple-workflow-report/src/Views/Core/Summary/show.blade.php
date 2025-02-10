@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">لیست پرونده های فرآیند {{ $process->name }}</div>
-                    
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="draft-list">
@@ -35,6 +35,8 @@
                                         <th>موبایل</th>
                                         <th>دستگاه</th>
                                         <th>کارشناس</th>
+                                        <th>مرحله قبلی</th>
+                                        <th>مرحله جاری</th>
                                         <th>آخرین وضعیت</th>
                                         <th>ایجاد شده در</th>
                                         <th>اقدام</th>
@@ -43,12 +45,14 @@
                                 <tbody>
                                     @foreach ($process->cases as $case)
                                         @php
-                                            $name = $case->variables()->where('key', 'customer_fullname')->first()?->value;
-                                            $mobile = $case->variables()->where('key', 'customer_mobile')->first()?->value;
-                                            $device_name = $case->variables()->where('key', 'device_name')->first()?->value;
-
-                                            $repairman = $case->variables()->where('key', 'repairman')->first()
+                                            $name = $case->variables()->where('key', 'customer_fullname')->first()
                                                 ?->value;
+                                            $mobile = $case->variables()->where('key', 'customer_mobile')->first()
+                                                ?->value;
+                                            $device_name = $case->variables()->where('key', 'device_name')->first()
+                                                ?->value;
+
+                                            $repairman = $case->variables()->where('key', 'repairman')->first()?->value;
                                             $repairman = getUserInfo($repairman)?->name ?? '';
                                             $last_status =
                                                 $case->variables()->where('key', 'last_status')->first()?->value ?? '';
@@ -63,8 +67,8 @@
                                             <td>{{ $mobile }}</td>
                                             <td>{{ $device_name }}</td>
                                             <td>{{ $repairman }}</td>
+                                            <td>{{ $case->previousTask()->task->name ?? '' }}</td>
                                             @php
-                                                $w = $last_status;
                                                 $w = ' ';
                                                 foreach ($case->whereIs() as $inbox) {
                                                     $w .= $inbox->task->name ?? '';
@@ -73,8 +77,12 @@
                                                 }
                                             @endphp
                                             <td>{!! $w !!}</td>
+                                            <td>{{ $case->last_status }}</td>
                                             <td dir="ltr">{{ toJalali($case->created_at)->format('Y-m-d H:i') }}</td>
-                                            <td><a href="{{ route('simpleWorkflowReport.summary-report.edit', [ 'summary_report' => $case->id ]) }}"><button class="btn btn-primary btn-sm">{{ trans('fields.Show More') }}</button></a></td>
+                                            <td><a
+                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
+                                                        class="btn btn-primary btn-sm">{{ trans('fields.Show More') }}</button></a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -96,7 +104,20 @@
             ],
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
-            }
+            },
+            "dom": 'Bfrtip',
+            "buttons": [{
+                extend: 'excelHtml5',
+                text: 'خروجی اکسل',
+                titleAttr: 'خروجی اکسل',
+                exportOptions: {
+                    columns: ':visible'
+                },
+                className: 'btn btn-default',
+                attr: {
+                    style: 'direction: ltr'
+                }
+            }]
         });
     </script>
 @endsection
