@@ -1,6 +1,11 @@
 @php
     $attributes = json_decode($field->attributes);
 @endphp
+{!! Form::text('id', [
+    'value' => $attributes?->id ?? null,
+    'required' => false,
+    'dir' => 'ltr'
+]) !!}
 {!! Form::textarea('columns', [
     'value' => $attributes?->columns ?? null,
     'required' => false,
