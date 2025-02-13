@@ -13,8 +13,10 @@
             $required = $field->required;
             $readOnly = $mode ? $mode : $field->readOnly;
             $fieldDetails = getFieldDetailsByName($field->fieldName);
+            $isPrice = '';
             if ($fieldDetails) {
                 $fieldAttributes = json_decode($fieldDetails->attributes);
+                $isPrice = isset($fieldAttributes->isPrice) ? $fieldAttributes->isPrice : '';
                 $fieldValue = isset($variables) ? $variables->where('key', $field->fieldName)->first()?->value : null;
             } else {
                 if ($field->fieldName != $form->id) {
@@ -64,6 +66,7 @@
                         'placeholder' => $fieldAttributes?->placeholder,
                         'required' => $required,
                         'readonly' => $readOnly,
+                        'isPrice' => $isPrice,
                         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
                         'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
                         'datalist_from_database' => isset($fieldAttributes?->datalist_from_database)

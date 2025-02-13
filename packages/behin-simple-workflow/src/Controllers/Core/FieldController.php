@@ -66,6 +66,25 @@ class FieldController extends Controller
         if($request->id !== null){
             $attributes['id'] = $request->id;
         }
+        if ($request->isPrice == 1) {
+            $attributes['isPrice'] = '
+            function formatNumber(num) {
+                return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            $(document).ready(function () {
+                $("#' . $field->name . '").after("<p id=payment_amount_formatted></p>");
+            });
+            $("#' . $field->name . '").on("keyup", function(){
+                let inputVal = $(this).val();
+                
+                formattedVal = formatNumber(inputVal );
+                console.log(formattedVal );
+                $("#' . $field->name . '_formatted").html(formattedVal + " ریال")
+            })
+            ';
+        }else{
+            $attributes['isPrice'] = null;
+        }
         $field->update([
             'name' => $request->name,
             'type' => $request->type,

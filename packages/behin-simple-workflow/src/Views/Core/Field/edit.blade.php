@@ -16,6 +16,7 @@
     @endif
     @php
         $attributes = json_decode($field->attributes);
+        $isPrice = isset($attributes->isPrice) and $attributes->isPrice ? $attributes->isPrice : '';
     @endphp
     <form action="{{ route('simpleWorkflow.fields.update', $field->id) }}" method="POST"
         class="p-4 border rounded shadow-sm bg-light">
@@ -79,6 +80,16 @@
             <div class="mb-3">
                 <label for="style" class="form-label">Style</label>
                 <textarea name="style" id="style" class="form-control" rows="4" dir="ltr">{{ isset($attributes->style) && is_string($attributes?->style) ? $attributes?->style : '' }}</textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="script" class="form-label">Is price?</label>
+                <span></span>
+                <select name="isPrice" id="">
+                    <option></option>
+                    <option value="1" @if($isPrice) selected @endif>بله</option>
+                    <option value="0" @if(!$isPrice) selected @endif>خیر</option>
+                </select>
             </div>
 
             <div class="mb-3">
