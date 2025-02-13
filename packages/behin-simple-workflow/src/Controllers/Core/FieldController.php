@@ -72,7 +72,7 @@ class FieldController extends Controller
                 return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
             $(document).ready(function () {
-                $("#' . $field->name . '").after("<p id=payment_amount_formatted></p>");
+                $("#' . $field->name . '").after("<p id=' . $field->name . '_formatted></p>");
             });
             $("#' . $field->name . '").on("keyup", function(){
                 let inputVal = $(this).val();
