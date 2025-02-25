@@ -25,13 +25,17 @@ class SummaryReportController extends Controller
     public function show($process_id)
     {
         $process= ProcessController::getById($process_id);
+        $view = 'SimpleWorkflowReportView::Core.Summary.process.' . $process_id;
+        if(view()->exists($view)){
+            return view($view, compact('process'));
+        }
         return view('SimpleWorkflowReportView::Core.Summary.show', compact('process'));
     }
 
     public function edit($caseId) {
         $case = CaseController::getById($caseId);
         $process = $case->process;
-        $summaryForm = RoleReportFormController::getSummaryReportFormByRoleId(Auth::user()->role_id);
+        $summaryForm = RoleReportFormController::getSummaryReportFormByRoleId(Auth::user()->role_id, $process->id);
         if($summaryForm == null){
             return redirect()->back()->with('error', trans('Form not found'));  
         }
@@ -39,6 +43,6 @@ class SummaryReportController extends Controller
 
         $form = FormController::getById($formId);
 
-        return view('SimpleWorkflowReportView::Core.Report.edit', compact('case','form','process'));
+        return view('SimpleWorkflowReportView::Core.Summary.edit', compact('case','form','process'));
     }
 }
