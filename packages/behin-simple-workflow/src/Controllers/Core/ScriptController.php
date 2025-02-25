@@ -80,10 +80,6 @@ class ScriptController extends Controller
             $script = self::getById($id);
             $case = CaseController::getById($caseId);
             $executiveFile = "\\Behin\SimpleWorkflow\Controllers\Scripts\\$script->executive_file";
-            $fileContent = file_get_contents(__DIR__ .'/../Scripts/'.$script->executive_file .'.php');
-            if (preg_match('/(fopen|fclose|fread|fwrite|file_put_contents|file_get_contents|unlink|rename|copy|move_uploaded_file|scandir|readdir|opendir|closedir|mkdir|rmdir)/', $fileContent)) {
-                return throw new \Exception('This script cannot be executed because it contains unsafe functions.');
-            }
             $script = new $executiveFile($case);
             $output = $script->execute();
             if ($forTest) {
