@@ -24,8 +24,13 @@ class SummaryReportController extends Controller
 
     public function show($process_id)
     {
+        $role_id = Auth::user()->role_id;
         $process= ProcessController::getById($process_id);
+        $viewForRole = 'SimpleWorkflowReportView::Core.Summary.process.' . $process_id . '.' . $role_id;
         $view = 'SimpleWorkflowReportView::Core.Summary.process.' . $process_id;
+        if(view()->exists($viewForRole)){
+            return view($viewForRole, compact('process'));
+        }
         if(view()->exists($view)){
             return view($view, compact('process'));
         }
