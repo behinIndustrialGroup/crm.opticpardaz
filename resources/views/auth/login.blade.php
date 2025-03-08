@@ -38,13 +38,14 @@
                 <button type="submit" class="btn btn-primary col-sm-12" onclick="submit()">ورود</button>
             </div>
             <hr>
-            <div class="center-align" style="text-align: center">
+            {{-- <div class="center-align" style="text-align: center">
                 <a href="{{ route('register') }}" class="text-center">صفحه ثبت نام</a>
             </div>
             <hr>
             <div class="center-align" style="text-align: center">
                 <a href="{{ route('password.request') }}" class="text-center">فراموشی رمز</a>
-            </div>
+            </div> --}}
+            <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=302365&Code=s9dldT7eT2c2RN6M3POs'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=302365&Code=s9dldT7eT2c2RN6M3POs' alt='' style='cursor:pointer' code='s9dldT7eT2c2RN6M3POs'></a>
         </div>
 
     </div>
