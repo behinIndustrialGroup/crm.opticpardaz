@@ -137,6 +137,9 @@ class InboxController extends Controller
             if (!isset($form->content)) {
                 return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('Form not found'));
             }
+            // if(!TaskActorController::userIsAssignToTask($task->id, Auth::id())){
+            //     return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('You are not assigned to this task'));
+            // }
             return view('SimpleWorkflowView::Core.Inbox.show')->with([
                 'inbox' => $inbox,
                 'case' => $case,
@@ -151,10 +154,11 @@ class InboxController extends Controller
     public function delete(Request $request, $id)
     {
         $inbox = self::getById($id);
-        if($inbox->status == 'draft'){
+        // if($inbox->status == 'draft'){
             $inbox->delete();
             return redirect()->route('simpleWorkflow.inbox.index')->with('success', trans('fields.Inbox deleted successfully'));
-        }
+        // }
+        
     }
 
     public static function createCaseName(Task $task, $caseId)
