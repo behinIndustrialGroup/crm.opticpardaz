@@ -21,3 +21,5 @@
     'required' => false,
     'dir' => 'ltr'
 ]) !!}
+dir' => 'ltr'
+]) !!}
