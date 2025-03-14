@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/dist/css/dropzone.min.css')  . '?' . config('app.version') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     {{-- <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" /> --}}
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    {{-- <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.css') }}">
     @yield('style')
@@ -90,9 +90,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
         <script src="{{ url('public/behin/behin-dist/plugins/select2/select2.full.min.js')}}"></script>
-        <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+        {{-- <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
-        <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+        <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script> --}}
 
 
 
