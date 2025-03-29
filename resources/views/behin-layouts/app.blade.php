@@ -140,33 +140,33 @@
             .catch(console.error);
     </script>
     <script>
-        document.getElementById('notification-btn').addEventListener('click', () => {
-            checkNotificationPermission();
-        });
+        // document.getElementById('notification-btn').addEventListener('click', () => {
+        //     checkNotificationPermission();
+        // });
 
-        function checkNotificationPermission() {
-            if (!('Notification' in window)) {
-                alert('این مرورگر از نوتیفیکیشن پشتیبانی نمی‌کند.');
-                return;
-            }
+        // function checkNotificationPermission() {
+        //     if (!('Notification' in window)) {
+        //         alert('این مرورگر از نوتیفیکیشن پشتیبانی نمی‌کند.');
+        //         return;
+        //     }
 
-            if (Notification.permission === 'granted') {
-                new Notification('نوتیفیکیشن فعال است', {
-                    body: 'شما قبلاً مجوز داده‌اید!',
-                    icon: '{{ url('public/behin/logo.ico') }}'
-                });
-            } else if (Notification.permission === 'denied') {
-                alert('شما مجوز نوتیفیکیشن را رد کرده‌اید. لطفاً از تنظیمات مرورگر آن را فعال کنید.');
-            } else {
-                Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                        new Notification('متشکریم!', {
-                            body: 'شما نوتیفیکیشن را فعال کردید.'
-                        });
-                    }
-                });
-            }
-        }
+        //     if (Notification.permission === 'granted') {
+        //         new Notification('نوتیفیکیشن فعال است', {
+        //             body: 'شما قبلاً مجوز داده‌اید!',
+        //             icon: '{{ url('public/behin/logo.ico') }}'
+        //         });
+        //     } else if (Notification.permission === 'denied') {
+        //         alert('شما مجوز نوتیفیکیشن را رد کرده‌اید. لطفاً از تنظیمات مرورگر آن را فعال کنید.');
+        //     } else {
+        //         Notification.requestPermission().then(permission => {
+        //             if (permission === 'granted') {
+        //                 new Notification('متشکریم!', {
+        //                     body: 'شما نوتیفیکیشن را فعال کردید.'
+        //                 });
+        //             }
+        //         });
+        //     }
+        // }
     </script>
     <script>
         function logout() {
