@@ -151,21 +151,6 @@
             }
 
             if (Notification.permission === 'granted') {
-                beamsClient
-                    .publishToUsers(["{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}"], {
-                        web: {
-                            notification: {
-                                title: "نوتیفیکیشن فعال است",
-                                body: "شما قبلاً مجوز داده-اید!",
-                            },
-                        },
-                    })
-                    .then((publishResponse) => {
-                        console.log("Just published:", publishResponse.publishId);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
                 new Notification('نوتیفیکیشن فعال است', {
                     body: 'شما قبلاً مجوز داده‌اید!',
                     icon: '{{ url('public/behin/logo.ico') }}'
