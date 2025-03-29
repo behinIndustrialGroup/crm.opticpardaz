@@ -20,14 +20,16 @@ class SendPushNotification implements ShouldQueue
     protected $pushUserId;
     protected $title;
     protected $message;
+    protected $link;
     protected $icon;
 
-    public function __construct($userId, $title = "کارجدید", $message = "کار جدید بهتون ارجاع داده شد")
+    public function __construct($userId, $title = "کارجدید", $message = null, $link = null)
     {
         $this->userId = $userId;
         $this->pushUserId = config('broadcasting.pusher.prefix_user') . $userId;
         $this->title = $title;
-        $this->message = $message;
+        $this->message = $message ?? "کار جدید بهتون ارجاع داده شد";
+        $this->link = $link;
         $this->icon = url('public/behin/logo.ico');
     }
 
@@ -43,7 +45,8 @@ class SendPushNotification implements ShouldQueue
                     "notification" => [
                         "title" => $title,
                         "body" => $this->message,
-                        "icon" => $this->icon
+                        "icon" => $this->icon,
+                        "deep_link" => $this->link
                     ]
                 ]
             ]
