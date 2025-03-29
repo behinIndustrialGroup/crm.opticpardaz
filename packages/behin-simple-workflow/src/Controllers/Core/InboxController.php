@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Events\NewInboxEvent;
 use App\Models\User;
+use Behin\SimpleWorkflow\Jobs\SendPushNotification;
 
 class InboxController extends Controller
 {
@@ -136,19 +137,11 @@ class InboxController extends Controller
         $process = ProcessController::getById($task->process_id);
         $form = FormController::getById($task->executive_element_id);
         $variables = VariableController::getVariablesByCaseId($case->id, $process->id);
-        $beamsClient = new PushNotifications();
-
-        $publishResponse = $beamsClient->publishToUsers(
-            array(config('broadcasting.pusher.prefix_user') . $inbox->actor),
-            array(
-                "web" => array(
-                    "notification" => array(
-                        "title" => "کارجدید",
-                        "body" => "کار جدید بهتون ارجاع داده شد: " . $inbox->case_name,
-                        "icon" => url('public/behin/logo.ico')
-                    )
-                )
-            )
+        SendPushNotification::dispatch(
+            $inbox->actor,
+            'کار جدید',
+            'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
+            url('public/behin/logo.ico')
         );
 
         if ($task->type == 'form') {

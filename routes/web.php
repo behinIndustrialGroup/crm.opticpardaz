@@ -2,6 +2,7 @@
 
 use Behin\SimpleWorkflow\Controllers\Core\PushNotifications;
 use BehinInit\App\Http\Middleware\Access;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -33,9 +34,16 @@ Route::get('/pusher/beams-auth', function (Request $request) {
     return response()->json($beamsToken);
 })->middleware('auth');
 
+Route::get('queue-work', function(){
+    Artisan::call('queue:work --stop-when-empty');
+});
+
+
+
 Route::get('build-app', function(){
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
+    Artisan::call('view:clear');
     Artisan::call('view:clear');
     Artisan::call('migrate');
     return redirect()->back();
