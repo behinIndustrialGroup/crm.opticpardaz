@@ -55,6 +55,7 @@
 @section('script')
     <script>
         @if (auth()->id())
+            show_message("شما قبلا وارد شده اید")
             show_message("به صفحه داشبورد منتقل میشوید")
             window.location = "{{ url('admin') }}"
         @endif
