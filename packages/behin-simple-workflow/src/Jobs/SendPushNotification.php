@@ -35,7 +35,7 @@ class SendPushNotification implements ShouldQueue
     {
         $beamsClient = new PushNotifications();
         $user = User::find($this->userId);
-        $title = $user->name . 'عزیز' ?? $this->title;
+        $title = $user->name . ' عزیز' ?? $this->title;
         $beamsClient->publishToUsers(
             [$this->pushUserId],
             [
