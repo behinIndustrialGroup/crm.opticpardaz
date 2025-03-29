@@ -129,15 +129,15 @@
             url: "{{ url('/pusher/beams-auth') }}"
         });
 
-        // beamsClient.stop().catch(console.error);
-        // beamsClient
-        //     .start()
-        //     .then(() => {
-        //         // beamsClient.stop().catch(console.error);
-        //         beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
-        //             beamsTokenProvider)
-        //     })
-        //     .catch(console.error);
+        beamsClient.stop().catch(console.error);
+        beamsClient
+            .start()
+            .then(() => {
+                // beamsClient.stop().catch(console.error);
+                beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
+                    beamsTokenProvider)
+            })
+            .catch(console.error);
     </script>
     <script>
         document.getElementById('notification-btn').addEventListener('click', () => {
