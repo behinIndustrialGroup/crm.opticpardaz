@@ -125,19 +125,32 @@
         const beamsClient = new PusherPushNotifications.Client({
             instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
         });
-        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
-            url: "{{ url('/pusher/beams-auth') }}"
-        });
+        
 
-        beamsClient.stop().catch(console.error);
-        beamsClient
-            .start()
-            .then(() => {
-                // beamsClient.stop().catch(console.error);
-                beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
-                    beamsTokenProvider)
+        // beamsClient.stop().catch(console.error);
+        beamsClient.getUserId()
+            .then(userId => {
+                if (!userId) {
+                    beamsClient.start().then(() => {
+                        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
+                            url: "{{ url('/pusher/beams-auth') }}"
+                        });
+                        beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
+                            beamsTokenProvider)
+                    })
+                }else{
+                    console.log('User ID:', userId);
+                }
             })
             .catch(console.error);
+        // beamsClient
+        //     .start()
+        //     .then(() => {
+        //         // beamsClient.stop().catch(console.error);
+        //         beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
+        //             beamsTokenProvider)
+        //     })
+        //     .catch(console.error);
     </script>
     <script>
         // document.getElementById('notification-btn').addEventListener('click', () => {
