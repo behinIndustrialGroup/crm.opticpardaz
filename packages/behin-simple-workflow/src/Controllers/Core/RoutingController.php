@@ -225,7 +225,7 @@ class RoutingController extends Controller
                             $inbox->actor,
                             'کار جدید',
                             'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
-                            url('public/behin/logo.ico')
+                            route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
                     // echo json_encode($taskActors);
@@ -238,7 +238,7 @@ class RoutingController extends Controller
                             $inbox->actor,
                             'کار جدید',
                             'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
-                            url('public/behin/logo.ico')
+                            route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
                 }
