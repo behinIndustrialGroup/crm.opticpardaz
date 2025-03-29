@@ -3,6 +3,7 @@
 
 namespace Behin\SimpleWorkflow\Jobs;
 
+use App\Models\User;
 use Behin\SimpleWorkflow\Controllers\Core\PushNotifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,13 +17,15 @@ class SendPushNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $userId;
+    protected $pushUserId;
     protected $title;
     protected $message;
     protected $icon;
 
     public function __construct($userId, $title = "کارجدید", $message = "کار جدید بهتون ارجاع داده شد")
     {
-        $this->userId = config('broadcasting.pusher.prefix_user') . $userId;
+        $this->userId = $userId;
+        $this->pushUserId = config('broadcasting.pusher.prefix_user') . $userId;
         $this->title = $title;
         $this->message = $message;
         $this->icon = url('public/behin/logo.ico');
@@ -30,15 +33,15 @@ class SendPushNotification implements ShouldQueue
 
     public function handle()
     {
-        Log::info("send push notification");
         $beamsClient = new PushNotifications();
-
+        $user = User::find($this->userId);
+        $title = $user->name . 'عزیز' ?? $this->title;
         $beamsClient->publishToUsers(
-            [$this->userId],
+            [$this->pushUserId],
             [
                 "web" => [
                     "notification" => [
-                        "title" => $this->title,
+                        "title" => $title,
                         "body" => $this->message,
                         "icon" => $this->icon
                     ]
