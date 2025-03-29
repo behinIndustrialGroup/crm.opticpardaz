@@ -35,6 +35,7 @@
 		<script src="{{ url('public/behin/behin-js/ajax.js')  . '?' . config('app.version') }}"></script>
 		<script src="{{ url('public/behin/behin-js/dataTable.js')  . '?' . config('app.version') }}"></script>
 		<script src="{{ url('public/behin/behin-js/dropzone.js')  . '?' . config('app.version') }}"></script>
+		<script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
 		
 	</head>
 <body>
@@ -57,7 +58,16 @@
 	{{-- <script src="{{ url('public/behin/behin-dist/plugins/persian-datepicker/persian-date.js')  . '?' . config('app.version') }}"></script>
 	<script src="{{ url('public/behin/behin-dist/plugins/persian-datepicker/persian-datepicker.js')  . '?' . config('app.version') }}"></script>
 	<script src="{{ url('public/behin/behin-dist/dist/js/num2persian/num2persian.js') }}" type="text/javascript"></script> --}}
-
+	<script>
+		const beamsClient = new PusherPushNotifications.Client({
+		  instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
+		});
+	  
+		beamsClient.start()
+		  .then(() => beamsClient.addDeviceInterest('hello'))
+		  .then(() => console.log('Successfully registered and subscribed!'))
+		  .catch(console.error);
+	</script>
 	<script>
 		$('.select2').select2();
 		function initial_view(){
