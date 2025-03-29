@@ -18,7 +18,7 @@ class ToDoCaseController extends Controller
             "/api/1.0/workflow/home/todo?limit=100"
         );
         $unassigns = UnassignedCaseController::getMyCase();
-        if($unassigns->data){
+        if($unassigns and isset($unassigns->data)){
             foreach($unassigns->data as $unassign){
                 $inbox->data[] = $unassign;
             }
