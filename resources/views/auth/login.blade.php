@@ -54,6 +54,10 @@
 
 @section('script')
     <script>
+        @if (auth()->id())
+            show_message("به صفحه داشبورد منتقل میشوید")
+            window.location = "{{ url('admin') }}"
+        @endif
         function submit() {
             send_ajax_request(
                 "{{ route('login') }}",
