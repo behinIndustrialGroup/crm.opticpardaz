@@ -1,5 +1,6 @@
 <?php
 
+use Behin\SimpleWorkflow\Controllers\Core\PushNotifications;
 use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -21,6 +22,16 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', Access::class
         return view('admin.dashboard');
     })->name('dashboard');
 });
+
+Route::get('/pusher/beams-auth', function (Request $request) {
+    $beamsClient = new PushNotifications([
+        'instanceId' => config('broadcasting.pusher.instanceId'),
+        'secretKey' => config('broadcasting.pusher.secretKey')
+    ]);
+    $userId = auth()->user()->id;
+    $beamsToken = $beamsClient->generateToken(config('broadcasting.pusher.prefix_user').$userId);
+    return response()->json($beamsToken);
+})->middleware('auth');
 
 Route::get('build-app', function(){
     Artisan::call('cache:clear');

@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Events\NewInboxEvent;
+use App\Models\User;
+
 class InboxController extends Controller
 {
     public static function getById($id): Inbox
@@ -24,7 +27,7 @@ class InboxController extends Controller
     public static function create($taskId, $caseId, $actor, $status = 'new', $caseName = null)
     {
         $task = TaskController::getById($taskId);
-        if($caseName == null)
+        if ($caseName == null)
             $createCaseName = self::createCaseName($task, $caseId);
         else
             $createCaseName = $caseName;
@@ -37,6 +40,7 @@ class InboxController extends Controller
             // 'case_name' => $createCaseName
         ]);
         self::editCaseName($inbox->id, $createCaseName);
+        $inbox->refresh();
         return $inbox;
     }
 
@@ -60,10 +64,9 @@ class InboxController extends Controller
     public static function changeStatusByInboxId($inboxId, $status)
     {
         $inboxRow = self::getById($inboxId);
-        if($inboxRow->status == 'done' and $inboxRow->actor != Auth::id()){
+        if ($inboxRow->status == 'done' and $inboxRow->actor != Auth::id()) {
             $inboxRow->status = 'doneByOther';
-        }
-        else{
+        } else {
             $inboxRow->status = $status;
         }
         $inboxRow->save();
@@ -133,6 +136,21 @@ class InboxController extends Controller
         $process = ProcessController::getById($task->process_id);
         $form = FormController::getById($task->executive_element_id);
         $variables = VariableController::getVariablesByCaseId($case->id, $process->id);
+        $beamsClient = new PushNotifications();
+
+        $publishResponse = $beamsClient->publishToUsers(
+            array(config('broadcasting.pusher.prefix_user') . $inbox->actor),
+            array(
+                "web" => array(
+                    "notification" => array(
+                        "title" => "کارجدید",
+                        "body" => "کار جدید بهتون ارجاع داده شد: " . $inbox->case_name,
+                        "icon" => url('public/behin/logo.ico')
+                    )
+                )
+            )
+        );
+
         if ($task->type == 'form') {
             if (!isset($form->content)) {
                 return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('Form not found'));
@@ -155,10 +173,10 @@ class InboxController extends Controller
     {
         $inbox = self::getById($id);
         // if($inbox->status == 'draft'){
-            $inbox->delete();
-            return redirect()->route('simpleWorkflow.inbox.index')->with('success', trans('fields.Inbox deleted successfully'));
+        $inbox->delete();
+        return redirect()->route('simpleWorkflow.inbox.index')->with('success', trans('fields.Inbox deleted successfully'));
         // }
-        
+
     }
 
     public static function createCaseName(Task $task, $caseId)
@@ -172,12 +190,15 @@ class InboxController extends Controller
 
         // جایگزینی متغیرها در عنوان
         $patterns = config('workflow.patterns');
+        // Log::info(json_encode($patterns));
 
 
         $replacements = [];
         foreach ($patterns as $key) {
-            $replacements[] = $variables[$key] ?? '';
+            // $title = str_replace('@' . $key, $variables[$key] ?? 'پیدا نشد', $title);
+            $replacements[] = $variables[$key] ?? 'پیدا نشد';
         }
+        // return $replacements;
 
         $p = [];
         foreach ($patterns as $key) {

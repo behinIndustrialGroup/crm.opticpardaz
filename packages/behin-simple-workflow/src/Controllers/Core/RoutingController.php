@@ -219,14 +219,40 @@ class RoutingController extends Controller
                 if ($task->assignment_type == 'normal' or $task->assignment_type == null) {
                     $taskActors = TaskActorController::getActorsByTaskId($task->id)->pluck('actor');
                     foreach ($taskActors as $actor) {
-                        InboxController::create($task->id, $caseId, $actor, 'new');
+                        $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
+                        $beamsClient = new PushNotifications();
+
+                        $publishResponse = $beamsClient->publishToUsers(
+                            array(config('broadcasting.pusher.prefix_user').$actor),
+                            array(
+                              "web" => array(
+                                "notification" => array(
+                                  "title" => "کارجدید",
+                                  "body" => "کار جدید بهتون ارجاع داده شد: " . $inbox->case_name,
+                                  "icon" => url('public/behin/logo.ico')
+                                )
+                              )
+                          ));
                     }
                     // echo json_encode($taskActors);
                 }
                 if ($task->assignment_type == 'dynamic') {
                     $taskActors = TaskActorController::getDynamicTaskActors($task->id, $caseId)->pluck('actor');
                     foreach ($taskActors as $actor) {
-                        InboxController::create($task->id, $caseId, $actor, 'new');
+                        $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
+                        $beamsClient = new PushNotifications();
+
+                        $publishResponse = $beamsClient->publishToUsers(
+                            array(config('broadcasting.pusher.prefix_user').$actor),
+                            array(
+                              "web" => array(
+                                "notification" => array(
+                                  "title" => "کارجدید",
+                                  "body" => "کار جدید بهتون ارجاع داده شد: " . $inbox->case_name,
+                                  "icon" => url('public/behin/logo.ico')
+                                )
+                              )
+                          ));
                     }
                 }
                 if ($task->assignment_type == 'parallel') {
