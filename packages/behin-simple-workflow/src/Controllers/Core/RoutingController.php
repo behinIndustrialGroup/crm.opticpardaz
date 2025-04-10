@@ -233,7 +233,7 @@ class RoutingController extends Controller
                         SendPushNotification::dispatch(
                             $inbox->actor,
                             'کار جدید',
-                            'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
+                            $task->name . ' - ' . $inbox->case_name,
                             route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
@@ -246,7 +246,7 @@ class RoutingController extends Controller
                         SendPushNotification::dispatch(
                             $inbox->actor,
                             'کار جدید',
-                            'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
+                            $task->name . ' - ' . $inbox->case_name,
                             route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
