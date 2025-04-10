@@ -101,6 +101,8 @@ class ScriptController extends Controller
         } catch (\Exception $e) {
             if($e->getMessage()) {
                 $result = $e->getMessage() . ' ' . $e->getLine() . ' ' . $e->getFile();
+            }else{
+                $result = '';
             }
         }
         return $result;
