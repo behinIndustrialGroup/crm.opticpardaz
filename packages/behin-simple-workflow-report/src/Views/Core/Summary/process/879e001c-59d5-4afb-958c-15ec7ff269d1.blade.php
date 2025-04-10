@@ -34,6 +34,7 @@
                                         <th>نام</th>
                                         <th>موبایل</th>
                                         <th>دستگاه</th>
+                                        <th>سریال</th>
                                         <th>کارشناس</th>
                                         <th>مرحله قبلی</th>
                                         <th>مرحله جاری</th>
@@ -52,7 +53,8 @@
                                                 ?->value;
                                             $device_name = $case->variables()->where('key', 'device_name')->first()
                                                 ?->value;
-
+                                            $device_serial_no = $case->variables()->where('key', 'device_serial_no')->first()
+                                                ?->value;
                                             $repairman = $case->variables()->where('key', 'repairman')->first()?->value;
                                             $repairman = getUserInfo($repairman)?->name ?? '';
                                             $last_status =
@@ -67,6 +69,7 @@
                                             <td>{{ $name }}</td>
                                             <td>{{ $mobile }}</td>
                                             <td>{{ $device_name }}</td>
+                                            <td>{{ $device_serial_no }}</td>
                                             <td>{{ $repairman }}</td>
                                             <td>{{ $case->previousTask()->task->name ?? '' }}</td>
                                             @php

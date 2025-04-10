@@ -34,13 +34,12 @@
                                         <th>نام</th>
                                         <th>موبایل</th>
                                         <th>دستگاه</th>
+                                        <th>سریال</th>
                                         <th>کارشناس</th>
                                         <th>مرحله قبلی</th>
                                         <th>مرحله جاری</th>
                                         <th>آخرین وضعیت</th>
                                         <th>تاریخ پذیرش</th>
-                                        <th>هزینه تعمیرات</th>
-                                        <th>هزینه دریافت شده</th>
                                         <th>ایجاد شده در</th>
                                         <th>اقدام</th>
                                     </tr>
@@ -54,7 +53,8 @@
                                                 ?->value;
                                             $device_name = $case->variables()->where('key', 'device_name')->first()
                                                 ?->value;
-
+                                            $device_serial_no = $case->variables()->where('key', 'device_serial_no')->first()
+                                                ?->value;
                                             $repairman = $case->variables()->where('key', 'repairman')->first()?->value;
                                             $repairman = getUserInfo($repairman)?->name ?? '';
                                             $last_status =
@@ -69,6 +69,7 @@
                                             <td>{{ $name }}</td>
                                             <td>{{ $mobile }}</td>
                                             <td>{{ $device_name }}</td>
+                                            <td>{{ $device_serial_no }}</td>
                                             <td>{{ $repairman }}</td>
                                             <td>{{ $case->previousTask()->task->name ?? '' }}</td>
                                             @php
@@ -80,10 +81,8 @@
                                                 }
                                             @endphp
                                             <td>{!! $w !!}</td>
-                                            <td>{{ $case->getVariable('last_status') }}</td>
+                                            <td>{{ $case->last_status }}</td>
                                             <td>{{ $case->getVariable('receive_date') ?? '' }}</td>
-                                            <td>{{ $case->getVariable('repair_cost') ?? '' }}</td>
-                                            <td>{{ $case->getVariable('payment_amount') ?? '' }}</td>
                                             <td dir="ltr">{{ toJalali($case->created_at)->format('Y-m-d H:i') }}</td>
                                             <td><a
                                                     href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
