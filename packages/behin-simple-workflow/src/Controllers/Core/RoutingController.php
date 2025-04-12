@@ -173,8 +173,8 @@ class RoutingController extends Controller
                 ]);
             }
             $form = $task->executiveElement();
-            $requiredFields = FormController::requiredFields($form->id);
-            $result = self::save($request, $requiredFields);
+            // $requiredFields = FormController::requiredFields($form->id);
+            $result = self::save($request);
             if ($result['status'] != 200) {
                 return $result;
             }
