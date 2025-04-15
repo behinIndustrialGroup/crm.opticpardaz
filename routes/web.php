@@ -1,10 +1,12 @@
 <?php
 
 use Behin\SimpleWorkflow\Controllers\Core\PushNotifications;
+use Behin\SimpleWorkflow\Jobs\SendPushNotification;
 use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Mkhodroo\AgencyInfo\Controllers\GetAgencyController;
@@ -24,6 +26,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', Access::class
         return view('admin.dashboard');
     })->name('dashboard');
 });
+
+Route::get('send-notification', function () {
+    SendPushNotification::dispatch(Auth::user()->id, 'test', 'test', route('admin.dashboard'));
+    return 'تا دقایقی دیگر باید نوتیفیکیشن دریافت کنید';
+})->name('send-notification');
 
 Route::get('/pusher/beams-auth', function (Request $request) {
     $beamsClient = new PushNotifications([
