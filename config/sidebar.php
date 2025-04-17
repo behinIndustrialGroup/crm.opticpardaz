@@ -5,9 +5,9 @@ return [
 
         'dashboard' => [
             'icon' => 'fa fa-dashboard',
-            'fa_name' => 'داشبرد من',
+            'fa_name' => 'داشبرد',
             'submenu' => [
-                'dashboard' => [ 'fa_name' => 'داشبرد', 'route-name' => '', 'route-url' => 'admin' ],
+                'dashboard' => [ 'fa_name' => 'داشبرد من', 'route-name' => '', 'route-url' => 'admin' ],
             ]
         ],
         'workflow-inbox' => [
