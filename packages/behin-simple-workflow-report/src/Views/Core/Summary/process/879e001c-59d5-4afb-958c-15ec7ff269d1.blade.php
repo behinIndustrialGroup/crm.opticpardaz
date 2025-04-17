@@ -38,7 +38,6 @@
                                         <th>کارشناس</th>
                                         <th>مرحله جاری</th>
                                         <th>تاریخ پذیرش</th>
-                                        <th>اقدام</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +59,11 @@
                                         <tr>
                                             {{-- <td>{{ $loop->iteration }}</td> --}}
                                             <td class="d-none">{{ $case->id }}</td>
-                                            <td>{{ $case->number }}</td>
+                                            <td>{{ $case->number }}
+                                                <a
+                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-external-link"></i></button></a>
+                                            </td>
                                             <td>{{ $case->creator()?->name }}</td>
 
                                             <td>{{ $name }}</td>
@@ -78,10 +81,6 @@
                                             @endphp
                                             <td>{!! $w !!}</td>
                                             <td>{{ $case->getVariable('receive_date') ?? '' }}</td>
-                                            <td><a
-                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
-                                                        class="btn btn-primary btn-sm">{{ trans('fields.Show More') }}</button></a>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
