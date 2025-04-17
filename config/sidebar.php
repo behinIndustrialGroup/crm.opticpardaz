@@ -5,7 +5,7 @@ return [
 
         'dashboard' => [
             'icon' => 'fa fa-dashboard',
-            'fa_name' => 'داشبرد',
+            'fa_name' => 'داشبرد من',
             'submenu' => [
                 'dashboard' => [ 'fa_name' => 'داشبرد', 'route-name' => '', 'route-url' => 'admin' ],
             ]
@@ -15,7 +15,7 @@ return [
             'fa_name' => 'کارتابل',
             'submenu' => [
                 'new-process' => [ 'fa_name' => 'فرایند جدید', 'route-name' => 'simpleWorkflow.process.startListView' ],
-                'inbox' => [ 'fa_name' => 'کارتابل', 'route-name' => 'simpleWorkflow.inbox.index' ],
+                'inbox' => [ 'fa_name' => 'کارتابل من', 'route-name' => 'simpleWorkflow.inbox.index' ],
                 'done-inbox' => [ 'fa_name' => 'انجام شده ها', 'route-name' => 'simpleWorkflow.inbox.done' ],
             ]
         ],
