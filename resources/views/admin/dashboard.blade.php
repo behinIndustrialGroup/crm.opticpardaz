@@ -46,7 +46,9 @@
                         <div class="inner">
                             <h3 class="col-sm-12">{{ trans('مجموع دریافتی ها') }}</h3>
 
-                            <p id="total-receivables" class="total-receivables"></p>
+                            <p id="total-receivables" class="total-receivables">
+                                <button class="btn btn-sm btn-danger" onclick="showtotalPayment()">نمایش</button>
+                            </p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
@@ -54,7 +56,8 @@
                         <a href="#"
                         class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
                         <script>
-                            send_ajax_get_request(
+                            function showtotalPayment(){
+                                send_ajax_get_request(
                                 "{{ route('simpleWorkflowReport.totalPayment') }}",
                                 function(response) {
 
@@ -63,6 +66,8 @@
 
                                 }
                             )
+                            }
+                            
                         </script>
                     </div>
 
