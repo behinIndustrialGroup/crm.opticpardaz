@@ -23,45 +23,45 @@
                         <th>{{ trans('fields.Case Title') }}</th>
                         <th>{{ trans('fields.Status') }}</th>
                         <th>{{ trans('fields.Received At') }}</th>
-                        <th>{{ trans('fields.Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($rows as $index => $row)
-                    <tr ondblclick="window.location.href = '{{ route('simpleWorkflow.inbox.view', $row->id) }}'">
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $row->task->process->name }}</td>
-                        <td>{{ $row->task->name }}</td>
-                        <td>{{ $row->case->number }}</td>
-                        <td>{{ $row->case_name }}</td>
-                        <td>
-                            @if ($row->status == 'new')
-                                <span class="badge bg-primary">{{ trans('fields.New') }}</span>
-                            @elseif($row->status == 'in_progress')
-                                <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
-                            @elseif($row->status == 'draft')
-                                <span class="badge bg-info">{{ trans('fields.Draft') }}</span>
-                            @else
-                                <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
-                            @endif
-                        </td>
-                        <td dir="ltr">{{ toJalali($row->created_at)->format('Y-m-d') }}&nbsp;&nbsp;{{ toJalali($row->created_at)->format('H:i') }}</td>
-                        <td>
-                            <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
-                                class="btn btn-sm btn-primary">{{ trans('fields.View') }}<i
-                                    class="fa fa-external-link"></i></a>
-                            @if ($row->status == 'draft')
-                                <a href="{{ route('simpleWorkflow.inbox.delete', $row->id) }}"
-                                    class="btn btn-sm btn-danger">{{ trans('fields.Delete') }}
-                                <i class="fa fa-trash"></i></a>
-                            @endif
-                        </td>
-                    </tr>
+                        <tr ondblclick="window.location.href = '{{ route('simpleWorkflow.inbox.view', $row->id) }}'">
+                            <td>
+                                {{ $index + 1 }}
+                                <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-external-link"></i></a>
+                                @if ($row->status == 'draft')
+                                    <a href="{{ route('simpleWorkflow.inbox.delete', $row->id) }}"
+                                        class="btn btn-sm btn-danger">{{ trans('fields.Delete') }}
+                                        <i class="fa fa-trash"></i></a>
+                                @endif
+                            </td>
+                            <td>{{ $row->task->process->name }}</td>
+                            <td>{{ $row->task->name }}</td>
+                            <td>{{ $row->case->number }}</td>
+                            <td>{{ $row->case_name }}</td>
+                            <td>
+                                @if ($row->status == 'new')
+                                    <span class="badge bg-primary">{{ trans('fields.New') }}</span>
+                                @elseif($row->status == 'in_progress')
+                                    <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
+                                @elseif($row->status == 'draft')
+                                    <span class="badge bg-info">{{ trans('fields.Draft') }}</span>
+                                @else
+                                    <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
+                                @endif
+                            </td>
+                            <td dir="ltr">
+                                {{ toJalali($row->created_at)->format('Y-m-d') }}&nbsp;&nbsp;{{ toJalali($row->created_at)->format('H:i') }}
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
         @endif
-        
+
     </div>
     <div class="container table-responsive card">
         <div class="alert alert-warning">کارتابل قدیم</div>
