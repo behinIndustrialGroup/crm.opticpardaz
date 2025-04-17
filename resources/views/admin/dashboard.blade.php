@@ -2,13 +2,49 @@
 
 
 @section('content')
+<style>
+    .small-box {
+        min-height: 150px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: right;
+        overflow: hidden;
+    }
+
+    .small-box .inner h3 {
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .small-box .inner p {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .small-box-footer {
+        font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .small-box .inner h3,
+        .small-box .inner p {
+            font-size: 14px;
+        }
+    }
+</style>
     <div class="row">
         @if (auth()->user()->access("مجموع دریافتی ها"))
-                <div class="col-sm-3 ">
+                <div class="col-sm-3">
                     <!-- small box -->
                     <div class="small-box bg-light">
                         <div class="inner">
-                            <h3>{{ trans('مجموع دریافتی ها') }}</h3>
+                            <h3 class="col-sm-12">{{ trans('مجموع دریافتی ها') }}</h3>
 
                             <p id="total-receivables" class="total-receivables"></p>
                         </div>
