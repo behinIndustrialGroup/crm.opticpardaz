@@ -31,11 +31,10 @@
                                         <th class="d-none">شناسه</th>
                                         <th>شماره پرونده</th>
                                         <th>ایجاد کننده</th>
-                                        <th>نام</th>
+                                        <th>{{ trans('fields.customer_fullname') }}</th>
                                         <th>موبایل</th>
                                         <th>دستگاه</th>
                                         <th>کارشناس</th>
-                                        <th>مرحله قبلی</th>
                                         <th>مرحله جاری</th>
                                         <th>آخرین وضعیت</th>
                                         <th>ایجاد شده در</th>
@@ -67,7 +66,6 @@
                                             <td>{{ $mobile }}</td>
                                             <td>{{ $device_name }}</td>
                                             <td>{{ $repairman }}</td>
-                                            <td>{{ $case->previousTask()->task->name ?? '' }}</td>
                                             @php
                                                 $w = ' ';
                                                 foreach ($case->whereIs() as $inbox) {
