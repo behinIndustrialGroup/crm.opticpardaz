@@ -31,16 +31,13 @@
                                         <th class="d-none">شناسه</th>
                                         <th>شماره پرونده</th>
                                         <th>ایجاد کننده</th>
-                                        <th>نام</th>
+                                        <th>{{ trans('fields.customer_fullname') }}</th>
                                         <th>موبایل</th>
                                         <th>دستگاه</th>
                                         <th>سریال</th>
                                         <th>کارشناس</th>
-                                        <th>مرحله قبلی</th>
                                         <th>مرحله جاری</th>
-                                        <th>آخرین وضعیت</th>
                                         <th>تاریخ پذیرش</th>
-                                        <th>ایجاد شده در</th>
                                         <th>اقدام</th>
                                     </tr>
                                 </thead>
@@ -71,7 +68,6 @@
                                             <td>{{ $device_name }}</td>
                                             <td>{{ $device_serial_no }}</td>
                                             <td>{{ $repairman }}</td>
-                                            <td>{{ $case->previousTask()->task->name ?? '' }}</td>
                                             @php
                                                 $w = ' ';
                                                 foreach ($case->whereIs() as $inbox) {
@@ -81,9 +77,7 @@
                                                 }
                                             @endphp
                                             <td>{!! $w !!}</td>
-                                            <td>{{ $case->last_status }}</td>
                                             <td>{{ $case->getVariable('receive_date') ?? '' }}</td>
-                                            <td dir="ltr">{{ toJalali($case->created_at)->format('Y-m-d H:i') }}</td>
                                             <td><a
                                                     href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
                                                         class="btn btn-primary btn-sm">{{ trans('fields.Show More') }}</button></a>
