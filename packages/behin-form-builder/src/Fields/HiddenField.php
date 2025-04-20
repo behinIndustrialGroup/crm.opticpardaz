@@ -9,7 +9,7 @@ class HiddenField extends AbstractField
     public function render(): string
     {
         $s = '<div class="form-group">';
-        $s .= '<input type="text" name="' . $this->name . '" ';
+        $s .= '<input type="hidden" name="' . $this->name . '" ';
         if(isset($this->attributes['value'])){
             $s .= 'value="' . $this->attributes['value'] . '" ';
         }
