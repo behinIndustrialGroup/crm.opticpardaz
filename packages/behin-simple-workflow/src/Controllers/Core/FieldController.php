@@ -60,30 +60,11 @@ class FieldController extends Controller
             'script' => $request->script,
             'datalist_from_database' => $request->datalist_from_database
         ];
-        if($request->columns !== null){
+        if ($request->columns !== null) {
             $attributes['columns'] = $request->columns;
         }
-        if($request->id !== null){
+        if ($request->id !== null) {
             $attributes['id'] = $request->id;
-        }
-        if ($request->isPrice == 1) {
-            $attributes['isPrice'] = '
-            function formatNumber(num) {
-                return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-            $(document).ready(function () {
-                $("#' . $field->name . '").after("<p id=' . $field->name . '_formatted></p>");
-            });
-            $("#' . $field->name . '").on("keyup", function(){
-                let inputVal = $(this).val();
-                
-                formattedVal = formatNumber(inputVal );
-                console.log(formattedVal );
-                $("#' . $field->name . '_formatted").html(formattedVal + " ریال")
-            })
-            ';
-        }else{
-            $attributes['isPrice'] = null;
         }
         $field->update([
             'name' => $request->name,
@@ -92,19 +73,21 @@ class FieldController extends Controller
         ]);
 
         return redirect()->route('simpleWorkflow.fields.edit', $field->id)->with('success', 'Fields updated successfully.');
-
     }
 
-    public static function getAll() {
+    public static function getAll()
+    {
         return Fields::orderBy('created_at')->get();
     }
-    public static function getById($id) {
+    public static function getById($id)
+    {
         return Fields::find($id);
     }
 
-    public static function getByName($fieldName) {
+    public static function getByName($fieldName)
+    {
         $field = Fields::where('name', $fieldName)->first();
-        if($field){
+        if ($field) {
             return $field;
         }
         return null;

@@ -13,11 +13,9 @@
             $required = $field->required;
             $readOnly = $mode ? $mode : $field->readOnly;
             $fieldDetails = getFieldDetailsByName($field->fieldName);
-            $isPrice = '';
             if ($fieldDetails) {
                 $fieldAttributes = json_decode($fieldDetails->attributes);
                 $fieldValue = isset($variables) ? $variables->where('key', $field->fieldName)->first()?->value : null;
-                $isPrice = isset($fieldAttributes->isPrice) ? $fieldAttributes->isPrice : '';
             } else {
                 if ($field->fieldName != $form->id) {
                     $childForm = getFormInformation($field->fieldName);
@@ -29,6 +27,15 @@
             <div class="{{ $field->class }}">
                 @if ($fieldDetails->type == 'title')
                     {!! Form::title($fieldId, [
+                        'value' => $fieldValue,
+                        'class' => '',
+                        'id' => $fieldId,
+                        'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
+                        'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
+                    ]) !!}
+                @endif
+                @if ($fieldDetails->type == 'hidden')
+                    {!! Form::hidden($fieldId, [
                         'value' => $fieldValue,
                         'class' => '',
                         'id' => $fieldId,
@@ -75,7 +82,6 @@
                         'placeholder' => $fieldAttributes?->placeholder,
                         'required' => $required,
                         'readonly' => $readOnly,
-                        'isPrice' => $isPrice,
                         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
                         'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
                         'datalist_from_database' => isset($fieldAttributes?->datalist_from_database)
