@@ -169,6 +169,15 @@ function hide_loading(){
     $('#preloader').hide();
 }
 
+function runScript(scriptId, data,callback){
+    url = "/workflow/scripts/" + scriptId + "/run";
+    return send_ajax_formdata_request(
+        url,
+        data,
+        callback
+    );
+}
+
 function open_admin_modal(url, title = ''){
     var modal = $('<div class="modal fade" id="admin-modal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                     '<div class="modal-dialog modal-lg">' +
