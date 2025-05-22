@@ -30,7 +30,7 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     Route::get('test', function () {
         $images = Variable::where('key', 'device_plaque_image')->whereNotNull('value')->get();
         foreach($images as $image){
-            echo "<a href='". url("public/$image->value")."' download>Download</a><br>";
+            echo $image->case->number . "<a href='". url("public/$image->value")."' download>Download</a><br>";
         }
     });
 });
