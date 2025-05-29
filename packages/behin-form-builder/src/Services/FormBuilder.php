@@ -22,6 +22,7 @@ use MyFormBuilder\Fields\TitleField;
 use MyFormBuilder\Renderers\FormRenderer;
 use MyFormBuilder\Fields\SelectMultipleField;
 use MyFormBuilder\Fields\SignatureField;
+use MyFormBuilder\Fields\TimeField;
 
 class FormBuilder
 {
@@ -64,21 +65,21 @@ class FormBuilder
         return $this;
     }
 
-    public function hidden(string $name, array $attributes = null)
-    {
-
-        $attributes = $attributes ?? [];
-        // $field = $this->fieldFactory->create('text', $name, $attributes);
-        return (new HiddenField($name, $attributes))->render();
-        return $this;
-    }
-
     public function button(string $name, array $attributes = null)
     {
 
         $attributes = $attributes ?? [];
         // $field = $this->fieldFactory->create('text', $name, $attributes);
         return (new ButtonField($name, $attributes))->render();
+        return $this;
+    }
+
+    public function hidden(string $name, array $attributes = null)
+    {
+
+        $attributes = $attributes ?? [];
+        // $field = $this->fieldFactory->create('text', $name, $attributes);
+        return (new HiddenField($name, $attributes))->render();
         return $this;
     }
 
@@ -138,6 +139,15 @@ class FormBuilder
         $attributes = $attributes ?? [];
         // $field = $this->fieldFactory->create('text', $name, $attributes);
         return (new DateField($name, $attributes))->render();
+        return $this;
+    }
+
+    public function time(string $name, array $attributes = null)
+    {
+
+        $attributes = $attributes ?? [];
+        // $field = $this->fieldFactory->create('text', $name, $attributes);
+        return (new TimeField($name, $attributes))->render();
         return $this;
     }
 

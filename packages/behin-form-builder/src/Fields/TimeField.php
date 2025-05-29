@@ -2,11 +2,19 @@
 
 namespace MyFormBuilder\Fields;
 
-class HelpField extends AbstractField
+class TimeField extends AbstractField
 {
     public function render(): string
     {
-        $s = '<div class="" ';
+        $s = '<div class="form-group">';
+        $s .= '<label>';
+        $s .= trans('fields.' . $this->name);
+        if($this->attributes['required'] == 'on' && $this->attributes['readonly'] != 'on'){
+            $s .= ' <span class="text-danger">*</span>';
+        }
+        $s .= '</label>';
+        $s .= '<input type="text" name="' . $this->name . '" ';
+
         foreach($this->attributes as $key => $value){
             if($key == 'required'){
                 if($value == 'on'){
@@ -17,24 +25,11 @@ class HelpField extends AbstractField
                 if($value == 'on'){
                     $s .= 'readonly ';
                 }
-            }
-            elseif($key == 'script'){
-
-            }
-            else{
+            }else{
                 $s .= $key . '="' . $value . '" ';
             }
         }
         $s .= '>';
-        $s .= trans($this->name);
-        $s .= '<p>';
-        $s .= $this->attributes['options'] ?? '';
-        $s .= '</p>';
-        if(isset($this->attributes['script'])){
-            $s .= '<script>';
-            $s .= $this->attributes['script'];
-            $s .= '</script>';
-        }
         $s .= '</div>';
         return $s;
     }
