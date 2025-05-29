@@ -30,6 +30,7 @@
                 <option value="div">div</option>
                 <option value="button">button</option>
                 <option value="help">help</option>
+                <option value="hidden">hidden</option>
             </select>
         </div>
         <div class="col-sm-4">
