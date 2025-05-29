@@ -17,6 +17,7 @@
                 <option value="number">number</option>
                 <option value="text">text</option>
                 <option value="date">date</option>
+                <option value="time">time</option>
                 <option value="select">select</option>
                 <option value="select-multiple">select-multiple</option>
                 <option value="file">file</option>
@@ -25,7 +26,6 @@
                 <option value="location">location</option>
                 <option value="signature">signature</option>
                 <option value="entity">entity</option>
-                <option value="hidden">hidden</option>
                 <option value="title">title</option>
                 <option value="div">div</option>
                 <option value="button">button</option>

@@ -51,7 +51,7 @@ class RoutingController extends Controller
         $formFields = FormController::getFormFields($formId);
 
         foreach ($vars as $key => $value) {
-            if (!in_array($key, $formFields)) {
+            if(!in_array($key, $formFields)){
                 continue;
             }
             if (gettype($value) == 'object') {
@@ -65,7 +65,7 @@ class RoutingController extends Controller
         }
         foreach ($requiredFields as $field) {
             $var = VariableController::getVariable($processId, $caseId, $field);
-            if (!$var?->value) {
+            if (is_null($var?->value) || $var?->value == '') {
                 return
                     [
                         'status' => 400,
@@ -119,7 +119,7 @@ class RoutingController extends Controller
             }
         } else {
             foreach ($taskChildren as $childTask) {
-                Log::info("Parent Task:" . $task->name . " Child Task:" . $childTask->name);
+                // Log::info("Parent Task:" . $task->name . " Child Task:" . $childTask->name);
                 $result = self::executeNextTask($childTask, $caseId);
                 if ($result == 'break') {
                     break;
@@ -150,6 +150,13 @@ class RoutingController extends Controller
                 // همه باید وضعیت انجام شده تغییر کنند
             }
         }
+        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+            return response()->json([
+                'status' => 200,
+                'msg' => trans('Saved'),
+                'url' => route('simpleWorkflow.inbox.view', ['inboxId' => $newInbox->id])
+            ]);
+        }
         return response()->json([
             'status' => 200,
             'msg' => trans('Saved')
@@ -163,28 +170,21 @@ class RoutingController extends Controller
         $taskId = $request->taskId;
         $nextTask = TaskController::getById($request->next_task_id);
         $process = ProcessController::getById($processId);
-        if (isset($request->inboxId)) {
-            $inbox = InboxController::getById($request->inboxId);
-            $task = $inbox->task;
-            if (in_array($inbox->status, ['done', 'doneByOther'])) {
-                return response()->json([
-                    'status' => 400,
-                    'msg' => trans('fields.Task Has Been Done Previously')
-                ]);
-            }
-            $form = $task->executiveElement();
-            // $requiredFields = FormController::requiredFields($form->id);
-            $result = self::save($request);
-            if ($result['status'] != 200) {
-                return $result;
-            }
-        } else {
-            $result = self::save($request);
-            if ($result['status'] != 200) {
-                return $result;
-            }
+        $inbox = InboxController::getById($request->inboxId);
+
+        if (in_array($inbox->status, ['done', 'doneByOther'])) {
+            return response()->json([
+                'status' => 400,
+                'msg' => trans('fields.Task Has Been Done Previously')
+            ]);
         }
 
+        $task = $inbox->task;
+        $form = $task->executiveElement();
+        $result = self::save($request);
+        if ($result['status'] != 200) {
+            return $result;
+        }
         if ($process->number_of_error) {
             return response()->json([
                 'status' => 400,
@@ -193,33 +193,34 @@ class RoutingController extends Controller
         }
 
         $result = self::executeNextTask($nextTask, $caseId);
-        if ($result) {
+        if ($result && $result != 'break') {
             return $result;
         }
-        if (isset($request->inboxId)) {
-            if ($task->type == 'form') {
-                if ($task->assignment_type == 'normal') {
-                    $inboxes = InboxController::getAllByTaskIdAndCaseId($task->id, $caseId);
-                    foreach ($inboxes as $inbox) {
-                        InboxController::changeStatusByInboxId($inbox->id, 'done');
-                    }
-                    // InboxController::changeStatusByInboxId($request->inboxId, 'done');
-                    //از این رکورد در اینباکس یک یا چمد ردیف وجود دارد
-                    // وضعیت همه رکوردها باید در اینباکس به انجام شده تغییر کند
-                }
-                if ($task->assignment_type == 'dynamic') {
-                    InboxController::changeStatusByInboxId($request->inboxId, 'done');
-                    //از این رکورد در اینباکس یک ردیف وجود دارد
-                    // وضعیت همین رکورد باید در اینباکس به انجام شده تغییر کند
-                }
-                if ($task->assignment_type == 'parallel') {
+        if ($task->type == 'form') {
+            if ($task->assignment_type == 'normal') {
+                $inboxes = InboxController::getAllByTaskIdAndCaseId($task->id, $caseId);
+                foreach ($inboxes as $inbox) {
                     InboxController::changeStatusByInboxId($inbox->id, 'done');
-                    // از این رکورد چند ردیف در اینباکس وجود دارد
-                    // همه باید وضعیت انجام شده تغییر کنند
                 }
+                // InboxController::changeStatusByInboxId($request->inboxId, 'done');
+                //از این رکورد در اینباکس یک یا چمد ردیف وجود دارد
+                // وضعیت همه رکوردها باید در اینباکس به انجام شده تغییر کند
             }
-            return redirect()->route('simpleWorkflow.inbox.index');
+            if ($task->assignment_type == 'dynamic') {
+                InboxController::changeStatusByInboxId($request->inboxId, 'done');
+                //از این رکورد در اینباکس یک ردیف وجود دارد
+                // وضعیت همین رکورد باید در اینباکس به انجام شده تغییر کند
+            }
+            if ($task->assignment_type == 'parallel') {
+                InboxController::changeStatusByInboxId($inbox->id, 'done');
+                // از این رکورد چند ردیف در اینباکس وجود دارد
+                // همه باید وضعیت انجام شده تغییر کنند
+            }
         }
+        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+            return redirect()->route('simpleWorkflow.inbox.view', ['inboxId' => $newInbox->id]);
+        }
+        return redirect()->route('simpleWorkflow.inbox.index');
     }
 
     public static function executeNextTask($task, $caseId)
@@ -251,8 +252,11 @@ class RoutingController extends Controller
                         );
                     }
                 }
-                if ($task->assignment_type == 'parallel') {
-                    // مشابه نورمال
+                if ($task->assignment_type == 'public') {
+                    $taskActors = TaskActorController::getActorsByTaskId($task->id)->pluck('actor');
+                    foreach ($taskActors as $actor) {
+                        $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
+                    }
                 }
             }
             if ($task->type == 'script') {
@@ -267,7 +271,7 @@ class RoutingController extends Controller
                 if ($task->next_element_id) {
                     $nextTask = TaskController::getById($task->next_element_id);
                     $result = self::executeNextTask($nextTask, $caseId);
-                    if ($result == 'break') {
+                    if($result == 'break'){
                         return 'break';
                     }
                     if ($result) {
@@ -277,7 +281,7 @@ class RoutingController extends Controller
                 $taskChildren = $task->children();
                 foreach ($taskChildren as $task) {
                     $result = self::executeNextTask($task, $caseId);
-                    if ($result == 'break') {
+                    if($result == 'break'){
                         return 'break';
                     }
                     if ($result) {
@@ -294,7 +298,7 @@ class RoutingController extends Controller
                     $nextTask = $condition->nextIfTrue();
                     if ((bool)$nextTask) {
                         $result = self::executeNextTask($nextTask, $caseId);
-                        if ($result == 'break') {
+                        if($result == 'break'){
                             return 'break';
                         }
                         if ($result) {
@@ -304,7 +308,7 @@ class RoutingController extends Controller
                         if ($task->next_element_id) {
                             $nextTask = TaskController::getById($task->next_element_id);
                             $result = self::executeNextTask($nextTask, $caseId);
-                            if ($result == 'break') {
+                            if($result == 'break'){
                                 return 'break';
                             }
                             if ($result) {
@@ -314,7 +318,7 @@ class RoutingController extends Controller
                         $taskChildren = $task->children();
                         foreach ($taskChildren as $task) {
                             $result = self::executeNextTask($task, $caseId);
-                            if ($result == 'break') {
+                            if($result == 'break'){
                                 return 'break';
                             }
                             if ($result) {

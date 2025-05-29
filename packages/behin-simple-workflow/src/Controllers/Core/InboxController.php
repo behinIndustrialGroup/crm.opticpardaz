@@ -45,6 +45,10 @@ class InboxController extends Controller
         return $inbox;
     }
 
+    public static function caseIsInUserInbox($caseId){
+        return Inbox::where('case_id', $caseId)->whereIn('status', ['new', 'opened', 'inProgress', 'draft'])->where('actor', Auth::id())->first();
+    }
+
     public static function editCaseName($inboxId, $caseName)
     {
         $inbox = InboxController::getById($inboxId);
@@ -137,14 +141,21 @@ class InboxController extends Controller
         $process = ProcessController::getById($task->process_id);
         $form = FormController::getById($task->executive_element_id);
         $variables = VariableController::getVariablesByCaseId($case->id, $process->id);
-
+        
         if ($task->type == 'form') {
             if (!isset($form->content)) {
                 return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('Form not found'));
             }
-            // if(!TaskActorController::userIsAssignToTask($task->id, Auth::id())){
-            //     return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('You are not assigned to this task'));
-            // }
+            if($task->assignment_type == 'public'){
+                return view('SimpleWorkflowView::Core.Inbox.public-show')->with([
+                    'inbox' => $inbox,
+                    'case' => $case,
+                    'task' => $task,
+                    'process' => $process,
+                    'variables' => $variables,
+                    'form' => $form
+                ]);
+            }
             return view('SimpleWorkflowView::Core.Inbox.show')->with([
                 'inbox' => $inbox,
                 'case' => $case,
@@ -195,4 +206,17 @@ class InboxController extends Controller
         $title = preg_replace($p, $replacements, $title);
         return $title;
     }
+
+    public static function caseHistory($caseNumber){
+        $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
+        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
+        return view('SimpleWorkflowView::Core.Inbox.history', compact('rows'));
+    }
+
+    public static function caseHistoryList($caseNumber){
+        $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
+        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
+        return $rows;
+    }
 }
+

@@ -4,6 +4,7 @@ namespace Behin\SimpleWorkflow\Models\Core;
 
 use App\Models\User;
 use Behin\SimpleWorkflow\Controllers\Core\FormController;
+use Behin\SimpleWorkflow\Controllers\Core\InboxController;
 use Behin\SimpleWorkflow\Controllers\Core\VariableController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,11 @@ class Cases extends Model
         return VariableController::getVariable($this->process_id, $this->id, $name)?->value;
     }
 
+    public function saveVariable($name, $value)
+    {
+        return VariableController::save($this->process_id, $this->id, $name, $value);
+    }
+
     public function process()
     {
         return $this->belongsTo(Process::class, 'process_id');
@@ -58,14 +64,40 @@ class Cases extends Model
         return User::find($this->creator);
     }
 
+    public function copyVariableFrom($parentCaseId){
+        $parentCase = Cases::find($parentCaseId);
+        foreach($parentCase->variables() as $variable){
+            VariableController::save($this->process_id, $this->id, $variable->key, $variable->value);
+        }
+    }
+
     public function whereIs(){
-        $childCaseId = Cases::where('parent_id', $this->id)->get()->pluck('id')->toArray();
-        return Inbox::where(function($query) use($childCaseId){
+        $childCaseId = Cases::where('number', $this->number)->get()->pluck('id')->toArray();
+        $rows = Inbox::where(function($query) use($childCaseId){
             $query->where('case_id', $this->id)->orWhereIn('case_id', $childCaseId);
         })->whereNotIn('status', ['done', 'doneByOther', 'canceled'])->get();
+        
+        if ($rows->isEmpty()) {
+            return [(object) [
+                'archive' => 'yes',
+                'task' => (object) [
+                    'styled_name' => "<span style='color: #ffffff; background: #007a41; padding:2px 4px; border-radius:4px;'>پایان کار</span>",
+                ],
+                'actor' => '',
+            ]];
+        }
+        return $rows;
     }
 
     public function previousTask(){
         return Inbox::where('case_id', $this->id)->whereIn('status', ['done'])->orderBy('created_at', 'desc')->first();
+    }
+
+    public function getHistoryAttribute(){
+         return "<a title='". trans('fields.History') ."' href='". route('simpleWorkflow.inbox.caseHistoryView', ['caseNumber' => $this->number]) ."'><i class='fa fa-history'></i></a>";
+    }
+
+    public function getHistoryList(){
+        return InboxController::caseHistoryList($this->number);
     }
 }

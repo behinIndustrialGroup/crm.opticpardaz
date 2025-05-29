@@ -77,6 +77,7 @@ class ConditionController extends Controller
             $value = mb_convert_encoding($condition->value, 'UTF-8');
             // print($value);
             $c = (bool)$variables->where('key', $condition->fieldName)->where('value', $condition->operation, $value)->first();
+            Log::info($condition->fieldName . " " . $condition->operation . " " . $value . " " . $c);
             // print($c);
             // Log::info($Condition->name . ": " .$c);
             if(!$c){
@@ -85,6 +86,31 @@ class ConditionController extends Controller
             }
         }
         return true;
-
     }
+
+    public static function runConditionForTest(Request $request,$id)
+    {
+        $request->validate([
+            'caseId' => 'required',
+        ]);
+        $caseId = $request->caseId;
+        $Condition = self::getById($id);
+        $conditions = json_decode($Condition->content);
+        $case = CaseController::getById($caseId);
+        $variables = collect($case->variables());
+        foreach($conditions as $condition){
+            $value = mb_convert_encoding($condition->value, 'UTF-8');
+            // print($value);
+            $c = $variables->where('key', $condition->fieldName)->where('value', $condition->operation, $value)->first();
+            Log::info($condition->fieldName . " " . $condition->operation . " " . $value . " " . $c);
+            print($c);
+            // Log::info($Condition->name . ": " .$c);
+            if(!$c){
+                // print($value);
+                return 'false';
+            }
+        }
+        return 'true';
+    }
+    
 }

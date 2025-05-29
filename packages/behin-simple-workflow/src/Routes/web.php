@@ -53,6 +53,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::any('scripts/{id}/run', [ ScriptController::class, 'runFromView' ])->name('scripts.run');
 
     Route::resource('conditions', ConditionController::class);
+    Route::post('conditions/{id}/test', [ ConditionController::class, 'runConditionForTest' ])->name('conditions.test');
     Route::resource('task-actors', TaskActorController::class);
     Route::resource('fields', FieldController::class);
 
@@ -62,10 +63,11 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         // Route::get('all-inbox', [ InboxController::class, 'getAllInbox' ])->name('getAllInbox');
         Route::get('cases', [ InboxController::class, 'showCases' ])->name('cases.list');
         Route::get('cases/{caseId}/inboxes', [ InboxController::class, 'showInboxes' ])->name('cases.inboxes');
-        Route::get('view/{inboxId}', [ InboxController::class, 'view' ])->name('view');
+        
         Route::get('edit/{inboxId}', [ InboxController::class, 'edit' ])->name('edit');
         Route::put('update/{inboxId}', [ InboxController::class, 'update' ])->name('update');
         Route::get('delete/{inboxId}', [ InboxController::class, 'delete' ])->name('delete');
+        Route::get('case-history/{caseNumber?}', [InboxController::class, 'caseHistory'])->name('caseHistoryView');
     });
 
     Route::name('routing.')->prefix('routing')->group(function(){
@@ -84,3 +86,5 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::get('task-jump/{task_id}/{inbox_id}/{case_id}/{process_id}', [TaskJumpController::class, 'show'])->name('task-jump.show');
 
 });
+
+Route::get('workflow/inbox/view/{inboxId}', [ InboxController::class, 'view' ])->name('simpleWorkflow.inbox.view')->middleware(['web']);

@@ -1,4 +1,4 @@
-@extends('behin-layouts.app')
+@extends('behin-layouts.welcome')
 
 @section('title', $form->name)
 
@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-    @include('SimpleWorkflowView::Core.Partial.back-btn')
+<div class="container">
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">{{ $task->name }} - {{ $inbox->case_name }}</h6>
@@ -15,12 +15,8 @@
         <div class="card-body">
             <p class="mb-0">
                 {{ trans('fields.Case Number') }}: <span class="badge badge-secondary">{{ $case->number }}</span> <br>
-                {{ trans('fields.Creator') }}: <span class="badge badge-light">{{ getUserInfo($case->creator)->name }}</span>
-                <br>
                 {{ trans('fields.Created At') }}: <span class="badge badge-light"
                     dir="ltr">{{ toJalali($case->created_at)->format('Y-m-d H:i') }}</span>
-                <br>
-                <span class="badge badge-light" style="color: dark">{{ $case->id }}</span>
             </p>
         </div>
     </div>
@@ -68,7 +64,7 @@
     </div>
 
     @if (in_array($inbox->status, ['done', 'doneByOther']))
-        <div class="card shadow-sm mb-2">
+        <div class="card shadow-sm mb-2" id="done-container">
             <div class="card-body">
                 <p class="m-0">
                     <i class="fa fa-check-circle text-success mr-2"></i>
@@ -85,7 +81,7 @@
             </div>
         </div>
     @else
-        <div class="d-flex justify-content-end bg-white p-2 mt-2">
+        <div class="d-flex justify-content-end bg-white p-2 mt-2" id="button-container">
             @if ($inbox->status == 'draft')
                 <button class="btn btn-sm btn-outline-info m-1"
                     onclick="createCaseNumberAndSave()">{{ trans('fields.Create Case Number and Save') }}</button>
@@ -104,6 +100,7 @@
             @endif
         </div>
     @endif
+</div>
 @endsection
 
 @section('script')

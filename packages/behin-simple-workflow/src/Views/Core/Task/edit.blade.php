@@ -12,6 +12,11 @@
             {{ session('error') }}
         </div>
     @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="mb-3">
         <a href="{{ route('simpleWorkflow.task.index', $task->process_id) }}" class="btn btn-secondary">
             {{ trans('Back to list') }}
@@ -90,8 +95,8 @@
                     <select name="parent_id" id="parent_id" class="form-control select2">
                         <option value="">{{ trans('None') }}</option>
                         @foreach ($task->process->tasks() as $item)
-                            <option value="{{ $item->id }}" {{ $item->id == $task->parent_id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
+                            <option dir="ltr" value="{{ $item->id }}" {{ $item->id == $task->parent_id ? 'selected' : '' }}>
+                                {{ $item->name }} ({{ $item->id }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -117,6 +122,8 @@
                             {{ trans('Normal') }}</option>
                         <option value="dynamic" {{ $task->assignment_type == 'dynamic' ? 'selected' : '' }}>
                             {{ trans('Dynamic') }}</option>
+                        <option value="public" {{ $task->assignment_type == 'public' ? 'selected' : '' }}>
+                            {{ trans('Public') }}</option>
                     </select>
                 </div>
             </div>
@@ -125,6 +132,49 @@
                 <div class="col-sm-10">
                     <input type="text" name="case_name" class="form-control" dir="ltr"
                         value="{{ $task->case_name }}">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="duration" class="col-sm-2 col-form-label">{{ trans('Duration') }}</label>
+                <div class="col-sm-10">
+                    <input type="text" name="duration" class="form-control" dir="ltr"
+                        value="{{ $task->duration }}">
+                    {{ trans('fields.Minutes') }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="color" class="col-sm-2 col-form-label">{{ trans('Color') }}</label>
+                <div class="col-sm-10 row">
+                    <input type="text" name="color" class="form-control col-sm-10" dir="ltr"
+                        value="{{ $task->color }}">
+                    <input type="color" id="color" class="col-sm-2" dir="ltr"
+                        value="{{ $task->color }}">
+                    <script>
+                        document.getElementById('color').addEventListener('change', function() {
+                            $('input[name=color]').val(this.value);
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="background" class="col-sm-2 col-form-label">{{ trans('Background') }}</label>
+                <div class="col-sm-10 row">
+                    <input type="text" name="background" class="form-control col-sm-10" dir="ltr"
+                        value="{{ $task->background }}">
+                    <input type="color" id="background" class="col-sm-2" dir="ltr"
+                        value="{{ $task->background }}">
+                    <script>
+                        document.getElementById('background').addEventListener('change', function() {
+                            $('input[name=background]').val(this.value);
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="order" class="col-sm-2 col-form-label">{{ trans('Order') }}</label>
+                <div class="col-sm-10 row">
+                    <input type="text" name="order" class="form-control col-sm-12" dir="ltr"
+                        value="{{ $task->order }}">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="float: left">{{ trans('Edit') }}</button>
