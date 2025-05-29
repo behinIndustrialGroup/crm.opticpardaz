@@ -20,6 +20,7 @@
     @endif
     @php
         $attributes = json_decode($field->attributes);
+        $isPrice = isset($attributes->isPrice) and $attributes->isPrice ? $attributes->isPrice : '';
     @endphp
     <form action="{{ route('simpleWorkflow.fields.update', $field->id) }}" method="POST"
         class="p-4 border rounded shadow-sm bg-light">
