@@ -90,6 +90,28 @@
                 </div>
             </div>
         @endauth
+        @if (auth()->user()->access('پذیرش دستگاه برگشتی'))
+            <div class="col-sm-3 ">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>{{ trans('پذیرش دستگاه برگشتی') }}</h3>
+
+                        <p>{{ trans('پذیرش دستگاه برگشتی') }}</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="{{ route('simpleWorkflow.process.start', [
+                        'taskId' => '3629b18d-703b-49fa-b4f2-f55436a887cb',
+                        'inDraft' => true,
+                        'force' => 1,
+                        'redirect' => true,
+                        ]) }}" class="small-box-footer">{{ trans('مشاهده') }} <i
+                            class="fa fa-arrow-circle-left"></i></a>
+                </div>
+            </div>
+        @endauth
         @if (auth()->user()->access('منو >>کارتابل>>کارتابل'))
             <div class="col-sm-3 ">
                 <!-- small box -->
