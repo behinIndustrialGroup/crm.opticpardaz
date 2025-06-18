@@ -122,27 +122,27 @@
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
         <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script> --}}
     <script>
-        const beamsClient = new PusherPushNotifications.Client({
-            instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
-        });
+        // const beamsClient = new PusherPushNotifications.Client({
+        //     instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
+        // });
         
 
         // beamsClient.stop().catch(console.error);
-        beamsClient.getUserId()
-            .then(userId => {
-                if (!userId) {
-                    beamsClient.start().then(() => {
-                        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
-                            url: "{{ url('/pusher/beams-auth') }}"
-                        });
-                        beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
-                            beamsTokenProvider)
-                    })
-                }else{
-                    console.log('User ID:', userId);
-                }
-            })
-            .catch(console.error);
+        // beamsClient.getUserId()
+        //     .then(userId => {
+        //         if (!userId) {
+        //             beamsClient.start().then(() => {
+        //                 const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
+        //                     url: "{{ url('/pusher/beams-auth') }}"
+        //                 });
+        //                 beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
+        //                     beamsTokenProvider)
+        //             })
+        //         }else{
+        //             console.log('User ID:', userId);
+        //         }
+        //     })
+        //     .catch(console.error);
         // beamsClient
         //     .start()
         //     .then(() => {
@@ -183,7 +183,7 @@
     </script>
     <script>
         function logout() {
-            beamsClient.stop().catch(console.error);
+            // beamsClient.stop().catch(console.error);
             window.location = "{{ route('logout') }}"
         }
     </script>
