@@ -69,7 +69,7 @@
     <script src="{{ url('public/behin/behin-js/ajax.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dataTable.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dropzone.js') . '?' . config('app.version') }}"></script>
-    <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
+    {{-- <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script> --}}
 
     @yield('script_in_head')
 
