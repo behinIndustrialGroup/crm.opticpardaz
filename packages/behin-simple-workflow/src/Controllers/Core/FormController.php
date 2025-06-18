@@ -47,7 +47,7 @@ class FormController extends Controller
                     $ar = array_merge($ar, $childAr); 
                 }
             }
-            if($field->required == 'on'){
+            if($field->required == 'on' and $field->readonly != 'on'){
                 $ar[] = $field->fieldName;
             }
         }
