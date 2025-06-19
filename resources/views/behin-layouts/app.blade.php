@@ -45,7 +45,7 @@
         href="{{ url('public/behin/behin-dist/plugins/datatables/dataTables.bootstrap4.css') . '?' . config('app.version') }}" />
     <link rel="stylesheet"
         href="{{ url('public/behin/behin-dist/dist/css/dropzone.min.css') . '?' . config('app.version') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/datatables/toastr.min.css') . '?' . config('app.version') }}">
     {{-- <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" /> --}}
     {{-- <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
@@ -64,7 +64,7 @@
     <script
         src="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.js') . '?' . config('app.version') }}">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ url('public/behin/behin-dist/plugins/datatables/toastr.min.js') . '?' . config('app.version') }}"></script>
 
     <script src="{{ url('public/behin/behin-js/ajax.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dataTable.js') . '?' . config('app.version') }}"></script>
@@ -102,7 +102,7 @@
     <script
         src="{{ url('public/behin/behin-dist/plugins/bootstrap/js/bootstrap.bundle.min.js') . '?' . config('app.version') }}">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> --}}
     <script src="{{ url('public/behin/behin-dist/plugins/knob/jquery.knob.js') . '?' . config('app.version') }}"></script>
     <script
         src="{{ url('public/behin/behin-dist/plugins/daterangepicker/daterangepicker.js') . '?' . config('app.version') }}">
@@ -114,9 +114,9 @@
         src="{{ url('public/behin/behin-dist/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') . '?' . config('app.version') }}">
     </script>
     <script src="{{ url('public/behin/behin-dist/dist/js/adminlte.js') . '?' . config('app.version') }}"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    {{-- <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script> --}}
     <script src="{{ url('public/behin/behin-dist/plugins/select2/select2.full.min.js') }}"></script>
     {{-- <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
