@@ -24,18 +24,19 @@
 		<link rel="stylesheet" href="{{ url('public/behin/behin-dist/dist/css/custom-style.css')  . '?' . config('app.version') }}">
 		<link rel="stylesheet" href="{{ url('public/behin/behin-dist/dist/css/custom.css')  . '?' . config('app.version') }}">
 		<link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css')  . '?' . config('app.version') }}">
-		<link rel="stylesheet" href="{{ url('public/behin/plugins/persian-datepicker/persian-datepicker.css')  . '?' . config('app.version') }}">
-	
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+		<link rel="stylesheet" href="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.css') }}">	
+		<link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.css') . '?' . config('app.version') }}">
+
 		@yield('style')
 	
 		<script src="{{ url('public/behin/behin-dist/plugins/jquery/jquery.min.js')  . '?' . config('app.version') }}"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+		<script src="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.js') . '?' . config('app.version') }}"></script>
+
 	
 		<script src="{{ url('public/behin/behin-js/ajax.js')  . '?' . config('app.version') }}"></script>
 		<script src="{{ url('public/behin/behin-js/dataTable.js')  . '?' . config('app.version') }}"></script>
 		<script src="{{ url('public/behin/behin-js/dropzone.js')  . '?' . config('app.version') }}"></script>
-		<script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
+		{{-- <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script> --}}
 		
 	</head>
 <body>
@@ -55,10 +56,7 @@
 	<script src="{{ url('public/behin/behin-js/loader.js')  . '?' . config('app.version') }}"></script>
 	<script src="{{ url('public/behin/behin-js/scripts.js')  . '?' . config('app.version') }}"></script>
 	<script src="{{ url('public/behin/behin-dist/plugins/select2/select2.full.min.js')  . '?' . config('app.version') }}"></script>
-	{{-- <script src="{{ url('public/behin/behin-dist/plugins/persian-datepicker/persian-date.js')  . '?' . config('app.version') }}"></script>
-	<script src="{{ url('public/behin/behin-dist/plugins/persian-datepicker/persian-datepicker.js')  . '?' . config('app.version') }}"></script>
-	<script src="{{ url('public/behin/behin-dist/dist/js/num2persian/num2persian.js') }}" type="text/javascript"></script> --}}
-	<script>
+	{{-- <script>
 		const beamsClient = new PusherPushNotifications.Client({
 		  instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
 		});
@@ -67,7 +65,7 @@
 		  .then(() => beamsClient.addDeviceInterest('hello'))
 		  .then(() => console.log('Successfully registered and subscribed!'))
 		  .catch(console.error);
-	</script>
+	</script> --}}
 	<script>
 		$('.select2').select2();
 		function initial_view(){
