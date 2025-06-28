@@ -41,11 +41,14 @@ class EntityController extends Controller
 
     public function update(Request $request, Entity $entity)
     {
+        if(!$request->uses){
+            $uses = "use Behin\SimpleWorkflow\Controllers\Core\VariableController; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Database\Eloquent\Model; use Illuminate\Support\Str; use Illuminate\Database\Eloquent\SoftDeletes;";
+        }
         $entity->update([
             'name' => $request->name,
             'description' => $request->description,
             'columns' => $request->columns,
-            'uses' => $request->uses,
+            'uses' => $request->uses ?? $uses,
             'class_contents' => $request->class_contents,
         ]);
 
@@ -153,5 +156,6 @@ class EntityController extends Controller
         $entityFileContent .= "}";
         file_put_contents($entityFile, $entityFileContent);
         echo "Entity class " . ucfirst($entity->name) . " created successfully.";
+        return redirect()->back();
     }
 }
