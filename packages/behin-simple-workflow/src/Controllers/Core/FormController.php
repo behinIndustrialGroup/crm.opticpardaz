@@ -3,6 +3,7 @@
 namespace Behin\SimpleWorkflow\Controllers\Core;
 
 use App\Http\Controllers\Controller;
+use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Form;
 use Behin\SimpleWorkflow\Models\Core\Inbox;
 use Behin\SimpleWorkflow\Models\Core\Process;
@@ -200,13 +201,13 @@ class FormController extends Controller
         $model = ViewModelController::getModelById($viewModel->id);
         $row = $model::find($request->row_id);
 
-        if(!isset($request->inbox_id)){
-            $inbox = Inbox::first();
+        if(!isset($request->case_id)){
+            $case = Cases::first();
         }else{
-            $inbox = InboxController::getById($request->inbox_id);
+            $case = CaseController::getById($request->case_id);
         }
-        $case = CaseController::getById($inbox->case_id);
-        return view('SimpleWorkflowView::Core.ViewModel.front.show', compact('form', 'inbox', 'viewModel', 'row'));
+        $inbox = InboxController::getById($request->inbox_id);
+        return view('SimpleWorkflowView::Core.ViewModel.front.show', compact('form', 'inbox', 'case', 'viewModel', 'row'));
     }
 
     public function openCreateNew(Request $request, $form_id){
@@ -217,12 +218,12 @@ class FormController extends Controller
         }
         $model = ViewModelController::getModelById($viewModel->id);
 
-        if(!isset($request->inbox_id)){
-            $inbox = Inbox::first();
+        if(!isset($request->case_id)){
+            $case = Cases::first();
         }else{
-            $inbox = InboxController::getById($request->inbox_id);
+            $case = CaseController::getById($request->case_id);
         }
-        $case = CaseController::getById($inbox->case_id);
-        return view('SimpleWorkflowView::Core.ViewModel.front.show', compact('form', 'inbox', 'viewModel'));
+        $inbox = InboxController::getById($request->inbox_id);
+        return view('SimpleWorkflowView::Core.ViewModel.front.show', compact('form', 'inbox', 'case', 'viewModel'));
     }
 }

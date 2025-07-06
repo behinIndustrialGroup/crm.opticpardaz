@@ -241,6 +241,7 @@ function get_view_model_rows(viewModel_id, api_key){
     fd.append('viewModel_id', viewModel_id);
     fd.append('api_key', api_key);
     fd.append('inbox_id', $('#inboxId').val() ?? '');
+    fd.append('case_id', $('#caseId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
         console.log(response)
         $(`#${viewModel_id} tbody`).html('');
@@ -255,6 +256,7 @@ function open_view_model_form(form_id, viewModel_id, row_id, api_key){
     fd.append('row_id', row_id);
     fd.append('api_key', api_key);
     fd.append('inbox_id', $('#inboxId').val() ?? '');
+    fd.append('case_id', $('#caseId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
         open_admin_modal_with_data(response)
     })
@@ -266,6 +268,7 @@ function open_view_model_create_new_form(form_id, viewModel_id, api_key){
     fd.append('viewModel_id', viewModel_id);
     fd.append('api_key', api_key);
     fd.append('inbox_id', $('#inboxId').val() ?? '');
+    fd.append('case_id', $('#caseId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
         open_admin_modal_with_data(response)
     })

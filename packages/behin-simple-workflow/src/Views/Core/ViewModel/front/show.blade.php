@@ -1,7 +1,6 @@
 @php
     $content = json_decode($form->content);
     $content = collect($content)->sortBy('order')->toArray();
-    $case = $inbox->case;
     $task = $inbox->task;
 @endphp
 <div class="card shadow-sm mb-4">
@@ -31,7 +30,7 @@
         <form action="javascript:void(0)" method="POST" id="modal-form"
             enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="inboxId" id="inboxId" value="{{ $inbox->id }}">
+            <input type="hidden" name="inboxId" id="inboxId" value="{{ $inbox->id ?? '' }}">
             <input type="hidden" name="caseId" id="caseId" value="{{ $case->id }}">
             <input type="hidden" name="viewModelId" id="viewModelId" value="{{ $viewModel->id }}">
             <input type="hidden" name="rowId" id="rowId" value="{{ $row->id ?? '' }}">

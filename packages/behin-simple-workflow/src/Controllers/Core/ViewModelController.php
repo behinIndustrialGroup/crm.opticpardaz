@@ -57,6 +57,7 @@ class ViewModelController extends Controller
     public function getRows(Request $request)
     {
         $inbox = InboxController::getById($request->inbox_id);
+        $case = CaseController::getById($request->case_id);
         $viewModel = self::getById($request->viewModel_id);
 
         if ($viewModel->api_key != $request->api_key) {
@@ -84,9 +85,9 @@ class ViewModelController extends Controller
 
         if ($viewModel->allow_read_row) {
             if($viewModel->show_rows_based_on == 'case_id'){
-                $rows = $model::where('case_id', $inbox->case_id);
+                $rows = $model::where('case_id', $case->id);
             }else{
-                $rows = $model::where('case_number', $inbox->case->number);
+                $rows = $model::where('case_number', $case->number);
             }
 
             $rows = $rows->where(function ($query) use ($readCondition) {
@@ -144,6 +145,7 @@ class ViewModelController extends Controller
     public function updateRecord(Request $request)
     {
         $inbox = InboxController::getById($request->inboxId);
+        $case = CaseController::getById($request->caseId);
         $viewModel = self::getById($request->viewModelId);
 
         if ($viewModel->api_key != $request->api_key) {
@@ -159,8 +161,8 @@ class ViewModelController extends Controller
         $row->fill($request->all());
 
         if ($isNew) {
-            $row->case_id = $inbox->case_id;
-            $row->case_number = $inbox->case->number;
+            $row->case_id = $case->id;
+            $row->case_number = $case->number;
             $row->created_by = Auth::id();
             $row->contributers = Auth::id();
         }
