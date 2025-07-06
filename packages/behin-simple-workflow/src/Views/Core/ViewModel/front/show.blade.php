@@ -92,3 +92,5 @@
         })
     }
 </script>
+
+{!! $form->scripts !!}
