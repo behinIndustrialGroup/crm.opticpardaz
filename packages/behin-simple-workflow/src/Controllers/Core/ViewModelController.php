@@ -138,6 +138,7 @@ class ViewModelController extends Controller
 
     public function updateRecord(Request $request)
     {
+        $inbox = InboxController::getById($request->inboxId);
         $viewModel = self::getById($request->viewModelId);
 
         if ($viewModel->api_key != $request->api_key) {
@@ -153,6 +154,8 @@ class ViewModelController extends Controller
         $row->fill($request->all());
 
         if ($isNew) {
+            $row->case_id = $inbox->case_id;
+            $row->case_number = $inbox->case->number;
             $row->created_by = Auth::id();
             $row->contributers = Auth::id();
         }
