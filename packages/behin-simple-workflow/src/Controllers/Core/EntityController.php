@@ -149,6 +149,7 @@ class EntityController extends Controller
         foreach ($ar as $column) {
             $entityFileContent .= "'" . str_replace('\r', '', $column['name']) . "', ";
         }
+        $entityFileContent .= " 'created_by', 'updated_by', 'contributers', ";
         $entityFileContent .= "]; \n";
 
         $entityFileContent .= "protected static function boot()
