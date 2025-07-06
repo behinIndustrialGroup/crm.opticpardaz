@@ -198,6 +198,17 @@
                 </td>
             </tr>
             <tr>
+                <td>{{ trans('fields.show_rows_based_on') }}</td>
+                <td>
+                    <select name="show_rows_based_on" id="">
+                        <option value="case_id" {{ $view_model->show_rows_based_on == 'case_id' ? 'selected' : '' }}>
+                            {{ trans('Case ID') }}</option>
+                        <option value="case_number" {{ $view_model->show_rows_based_on == 'case_number' ? 'selected' : '' }}>
+                            {{ trans('Case Number') }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>{{ trans('fields.read_form') }}</td>
                 <td>
                     <select name="read_form" id="" class="select2">
