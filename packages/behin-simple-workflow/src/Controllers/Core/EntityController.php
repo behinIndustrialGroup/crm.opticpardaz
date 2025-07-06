@@ -102,6 +102,10 @@ class EntityController extends Controller
                         $table->$type($name)->nullable($nullable);
                     }
                 }
+                $table->string('created_by')->nullable(false)->change();
+                $table->string('updated_by')->nullable(false)->change();
+                $table->string('contributers')->nullable(false)->change();
+
             });
             echo "Table $entity->name updated successfully.";
         } else {
@@ -113,6 +117,9 @@ class EntityController extends Controller
                     $nullable = $column['nullable'] == 'yes' ? true : false;
                     $table->$type($name)->nullable($nullable);
                 }
+                $table->string('created_by')->nullable(false);
+                $table->string('updated_by')->nullable(false);
+                $table->string('contributers')->nullable(false);
                 $table->timestamps();
                 $table->softDeletes();
             });
