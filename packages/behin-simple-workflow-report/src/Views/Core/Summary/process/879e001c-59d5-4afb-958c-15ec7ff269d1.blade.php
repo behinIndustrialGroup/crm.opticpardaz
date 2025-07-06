@@ -65,7 +65,7 @@
                                             <td class="d-none">{{ $case->id }}</td>
                                             <td>{{ $case->number }}
                                                 <a
-                                                    href="{{ route('simpleWorkflowReport.oppa-report.show', ['oppa_report' => $case->id]) }}"><button
+                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
                                                         class="btn btn-primary btn-sm"><i class="fa fa-external-link"></i></button></a>
                                             </td>
                                             <td>{{ $case->creator()?->name }}</td>
