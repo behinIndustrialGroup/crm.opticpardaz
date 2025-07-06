@@ -242,6 +242,7 @@ function get_view_model_rows(viewModel_id, api_key){
     fd.append('api_key', api_key);
     fd.append('inbox_id', $('#inboxId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
+        console.log(response)
         $(`#${viewModel_id} tbody`).html('');
         $(`#${viewModel_id} tbody`).html(response);
     })

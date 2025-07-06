@@ -48,7 +48,8 @@ class ViewModel extends Model
         'allow_read_row',
         'read_form',
         'read_form_fields',
-        'which_rows_user_can_read'
+        'which_rows_user_can_read',
+        'show_rows_based_on'
     ];
 
     protected $casts = [

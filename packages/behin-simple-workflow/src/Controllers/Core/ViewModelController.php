@@ -56,6 +56,7 @@ class ViewModelController extends Controller
 
     public function getRows(Request $request)
     {
+        $inbox = InboxController::getById($request->inbox_id);
         $viewModel = self::getById($request->viewModel_id);
 
         if ($viewModel->api_key != $request->api_key) {
@@ -82,7 +83,11 @@ class ViewModelController extends Controller
         $s = '';
 
         if ($viewModel->allow_read_row) {
-            $rows = $model::query();
+            if($viewModel->show_rows_based_on == 'case_id'){
+                $rows = $model::where('case_id', $inbox->case_id);
+            }else{
+                $rows = $model::where('case_number', $inbox->case->number);
+            }
 
             $rows = $rows->where(function ($query) use ($readCondition) {
                 if (in_array('all', $readCondition)) {
