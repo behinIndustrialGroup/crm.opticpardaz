@@ -31,6 +31,7 @@
                 <option value="button">button</option>
                 <option value="help">help</option>
                 <option value="hidden">hidden</option>
+                <option value="view-model">view-model</option>
             </select>
         </div>
         <div class="col-sm-4">

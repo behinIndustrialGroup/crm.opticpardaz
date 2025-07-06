@@ -66,10 +66,14 @@
     </script>
     <script src="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.js') . '?' . config('app.version') }}"></script>
 
+    <script>
+        window.appUrl = "{{ env('APP_URL') }}";
+    </script>
     <script src="{{ url('public/behin/behin-js/ajax.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dataTable.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dropzone.js') . '?' . config('app.version') }}"></script>
     {{-- <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script> --}}
+
 
     @yield('script_in_head')
 
@@ -82,6 +86,7 @@
 
         @include('behin-layouts.main-sidebar')
         <div class="content-wrapper">
+            
             <section class="content">
                 <div class="container-fluid">
                     @yield('content')
@@ -125,7 +130,7 @@
         // const beamsClient = new PusherPushNotifications.Client({
         //     instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
         // });
-        
+
 
         // beamsClient.stop().catch(console.error);
         // beamsClient.getUserId()

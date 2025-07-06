@@ -23,6 +23,7 @@ use MyFormBuilder\Renderers\FormRenderer;
 use MyFormBuilder\Fields\SelectMultipleField;
 use MyFormBuilder\Fields\SignatureField;
 use MyFormBuilder\Fields\TimeField;
+use MyFormBuilder\Fields\ViewModelField;
 
 class FormBuilder
 {
@@ -222,6 +223,12 @@ class FormBuilder
         $field = $this->fieldFactory->create('select', $name, $attributes);
         $this->fields[] = new SelectField($name, $field);
         return $this;
+    }
+
+    public function viewModel($name, $attributes = [])
+    {
+        $attributes = $attributes ?? [];
+        return (new ViewModelField($name, $attributes))->render();
     }
 
     public function submit($text = 'Submit', $attributes = []): self

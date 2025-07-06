@@ -1,23 +1,12 @@
 <?php
 
-use Behin\SimpleWorkflow\Controllers\Core\ConditionController;
-use Behin\SimpleWorkflow\Controllers\Core\FieldController;
-use Behin\SimpleWorkflow\Controllers\Core\FormController;
-use Behin\SimpleWorkflow\Controllers\Core\InboxController;
-use Behin\SimpleWorkflow\Controllers\Core\ProcessController;
-use Behin\SimpleWorkflow\Controllers\Core\RoutingController;
-use Behin\SimpleWorkflow\Controllers\Core\ScriptController;
-use Behin\SimpleWorkflow\Controllers\Core\TaskActorController;
-use Behin\SimpleWorkflow\Controllers\Core\TaskController;
+use Behin\SimpleWorkflowReport\Controllers\Scripts\OPPAReportController;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Variable;
 use Behin\SimpleWorkflowReport\Controllers\Core\FinReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\ReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
 use Behin\SimpleWorkflowReport\Controllers\Core\SummaryReportController;
-use BehinProcessMaker\Controllers\VariableController;
-use BehinProcessMaker\Models\PMVariable;
-use BehinProcessMaker\Models\PmVars;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['web', 'auth'])->group(function () {
@@ -34,4 +23,7 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
             echo $case->getVariable('device_name') . " | " . $case->number . "<a href='". url("public/$image->value")."' download='". $case->number .".jpg'>Download</a><br>";
         }
     });
+
+    Route::resource('oppa-report', OPPAReportController::class);
+
 });

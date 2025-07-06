@@ -5,6 +5,9 @@
     خلاصه گزارش فرایند {{ $process->name }}
 @endsection
 
+@php
+    use Behin\SimpleWorkflow\Models\Entities\Device_repair;
+@endphp
 
 @section('content')
     <div class="container">
@@ -36,6 +39,8 @@
                                         <th>دستگاه</th>
                                         <th>سریال</th>
                                         <th>کارشناس</th>
+                                        <th>نوع تعمیر</th>
+                                        <th>جزئیات نوع تعمیر</th>
                                         <th>مرحله جاری</th>
                                         <th>تاریخ پذیرش</th>
                                     </tr>
@@ -43,25 +48,24 @@
                                 <tbody>
                                     @foreach ($process->cases as $case)
                                         @php
-                                            $name = $case->variables()->where('key', 'customer_fullname')->first()
-                                                ?->value;
-                                            $mobile = $case->variables()->where('key', 'customer_mobile')->first()
-                                                ?->value;
-                                            $device_name = $case->variables()->where('key', 'device_name')->first()
-                                                ?->value;
-                                            $device_serial_no = $case->variables()->where('key', 'device_serial_no')->first()
-                                                ?->value;
-                                            $repairman = $case->variables()->where('key', 'repairman')->first()?->value;
+                                            $name = $case->getVariable('customer_fullname');
+                                            $mobile = $case->getVariable('customer_mobile');
+                                            $device_name = $case->getVariable('device_name');
+                                            $device_serial_no = $case->getVariable('device_serial_no');
+                                            $repairman = $case->getVariable('repairman');
                                             $repairman = getUserInfo($repairman)?->name ?? '';
-                                            $last_status =
-                                                $case->variables()->where('key', 'last_status')->first()?->value ?? '';
+                                            $last_status = $case->getVariable('last_status');
+                                        @endphp
+
+                                        @php
+                                            $deviceRepairs = Device_repair::where('case_number', $case->number)->get();
                                         @endphp
                                         <tr>
                                             {{-- <td>{{ $loop->iteration }}</td> --}}
                                             <td class="d-none">{{ $case->id }}</td>
                                             <td>{{ $case->number }}
                                                 <a
-                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
+                                                    href="{{ route('simpleWorkflowReport.oppa-report.show', ['oppa_report' => $case->id]) }}"><button
                                                         class="btn btn-primary btn-sm"><i class="fa fa-external-link"></i></button></a>
                                             </td>
                                             <td>{{ $case->creator()?->name }}</td>
@@ -71,6 +75,16 @@
                                             <td>{{ $device_name }}</td>
                                             <td>{{ $device_serial_no }}</td>
                                             <td>{{ $repairman }}</td>
+                                            <td>
+                                                @foreach ($deviceRepairs as $repair)
+                                                    {{ $repair->repair_type }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($deviceRepairs as $repair)
+                                                    {{ $repair->repair_subtype }}<br>
+                                                @endforeach
+                                            </td>
                                             @php
                                                 $w = ' ';
                                                 foreach ($case->whereIs() as $inbox) {
