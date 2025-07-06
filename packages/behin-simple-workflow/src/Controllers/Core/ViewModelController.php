@@ -91,7 +91,7 @@ class ViewModelController extends Controller
 
             $rows = $rows->where(function ($query) use ($readCondition) {
                 if (in_array('all', $readCondition)) {
-                    $query->orWhereNotNull('deleted_at');
+                    // $query->orWhereNotNull('deleted_at');
                 }
 
                 if (in_array('user-created-it', $readCondition)) {
