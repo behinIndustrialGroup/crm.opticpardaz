@@ -41,7 +41,7 @@ class EntityController extends Controller
 
     public function update(Request $request, Entity $entity)
     {
-        if(!$request->uses){
+        if (!$request->uses) {
             $uses = "use Behin\SimpleWorkflow\Controllers\Core\VariableController; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Database\Eloquent\Model; use Illuminate\Support\Str; use Illuminate\Database\Eloquent\SoftDeletes;";
         }
         $entity->update([
@@ -94,7 +94,7 @@ class EntityController extends Controller
                     $name = $column['name'];
                     $type = $column['type'];
                     $nullable = $column['nullable'] == 'yes' ? true : false;
-                    // $table->$type($name)->nullable($nullable)->change();
+
                     if (Schema::hasColumn($entity->db_table_name, $name)) {
                         $table->$type($name)->nullable($nullable)->change();
                         echo "Column $name updated successfully. <br>";
@@ -102,11 +102,29 @@ class EntityController extends Controller
                         $table->$type($name)->nullable($nullable);
                     }
                 }
-                $table->string('created_by')->nullable(false)->change();
-                $table->string('updated_by')->nullable(false)->change();
-                $table->string('contributers')->nullable(false)->change();
 
+                // ستون created_by
+                if (Schema::hasColumn($entity->db_table_name, 'created_by')) {
+                    $table->string('created_by')->nullable(false)->change();
+                } else {
+                    $table->string('created_by')->nullable(false);
+                }
+
+                // ستون updated_by
+                if (Schema::hasColumn($entity->db_table_name, 'updated_by')) {
+                    $table->string('updated_by')->nullable(false)->change();
+                } else {
+                    $table->string('updated_by')->nullable(false);
+                }
+
+                // ستون contributers
+                if (Schema::hasColumn($entity->db_table_name, 'contributers')) {
+                    $table->string('contributers')->nullable(false)->change();
+                } else {
+                    $table->string('contributers')->nullable(false);
+                }
             });
+
             echo "Table $entity->name updated successfully.";
         } else {
             Schema::create($entity->db_table_name, function ($table) use ($ar) {
