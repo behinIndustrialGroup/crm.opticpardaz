@@ -89,6 +89,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::get('task-jump/{task_id}/{inbox_id}/{case_id}/{process_id}', [TaskJumpController::class, 'show'])->name('task-jump.show');
 
     Route::resource('view-model', ViewModelController::class);
+    Route::get('view-model/{view_model}/copy', [ViewModelController::class, 'copy'])->name('view-model.copy');
     Route::post('get-view-model-rows', [ViewModelController::class, 'getRows'])->name('view-model.get-rows');
     Route::post('update-view-model-record', [ViewModelController::class, 'updateRecord'])->name('view-model.update-record');
     Route::post('delete-view-model-record', [ViewModelController::class, 'deleteRecord'])->name('view-model.delete-record');

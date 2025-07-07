@@ -76,7 +76,7 @@ class Cases extends Model
         $rows = Inbox::where(function($query) use($childCaseId){
             $query->where('case_id', $this->id)->orWhereIn('case_id', $childCaseId);
         })->whereNotIn('status', ['done', 'doneByOther', 'canceled'])->get();
-        
+
         if ($rows->isEmpty()) {
             return [(object) [
                 'archive' => 'yes',

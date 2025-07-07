@@ -1,7 +1,7 @@
 @php
     $content = json_decode($form->content);
     $content = collect($content)->sortBy('order')->toArray();
-    $task = $inbox->task;
+    $task = $inbox->task ?? '';
 @endphp
 <div class="card shadow-sm mb-4">
     <div class="card-body">

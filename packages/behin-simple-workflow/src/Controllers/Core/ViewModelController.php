@@ -7,6 +7,7 @@ use Behin\SimpleWorkflow\Models\Core\Entity;
 use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\ViewModel;
+use BehinUserRoles\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -49,14 +50,56 @@ class ViewModelController extends Controller
         return redirect()->back()->with(['success' => trans('Updated Successfully')]);
     }
 
+    public function copy(ViewModel $view_model)
+    {
+        // کپی اطلاعات رکورد
+        $newViewModel = $view_model->replicate();
+
+        // در صورت نیاز، فیلدهایی که باید منحصر به‌فرد باشن رو تغییر بده (مثلاً نام یا شناسه)
+        $newViewModel->name = $newViewModel->name . ' (Copy)';
+
+        // ذخیره رکورد جدید
+        $newViewModel->save();
+
+        return redirect()->back()->with(['success' => trans('fields.Copy Successfully')]);
+    }
+
+
     public static function getById($id)
     {
         return ViewModel::find($id);
     }
 
+    public function resolveColumnPath($model, string $columnPath)
+    {
+        try {
+            $parts = explode('()->', $columnPath);
+            $current = $model;
+
+            foreach ($parts as $index => $part) {
+                if (!$current) {
+                    return null;
+                }
+
+                if ($index === count($parts) - 1) {
+                    return $current->$part ?? null;
+                }
+
+                // استفاده از property به جای method
+                $current = $current->$part();
+            }
+
+            return null;
+        } catch (\Throwable $e) {
+            return $e->getMessage() ;
+        }
+    }
+
+
+
     public function getRows(Request $request)
     {
-        $inbox = InboxController::getById($request->inbox_id);
+        // $inbox = InboxController::getById($request->inbox_id);
         $case = CaseController::getById($request->case_id);
         $viewModel = self::getById($request->viewModel_id);
 
@@ -84,9 +127,9 @@ class ViewModelController extends Controller
         $s = '';
 
         if ($viewModel->allow_read_row) {
-            if($viewModel->show_rows_based_on == 'case_id'){
+            if ($viewModel->show_rows_based_on == 'case_id') {
                 $rows = $model::where('case_id', $case->id);
-            }else{
+            } else {
                 $rows = $model::where('case_number', $case->number);
             }
 
@@ -115,7 +158,17 @@ class ViewModelController extends Controller
             foreach ($rows as $row) {
                 $s .= "<tr>";
                 foreach ($columns as $column) {
-                    $s .= "<td>{$row->$column}</td>";
+                    try {
+                        if (str_contains($column, '()->')) {
+                            $value = $this->resolveColumnPath($row, $column);
+                        } else {
+                            $value = $row->$column ?? null;
+                        }
+
+                        $s .= "<td>{$value}</td>";
+                    } catch (\Throwable $e) {
+                        $s .= "<td>". $e->getMessage() . "</td>";
+                    }
                 }
                 $s .= "<td>";
                 if (
@@ -144,7 +197,7 @@ class ViewModelController extends Controller
 
     public function updateRecord(Request $request)
     {
-        $inbox = InboxController::getById($request->inboxId);
+        // $inbox = InboxController::getById($request->inboxId);
         $case = CaseController::getById($request->caseId);
         $viewModel = self::getById($request->viewModelId);
 

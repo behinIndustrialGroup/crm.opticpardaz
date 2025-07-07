@@ -35,6 +35,8 @@
                                         <td><a class="btn btn-primary"
                                                 href="{{ route('simpleWorkflow.view-model.edit', $viewModel->id) }}">
                                                 {{ trans('fields.Edit') }}</a>
+
+                                            <a href="{{ route('simpleWorkflow.view-model.copy', $viewModel->id) }}" class="btn btn-info">Copy</a>
                                         </td>
                                     </tr>
                                 @endforeach

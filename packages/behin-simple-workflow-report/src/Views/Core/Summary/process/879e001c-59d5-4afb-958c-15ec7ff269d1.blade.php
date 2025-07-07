@@ -63,10 +63,11 @@
                                         <tr>
                                             {{-- <td>{{ $loop->iteration }}</td> --}}
                                             <td class="d-none">{{ $case->id }}</td>
-                                            <td>{{ $case->number }}
+                                            <td>
+                                                {!! $case->history !!}
+                                                {{ $case->number }}
                                                 <a
-                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><button
-                                                        class="btn btn-primary btn-sm"><i class="fa fa-external-link"></i></button></a>
+                                                    href="{{ route('simpleWorkflowReport.summary-report.edit', ['summary_report' => $case->id]) }}"><i class="fa fa-external-link"></i></a>
                                             </td>
                                             <td>{{ $case->creator()?->name }}</td>
 

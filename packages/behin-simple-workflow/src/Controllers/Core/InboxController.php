@@ -20,7 +20,7 @@ use Behin\SimpleWorkflow\Jobs\SendPushNotification;
 
 class InboxController extends Controller
 {
-    public static function getById($id): Inbox
+    public static function getById($id)
     {
         return Inbox::find($id);
     }
