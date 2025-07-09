@@ -44,7 +44,7 @@
                     <div class="col-sm-6 mb-3">
                         <label for="type" class="form-label">{{ trans('Type') }}</label>
                         <select name="type" id="type" class="form-select form-control">
-                            @foreach (['string', 'number', 'text', 'date', 'time', 'select', 'select-multiple', 'file', 'checkbox', 'radio', 'location', 'signature', 'entity', 'title', 'div', 'button', 'help', 'hidden', 'view-model'] as $typeOption)
+                            @foreach (['string', 'number', 'formatted-digit', 'text', 'date', 'time', 'select', 'select-multiple', 'file', 'checkbox', 'radio', 'location', 'signature', 'entity', 'title', 'div', 'button', 'help', 'hidden', 'view-model'] as $typeOption)
                                 <option value="{{ $typeOption }}" @if ($field->type == $typeOption) selected @endif>
                                     {{ trans(ucwords(str_replace('-', ' ', $typeOption))) }}
                                 </option>

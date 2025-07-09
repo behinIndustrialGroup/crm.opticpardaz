@@ -15,6 +15,7 @@
             <select name="type" id="" class="form-control">
                 <option value="string">string</option>
                 <option value="number">number</option>
+                <option value="formmatted-digit">formatted-digit</option>
                 <option value="text">text</option>
                 <option value="date">date</option>
                 <option value="time">time</option>

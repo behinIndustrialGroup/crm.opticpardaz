@@ -194,5 +194,22 @@
         'class' => $fieldClass,
         'id' => $fieldId,
         'view_model_id' => $fieldAttributes?->view_model_id,
+        'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
+    ]) !!}
+@endif
+
+@if ($fieldDetails->type == 'formatted-digit')
+    {!! Form::formattedDigit($fieldId, [
+        'value' => $fieldValue,
+        'class' => 'form-control',
+        'id' => $fieldId,
+        'placeholder' => $fieldAttributes?->placeholder,
+        'required' => $required,
+        'readonly' => $readOnly,
+        'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
+        'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
+        'datalist_from_database' => isset($fieldAttributes?->datalist_from_database)
+            ? $fieldAttributes?->datalist_from_database
+            : null,
     ]) !!}
 @endif
