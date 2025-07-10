@@ -59,6 +59,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::post('conditions/{id}/test', [ ConditionController::class, 'runConditionForTest' ])->name('conditions.test');
     Route::resource('task-actors', TaskActorController::class);
     Route::resource('fields', FieldController::class);
+    Route::get('fields/{field}/copy', [FieldController::class, 'copy'])->name('fields.copy');
 
     Route::name('inbox.')->prefix('inbox')->group(function(){
         Route::get('', [ InboxController::class, 'index' ])->name('index');
