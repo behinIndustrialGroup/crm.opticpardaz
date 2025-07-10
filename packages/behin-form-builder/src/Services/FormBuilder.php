@@ -15,6 +15,7 @@ use MyFormBuilder\Fields\FileField;
 use MyFormBuilder\Fields\CheckboxField;
 use MyFormBuilder\Fields\DivField;
 use MyFormBuilder\Fields\EntityField;
+use MyFormBuilder\Fields\FormattedDigitField;
 use MyFormBuilder\Fields\HelpField;
 use MyFormBuilder\Fields\HiddenField;
 use MyFormBuilder\Fields\LocationField;
@@ -229,6 +230,15 @@ class FormBuilder
     {
         $attributes = $attributes ?? [];
         return (new ViewModelField($name, $attributes))->render();
+    }
+
+    public function formattedDigit(string $name, array $attributes = null)
+    {
+
+        $attributes = $attributes ?? [];
+        // $field = $this->fieldFactory->create('text', $name, $attributes);
+        return (new FormattedDigitField($name, $attributes))->render();
+        return $this;
     }
 
     public function submit($text = 'Submit', $attributes = []): self
