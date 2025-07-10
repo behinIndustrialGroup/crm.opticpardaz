@@ -7,6 +7,7 @@ use Behin\SimpleWorkflow\Models\Entities\Device_repair;
 use Behin\SimpleWorkflow\Models\Entities\Devices;
 use Behin\SimpleWorkflow\Models\Entities\Repair_cost;
 use Behin\SimpleWorkflow\Models\Entities\Repair_incomes;
+use Behin\SimpleWorkflow\Models\Entities\Case_customer;
 use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
@@ -97,6 +98,15 @@ Route::get('test', function(){
     echo "<table>";
     foreach($cases as $case){
         try{
+            if($case->getVariable('customer_fullname')){
+                $device = Case_customer::create([
+                    'case_id' => $case->id,
+                    'case_number' => $case->number ?? '',
+                    'name' => $case->getVariable('customer_fullname') ?? '',
+                    'mobile' => $case->getVariable('customer_mobile') ?? '',
+                    'address' => $case->getVariable('customer_address') ?? '',
+                ]);
+            }
             if($case->getVariable('device_name')){
                 $device = Devices::create([
                     'case_id' => $case->id,
@@ -110,7 +120,7 @@ Route::get('test', function(){
                     'specifications' => $case->getVariable('device_specifications'),
                 ]);
             }
-            
+
 
             if($case->getVariable('repair_report')){
                 $deviceRepair = Device_repair::create([
@@ -124,29 +134,29 @@ Route::get('test', function(){
                     'repairman_assitant' => $case->getVariable('repairman_assitant'),
                     'repair_report' => $case->getVariable('repair_report'),
                 ]);
-    
+
                 if($case->getVariable('repair_start_date')){
                     $deviceRepair->repair_start_timestamp = convertPersianDateToTimestamp($case->getVariable('repair_start_date'));
                 }
-    
+
                 if($case->getVariable('repair_is_approved')){
                     $deviceRepair->repair_is_approved = $case->getVariable('repair_is_approved');
                     $deviceRepair->repair_is_approved_by = 3;
                     $deviceRepair->repair_is_approved_description = $case->getVariable('repair_is_approved_description');
                 }
-    
+
                 if($case->getVariable('repair_is_approved_2')){
                     $deviceRepair->repair_is_approved_2 = $case->getVariable('repair_is_approved_2');
                     $deviceRepair->repair_is_approved_by_2 = 8;
                     $deviceRepair->repair_is_approved_description_2 = $case->getVariable('repair_is_approved_description_2');
                 }
-    
+
                 if($case->getVariable('repair_is_approved_3')){
                     $deviceRepair->repair_is_approved_3 = $case->getVariable('repair_is_approved_3');
                     $deviceRepair->repair_is_approved_by_3 = 4;
                     $deviceRepair->repair_is_approved_description_3 = $case->getVariable('repair_is_approved_description_3');
                 }
-    
+
                 $deviceRepair->save();
             }
 
@@ -179,11 +189,11 @@ Route::get('test', function(){
             }
 
 
-            
+
         }
         catch(Exception $e) {
             echo $case->id .  " Error: " . $e->getMessage() . '<br>';
         }
-        
+
     }
 });
