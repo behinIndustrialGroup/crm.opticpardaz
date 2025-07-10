@@ -33,7 +33,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- bootstrap rtl -->
     <link rel="stylesheet"
-        href="{{ url     ('public/behin/behin-dist/dist/css/bootstrap-rtl.min.css') . '?' . config('app.version') }}">
+        href="{{ url('public/behin/behin-dist/dist/css/bootstrap-rtl.min.css') . '?' . config('app.version') }}">
     <!-- template rtl version -->
     <link rel="stylesheet"
         href="{{ url('public/behin/behin-dist/dist/css/custom-style.css') . '?' . config('app.version') }}">
@@ -45,7 +45,8 @@
         href="{{ url('public/behin/behin-dist/plugins/datatables/dataTables.bootstrap4.css') . '?' . config('app.version') }}" />
     <link rel="stylesheet"
         href="{{ url('public/behin/behin-dist/dist/css/dropzone.min.css') . '?' . config('app.version') }}">
-    <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.css') . '?' . config('app.version') }}">
+    <link rel="stylesheet"
+        href="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.css') . '?' . config('app.version') }}">
     {{-- <link rel="stylesheet" href="{{ Url('public/behin/behin-dist/dist/css/persian-datepicker-0.4.5.min.css')  . '?' . config('app.version') }}" /> --}}
     {{-- <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
@@ -72,6 +73,8 @@
     <script src="{{ url('public/behin/behin-js/ajax.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dataTable.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dropzone.js') . '?' . config('app.version') }}"></script>
+    <script src="{{ url('public/behin/behin-dist/plugins/autonumeric/autoNumeric.min.js') . '?' . config('app.version') }}"></script>
+
     {{-- <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script> --}}
 
 
@@ -86,7 +89,7 @@
 
         @include('behin-layouts.main-sidebar')
         <div class="content-wrapper">
-            
+
             <section class="content">
                 <div class="container-fluid">
                     @yield('content')
@@ -209,6 +212,12 @@
                         locale: 'fa'
                     }
                 }
+            });
+            AutoNumeric.multiple('.formatted-digit', {
+                digitGroupSeparator: ',',
+                decimalCharacter: '.',
+                decimalPlaces: 0,
+                unformatOnSubmit: true
             });
         }
     </script>
