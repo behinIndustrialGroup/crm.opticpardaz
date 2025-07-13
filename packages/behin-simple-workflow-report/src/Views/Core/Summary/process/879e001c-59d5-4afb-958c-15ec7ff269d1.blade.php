@@ -78,12 +78,12 @@
                                             <td>{{ $repairman }}</td>
                                             <td>
                                                 @foreach ($deviceRepairs as $repair)
-                                                    {{ $repair->repair_type }}<br>
+                                                    {{ json_encode($repair->repair_type) }}<br>
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($deviceRepairs as $repair)
-                                                    {{ $repair->repair_subtype }}<br>
+                                                    {{ json_encode($repair->repair_subtype) }}<br>
                                                 @endforeach
                                             </td>
                                             @php
