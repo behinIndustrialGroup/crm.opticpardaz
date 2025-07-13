@@ -99,10 +99,11 @@ Route::get('test', function(){
     foreach($cases as $case){
         try{
             if($case->getVariable('customer_fullname')){
+
                 $device = Case_customer::create([
                     'case_id' => $case->id,
                     'case_number' => $case->number ?? '',
-                    'name' => $case->getVariable('customer_fullname') ?? '',
+                    'fullname' => $case->getVariable('customer_fullname') ?? '',
                     'mobile' => $case->getVariable('customer_mobile') ?? '',
                     'address' => $case->getVariable('customer_address') ?? '',
                 ]);
