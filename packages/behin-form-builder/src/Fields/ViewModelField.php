@@ -42,15 +42,7 @@ class ViewModelField extends AbstractField
 
         $s .= "<tbody></tbody>";
 
-        if ($viewModel->allow_create_row) {
-            $s .= "<tfoot><tr>";
-            $colspan = count($columns) +1;
-            $btnLabel = trans('fields.Create new');
-            $s .= "<td colspan='{$colspan}'>";
-            $s .= "<button class='btn btn-sm btn-primary' onclick='open_view_model_create_new_form(`$viewModel->create_form`, `$viewModel->id`, `$viewModel->api_key`)'>";
-            $s .= "{$btnLabel}</button></td>";
-            $s .= "</tr></tfoot>";
-        }
+        
 
         $s .= "</table>";
         $s .= "</div>";
