@@ -6,6 +6,8 @@ use App\Models\User;
 use Behin\SimpleWorkflow\Controllers\Core\FormController;
 use Behin\SimpleWorkflow\Controllers\Core\InboxController;
 use Behin\SimpleWorkflow\Controllers\Core\VariableController;
+use Behin\SimpleWorkflow\Models\Entities\Devices;
+use Behin\SimpleWorkflow\Models\Entities\Case_customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,6 +39,12 @@ class Cases extends Model
         'creator',
         'parent_id'
     ];
+
+    public function name(){
+        $a =  Case_customer::where('case_id', $this->id)->first()?->fullname;
+        $b = Devices::where('case_id', $this->id)->first()?->name;
+        return $a . ' ' . $b;
+    }
 
     public function variables()
     {

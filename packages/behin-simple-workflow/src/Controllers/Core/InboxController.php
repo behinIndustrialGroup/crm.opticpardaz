@@ -45,7 +45,8 @@ class InboxController extends Controller
         return $inbox;
     }
 
-    public static function caseIsInUserInbox($caseId){
+    public static function caseIsInUserInbox($caseId)
+    {
         return Inbox::where('case_id', $caseId)->whereIn('status', ['new', 'opened', 'inProgress', 'draft'])->where('actor', Auth::id())->first();
     }
 
@@ -146,7 +147,7 @@ class InboxController extends Controller
             if (!isset($form->content)) {
                 return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('Form not found'));
             }
-            if($task->assignment_type == 'public'){
+            if ($task->assignment_type == 'public') {
                 return view('SimpleWorkflowView::Core.Inbox.public-show')->with([
                     'inbox' => $inbox,
                     'case' => $case,
@@ -186,6 +187,17 @@ class InboxController extends Controller
         // دریافت عنوان تسک
         $title = $task->case_name;
 
+        if (!$task->case_name) {
+            $case = CaseController::getById($caseId);
+
+            if (method_exists($case, 'name')) {
+                $case_name = $case->name();
+                if ($case_name) {
+                    return $case_name;
+                }
+            }
+        }
+
         // جایگزینی متغیرها در عنوان
         $patterns = config('workflow.patterns');
         // Log::info(json_encode($patterns));
@@ -207,16 +219,17 @@ class InboxController extends Controller
         return $title;
     }
 
-    public static function caseHistory($caseNumber){
+    public static function caseHistory($caseNumber)
+    {
         $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
-        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
+        $rows = Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
         return view('SimpleWorkflowView::Core.Inbox.history', compact('rows'));
     }
 
-    public static function caseHistoryList($caseNumber){
+    public static function caseHistoryList($caseNumber)
+    {
         $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
-        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
+        $rows = Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
         return $rows;
     }
 }
-
