@@ -140,11 +140,11 @@
     ]) !!}
 @endif
 @if ($fieldDetails->type == 'file')
-    @php
+    {{-- @php
         $fieldValues = isset($variables) ? $variables->where('key', $field->fieldName)->pluck('value') : [];
-    @endphp
+    @endphp --}}
     {!! Form::file($fieldId, [
-        'value' => $fieldValues,
+        'value' => $fieldValues ?? [],
         'class' => 'form-control',
         'id' => $fieldId,
         'placeholder' => $fieldAttributes?->placeholder,
