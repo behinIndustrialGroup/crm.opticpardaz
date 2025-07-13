@@ -46,6 +46,16 @@ class ViewModelController extends Controller
     {
         $data = $request->except('_token');
         $data['api_key'] = $request->api_key ? $request->api_key : Str::random(16);
+        $nullableArrayFields = [
+            'which_rows_user_can_delete',
+            'which_rows_user_can_update',
+            'which_rows_user_can_read'
+        ];
+        
+        foreach ($nullableArrayFields as $field) {
+            $data[$field] = $request->has($field) ? $request->$field : [];
+        }
+        
         $view_model->update($data);
         return redirect()->back()->with(['success' => trans('Updated Successfully')]);
     }
