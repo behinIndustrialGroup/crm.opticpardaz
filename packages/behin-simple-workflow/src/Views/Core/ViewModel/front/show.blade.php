@@ -79,7 +79,7 @@
                         @endif
                     @endforeach
                 </div>
-                <button class="btn btn-sm btn-success"
+                <button class="btn btn-sm btn-success view-model-update-btn"
                     onclick="updateViewModelRecord(`{{ $row->id ?? '' }}`)">{{ trans('fields.Save') }}</button>
 
             @endif
