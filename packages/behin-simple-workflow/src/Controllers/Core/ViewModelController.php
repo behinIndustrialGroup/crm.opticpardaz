@@ -7,6 +7,7 @@ use Behin\SimpleWorkflow\Models\Core\Entity;
 use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\ViewModel;
+use BehinFileControl\Controllers\FileController;
 use BehinUserRoles\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,11 +52,11 @@ class ViewModelController extends Controller
             'which_rows_user_can_update',
             'which_rows_user_can_read'
         ];
-        
+
         foreach ($nullableArrayFields as $field) {
             $data[$field] = $request->has($field) ? $request->$field : [];
         }
-        
+
         $view_model->update($data);
         return redirect()->back()->with(['success' => trans('Updated Successfully')]);
     }
@@ -101,7 +102,7 @@ class ViewModelController extends Controller
 
             return null;
         } catch (\Throwable $e) {
-            return $e->getMessage() ;
+            return $e->getMessage();
         }
     }
 
@@ -166,47 +167,69 @@ class ViewModelController extends Controller
                 ->get();
 
             foreach ($rows as $row) {
-                $s .= "<tr>";
-                foreach ($columns as $column) {
-                    try {
-                        if (str_contains($column, '()->')) {
-                            $value = $this->resolveColumnPath($row, $column);
-                        } else {
-                            $value = $row->$column ?? null;
+                if ($viewModel->show_as == 'table') {
+                    $s .= "<tr>";
+                    foreach ($columns as $column) {
+                        try {
+                            if (str_contains($column, '()->')) {
+                                $value = $this->resolveColumnPath($row, $column);
+                            } else {
+                                $value = $row->$column ?? null;
+                            }
+
+                            $s .= "<td>{$value}</td>";
+                        } catch (\Throwable $e) {
+                            $s .= "<td>" . $e->getMessage() . "</td>";
                         }
-
-                        $s .= "<td>{$value}</td>";
-                    } catch (\Throwable $e) {
-                        $s .= "<td>". $e->getMessage() . "</td>";
                     }
-                }
-                $s .= "<td>";
-                if (
-                    in_array('all', $updateCondition) ||
-                    (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
-                    (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
-                    (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
-                ) {
-                    $s .= "<i class='fa fa-edit btn btn-sm btn-success p-1 m-1' onclick='open_view_model_form(`$viewModel->update_form`, `$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
-                }
+                    $s .= "<td>";
+                    if (
+                        in_array('all', $updateCondition) ||
+                        (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
+                        (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
+                        (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
+                    ) {
+                        $s .= "<i class='fa fa-edit btn btn-sm btn-success p-1 m-1' onclick='open_view_model_form(`$viewModel->update_form`, `$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
+                    }
 
-                if (
-                    in_array('all', $deleteCondition) ||
-                    (in_array('user-created-it', $deleteCondition) && $row->created_by == Auth::id()) ||
-                    (in_array('user-contributed-it', $deleteCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
-                    (in_array('user-updated-it', $deleteCondition) && $row->updated_by == Auth::id())
-                ) {
-                    $s .= "<i class='fa fa-trash btn-sm btn-danger p-1 m-1' onclick='delete_view_model_row(`$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
+                    if (
+                        in_array('all', $deleteCondition) ||
+                        (in_array('user-created-it', $deleteCondition) && $row->created_by == Auth::id()) ||
+                        (in_array('user-contributed-it', $deleteCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
+                        (in_array('user-updated-it', $deleteCondition) && $row->updated_by == Auth::id())
+                    ) {
+                        $s .= "<i class='fa fa-trash btn-sm btn-danger p-1 m-1' onclick='delete_view_model_row(`$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
+                    }
+                    $s .= "</td>";
+                    $s .= "</tr>";
                 }
-                $s .= "</td>";
-                $s .= "</tr>";
+                if ($viewModel->show_as == 'box') {
+                    $request = new Request([
+                        'api_key' => $viewModel->api_key,
+                        'row_id' => $row->id,
+                        'case_id' => $request->case_id,
+                        'viewModel_id' => $viewModel->id,
+                    ]);
+                    $s .= "<div class='card'>";
+                    if (
+                        in_array('all', $updateCondition) ||
+                        (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
+                        (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
+                        (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
+                    ) {
+                        $s .= FormController::open($request, $viewModel->update_form, false);
+                    } else {
+                        $s .= FormController::openReadForm($request, $viewModel->read_form, false);
+                    }
+                    $s .= "</div>";
+                }
             }
         }
 
         //
         if ($viewModel->allow_create_row and count($rows) < $max_number_of_rows) {
             $s .= "<tr>";
-            $colspan = count($columns) +1;
+            $colspan = count($columns) + 1;
             $btnLabel = trans('fields.Create new');
             $s .= "<td colspan='{$colspan}'>";
             $s .= "<button class='btn btn-sm btn-primary' onclick='open_view_model_create_new_form(`$viewModel->create_form`, `$viewModel->id`, `$viewModel->api_key`)'>";
@@ -218,6 +241,7 @@ class ViewModelController extends Controller
 
     public function updateRecord(Request $request)
     {
+        // return $request->all();
         // $inbox = InboxController::getById($request->inboxId);
         $case = CaseController::getById($request->caseId);
         $viewModel = self::getById($request->viewModelId);
@@ -231,8 +255,16 @@ class ViewModelController extends Controller
         $row = $model::findOrNew($request->rowId);
 
         $isNew = !$row->exists;
-
-        $row->fill($request->all());
+        $data = $request->all();
+        // بررسی داینامیک فایل‌ها
+        foreach ($request->allFiles() as $fieldName => $file) {
+            $savedPaths = [];
+            $path = FileController::store($file, 'simpleWorkflow');
+            if ($path['status'] == 200) {
+                $data[$fieldName] = $path['dir'];
+            }
+        }
+        $row->fill($data);
 
         if ($isNew) {
             $row->case_id = $case->id;

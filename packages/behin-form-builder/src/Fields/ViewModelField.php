@@ -31,18 +31,22 @@ class ViewModelField extends AbstractField
 
         $s .= "</div>";
 
-        $s .= "<table class='table table-striped' id='{$viewModel->id}'>";
-        $s .= "<thead><tr>";
-        foreach ($columns as $column) {
-            $columnLabel = trans("fields." . $column);
-            $s .= "<th>$columnLabel</th>";
+        $s .= "<table class='table table-striped' id='{$viewModel->id}' style='width: 100%'>";
+        if ($viewModel->show_as == 'table') {
+
+            $s .= "<thead><tr>";
+            foreach ($columns as $column) {
+                $columnLabel = trans("fields." . $column);
+                $s .= "<th>$columnLabel</th>";
+            }
+            $s .= "<th></th>";
+            $s .= "</tr></thead>";
         }
-        $s .= "<th></th>";
-        $s .= "</tr></thead>";
+
 
         $s .= "<tbody></tbody>";
 
-        
+
 
         $s .= "</table>";
         $s .= "</div>";
