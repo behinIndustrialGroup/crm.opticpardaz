@@ -144,7 +144,7 @@
         $fieldValues = isset($variables) ? $variables->where('key', $field->fieldName)->pluck('value') : [];
     @endphp --}}
     {!! Form::file($fieldId, [
-        'value' => $fieldValues ?? [],
+        'value' => $fieldValue ?? [],
         'class' => 'form-control',
         'id' => $fieldId,
         'placeholder' => $fieldAttributes?->placeholder,
