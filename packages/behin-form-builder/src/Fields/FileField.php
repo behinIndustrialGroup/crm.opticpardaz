@@ -13,14 +13,15 @@ class FileField extends AbstractField
             $s .= ' <span class="text-danger">*</span>';
         }
         $s .= '</label><br>';
-        if(is_string($this->attributes['value'])){
+        if($this->attributes['value']){
             $s .= '<a href="' . url('public/' . $this->attributes['value']) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
-        }else{
-            foreach($this->attributes['value'] as $value){
-                $s .= '<a href="' . url('public/' . $value) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
-            }
         }
-        
+        // else{
+        //     foreach($this->attributes['value'] as $value){
+        //         $s .= '<a href="' . url('public/' . $value) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
+        //     }
+        // }
+
         if($this->attributes['readonly'] == 'on'){
             $s .= '<input type="file" multiple name="' . $this->name . '" disabled>';
         }else{
