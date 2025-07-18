@@ -97,104 +97,118 @@ Route::get('test', function(){
     $cases = Cases::where('process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')->groupBy('id')->get();
     echo "<table>";
     foreach($cases as $case){
-        try{
-            if($case->getVariable('customer_fullname')){
-
-                $device = Case_customer::create([
-                    'case_id' => $case->id,
-                    'case_number' => $case->number ?? '',
-                    'fullname' => $case->getVariable('customer_fullname') ?? '',
-                    'mobile' => $case->getVariable('customer_mobile') ?? '',
-                    'address' => $case->getVariable('customer_address') ?? '',
-                ]);
-            }
-            if($case->getVariable('device_name')){
-                $device = Devices::create([
-                    'case_id' => $case->id,
-                    'case_number' => $case->number ?? '',
-                    'name' => $case->getVariable('device_name') ?? '',
-                    'brand' => $case->getVariable('device_brand') ?? '',
-                    'power' => $case->getVariable('device_power'),
-                    'serial' => $case->getVariable('device_serial_no') ?? '',
-                    'initial_pic' => $case->getVariable('initial_device_pic'),
-                    'plaque_pic' => $case->getVariable('device_plaque_image'),
-                    'specifications' => $case->getVariable('device_specifications'),
-                ]);
-            }
-
-
-            if($case->getVariable('repair_report')){
-                $deviceRepair = Device_repair::create([
-                    'case_id' => $case->id,
-                    'case_number' => $case->number ?? '',
-                    'device_id' => $device->id,
-                    'repairman' => $case->getVariable('repairman'),
-                    'repair_type' => $case->getVariable('repair_type'),
-                    'repair_subtype' => $case->getVariable('repair_subtype'),
-                    'repair_pic' => $case->getVariable('device_pic'),
-                    'repairman_assitant' => $case->getVariable('repairman_assitant'),
-                    'repair_report' => $case->getVariable('repair_report'),
-                ]);
-
-                if($case->getVariable('repair_start_date')){
-                    $deviceRepair->repair_start_timestamp = convertPersianDateToTimestamp($case->getVariable('repair_start_date'));
+        try {
+            // Customer info
+            if ($case->getVariable('customer_fullname')) {
+                if (!Case_customer::where('case_id', $case->id)->exists()) {
+                    Case_customer::create([
+                        'case_id' => $case->id,
+                        'case_number' => $case->number ?? '',
+                        'fullname' => $case->getVariable('customer_fullname') ?? '',
+                        'mobile' => $case->getVariable('customer_mobile') ?? '',
+                        'address' => $case->getVariable('customer_address') ?? '',
+                    ]);
                 }
-
-                if($case->getVariable('repair_is_approved')){
-                    $deviceRepair->repair_is_approved = $case->getVariable('repair_is_approved');
-                    $deviceRepair->repair_is_approved_by = 3;
-                    $deviceRepair->repair_is_approved_description = $case->getVariable('repair_is_approved_description');
-                }
-
-                if($case->getVariable('repair_is_approved_2')){
-                    $deviceRepair->repair_is_approved_2 = $case->getVariable('repair_is_approved_2');
-                    $deviceRepair->repair_is_approved_by_2 = 8;
-                    $deviceRepair->repair_is_approved_description_2 = $case->getVariable('repair_is_approved_description_2');
-                }
-
-                if($case->getVariable('repair_is_approved_3')){
-                    $deviceRepair->repair_is_approved_3 = $case->getVariable('repair_is_approved_3');
-                    $deviceRepair->repair_is_approved_by_3 = 4;
-                    $deviceRepair->repair_is_approved_description_3 = $case->getVariable('repair_is_approved_description_3');
-                }
-
-                $deviceRepair->save();
             }
 
-            if($case->getVariable('repair_cost')){
-                $repairCost = Repair_cost::create([
-                    'case_id' => $case->id,
-                    'case_number' => $case->number,
-                    'cost' => convertPersianToEnglish($case->getVariable('repair_cost')),
-                    'description' => $case->getVariable('repair_cost_description'),
-                    'pre_invoice' => $case->getVariable('pre_invoice'),
-                    'pre_invoice_has_been_sended_to_customer' => $case->getVariable('pre_invoice_has_been_sended_to_customer'),
-                ]);
+            // Device info
+            $device = null;
+            if ($case->getVariable('device_name')) {
+                if (!Devices::where('case_id', $case->id)->where('name', $case->getVariable('device_name'))->exists()) {
+                    $device = Devices::create([
+                        'case_id' => $case->id,
+                        'case_number' => $case->number ?? '',
+                        'name' => $case->getVariable('device_name') ?? '',
+                        'brand' => $case->getVariable('device_brand') ?? '',
+                        'power' => $case->getVariable('device_power'),
+                        'serial' => $case->getVariable('device_serial_no') ?? '',
+                        'initial_pic' => $case->getVariable('initial_device_pic'),
+                        'plaque_pic' => $case->getVariable('device_plaque_image'),
+                        'specifications' => $case->getVariable('device_specifications'),
+                    ]);
+                } else {
+                    $device = Devices::where('case_id', $case->id)->where('name', $case->getVariable('device_name'))->first();
+                }
             }
 
-            if($case->getVariable('payment_amount')){
-                $repairIncomes = Repair_incomes::create([
-                    'case_id' => $case->id,
-                    'case_number' => $case->number,
-                    'payment_method' => $case->getVariable('payment_method'),
-                    'payment_receipt' =>$case->getVariable('payment_receipt'),
-                    'payment_date' =>$case->getVariable('payment_date'),
-                    'payment_amount'=>$case->getVariable('payment_amount'),
-                    'payment_description'=>$case->getVariable('payment_description'),
-                    'transaction_number'=>$case->getVariable('transaction_number'),
-                    'cheque_number'=>$case->getVariable('cheque_number'),
-                    'cheque_due_date'=>$case->getVariable('cheque_due_date'),
-                    'customer_account_status_image'=>$case->getVariable('customer_account_status_image'),
-                    'cheque_image'=>$case->getVariable('cheque_image')
-                ]);
+            // Repair info
+            if ($case->getVariable('repair_report') && $device) {
+                if (!Device_repair::where('case_id', $case->id)->where('device_id', $device->id)->exists()) {
+                    $deviceRepair = Device_repair::create([
+                        'case_id' => $case->id,
+                        'case_number' => $case->number ?? '',
+                        'device_id' => $device->id,
+                        'repairman' => $case->getVariable('repairman'),
+                        'repair_type' => $case->getVariable('repair_type'),
+                        'repair_subtype' => $case->getVariable('repair_subtype'),
+                        'repair_pic' => $case->getVariable('device_pic'),
+                        'repairman_assitant' => $case->getVariable('repairman_assitant'),
+                        'repair_report' => $case->getVariable('repair_report'),
+                    ]);
+
+                    if ($case->getVariable('repair_start_date')) {
+                        $deviceRepair->repair_start_timestamp = convertPersianDateToTimestamp($case->getVariable('repair_start_date'));
+                    }
+
+                    if ($case->getVariable('repair_is_approved')) {
+                        $deviceRepair->repair_is_approved = $case->getVariable('repair_is_approved');
+                        $deviceRepair->repair_is_approved_by = 3;
+                        $deviceRepair->repair_is_approved_description = $case->getVariable('repair_is_approved_description');
+                    }
+
+                    if ($case->getVariable('repair_is_approved_2')) {
+                        $deviceRepair->repair_is_approved_2 = $case->getVariable('repair_is_approved_2');
+                        $deviceRepair->repair_is_approved_by_2 = 8;
+                        $deviceRepair->repair_is_approved_description_2 = $case->getVariable('repair_is_approved_description_2');
+                    }
+
+                    if ($case->getVariable('repair_is_approved_3')) {
+                        $deviceRepair->repair_is_approved_3 = $case->getVariable('repair_is_approved_3');
+                        $deviceRepair->repair_is_approved_by_3 = 4;
+                        $deviceRepair->repair_is_approved_description_3 = $case->getVariable('repair_is_approved_description_3');
+                    }
+
+                    $deviceRepair->save();
+                }
             }
 
+            // Repair cost
+            if ($case->getVariable('repair_cost')) {
+                if (!Repair_cost::where('case_id', $case->id)->exists()) {
+                    Repair_cost::create([
+                        'case_id' => $case->id,
+                        'case_number' => $case->number,
+                        'cost' => convertPersianToEnglish($case->getVariable('repair_cost')),
+                        'description' => $case->getVariable('repair_cost_description'),
+                        'pre_invoice' => $case->getVariable('pre_invoice'),
+                        'pre_invoice_has_been_sended_to_customer' => $case->getVariable('pre_invoice_has_been_sended_to_customer'),
+                    ]);
+                }
+            }
 
+            // Income / payment
+            if ($case->getVariable('payment_amount')) {
+                if (!Repair_incomes::where('case_id', $case->id)->where('payment_amount', $case->getVariable('payment_amount'))->exists()) {
+                    Repair_incomes::create([
+                        'case_id' => $case->id,
+                        'case_number' => $case->number,
+                        'payment_method' => $case->getVariable('payment_method'),
+                        'payment_receipt' => $case->getVariable('payment_receipt'),
+                        'payment_date' => $case->getVariable('payment_date'),
+                        'payment_amount' => $case->getVariable('payment_amount'),
+                        'payment_description' => $case->getVariable('payment_description'),
+                        'transaction_number' => $case->getVariable('transaction_number'),
+                        'cheque_number' => $case->getVariable('cheque_number'),
+                        'cheque_due_date' => $case->getVariable('cheque_due_date'),
+                        'customer_account_status_image' => $case->getVariable('customer_account_status_image'),
+                        'cheque_image' => $case->getVariable('cheque_image')
+                    ]);
+                }
+            }
 
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             echo $case->id .  " Error: " . $e->getMessage() . '<br>';
         }
-
     }
+
 });
