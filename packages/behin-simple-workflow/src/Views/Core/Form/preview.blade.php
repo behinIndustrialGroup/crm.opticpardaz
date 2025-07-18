@@ -16,7 +16,7 @@
             if ($fieldDetails) {
                 $fieldAttributes = json_decode($fieldDetails->attributes);
                 $fieldValue = isset($case) ? $case->getVariable($field->fieldName) : null;
-                $fieldId = fieldAttributes['id'] ? fieldAttributes['id'] : $field->fieldName;
+                $fieldId = $fieldAttributes['id'] ? $fieldAttributes['id'] : $field->fieldName;
             } else {
                 if ($field->fieldName != $form->id) {
                     $childForm = getFormInformation($field->fieldName);
