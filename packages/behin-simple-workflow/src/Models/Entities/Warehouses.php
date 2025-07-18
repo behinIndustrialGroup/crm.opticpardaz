@@ -3,14 +3,13 @@ namespace Behin\SimpleWorkflow\Models\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\SoftDeletes;
- class Transactions extends Model 
+ class Warehouses extends Model 
 { 
     use SoftDeletes; 
     public $incrementing = false; 
     protected $keyType = 'string'; 
-    public $table = 'wf_entity_transactions'; 
-    protected $fillable = ['date', 'transaction_type', 'amount', 'description', 'category', 'case_id', 'payment_method', 'counterparty', 'document_number', 'register_user_id', 'status', 'notes', 'case_number',  'created_by', 'updated_by', 'contributers', ]; 
+    public $table = 'wf_entity_warehouses'; 
+    protected $fillable = ['name', 'manager', 'address', 'phone', 'capacity', ]; 
 protected static function boot()
         {
             parent::boot();
