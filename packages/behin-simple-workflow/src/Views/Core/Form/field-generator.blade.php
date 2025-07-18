@@ -184,7 +184,7 @@
 @if ($fieldDetails->type == 'button')
     {!! Form::button($fieldName, [
         'class' => $fieldClass,
-        'id' => $fieldId,
+        'id' => $fieldAttributes?->id,
         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
         'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
     ]) !!}

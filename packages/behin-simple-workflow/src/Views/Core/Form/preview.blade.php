@@ -10,13 +10,13 @@
             $fieldLabel = trans('SimpleWorkflowLang::fields.' . $field->fieldName);
             $fieldName = $field->fieldName;
             $fieldClass = $field->class;
+            $fieldId = $field->fieldName;
             $required = $field->required;
             $readOnly = $mode ? $mode : $field->readOnly;
             $fieldDetails = getFieldDetailsByName($field->fieldName);
             if ($fieldDetails) {
                 $fieldAttributes = json_decode($fieldDetails->attributes);
                 $fieldValue = isset($case) ? $case->getVariable($field->fieldName) : null;
-                $fieldId = $fieldAttributes['id'] ? $fieldAttributes['id'] : $field->fieldName;
             } else {
                 if ($field->fieldName != $form->id) {
                     $childForm = getFormInformation($field->fieldName);
