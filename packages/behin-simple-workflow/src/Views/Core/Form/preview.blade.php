@@ -10,7 +10,7 @@
             $fieldLabel = trans('SimpleWorkflowLang::fields.' . $field->fieldName);
             $fieldName = $field->fieldName;
             $fieldClass = $field->class;
-            $fieldId = $field->fieldName;
+            $fieldId = $field->id ? $field->id : $field->fieldName;
             $required = $field->required;
             $readOnly = $mode ? $mode : $field->readOnly;
             $fieldDetails = getFieldDetailsByName($field->fieldName);
