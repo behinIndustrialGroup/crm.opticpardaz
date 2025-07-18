@@ -45,7 +45,9 @@
             "Behin\\SimpleWorkflowReport\\": "packages/behin-simple-workflow-report/src/",
             "MyFormBuilder\\": "packages/behin-form-builder/src/",
             "TelegramBot\\": "packages/behin-telegram-bot/src/",
-            "BaleBot\\": "packages/behin-bale-bot/src/"
+            "BaleBot\\": "packages/behin-bale-bot/src/",
+            "NumberToWord\\": "packages/number-to-word/src/"
+
         },
         "files": [
             "packages/behin-init/src/App/Helpers/behin-helpers.php",

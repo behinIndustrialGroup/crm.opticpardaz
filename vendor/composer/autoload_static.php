@@ -141,6 +141,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'N' => 
         array (
             'NunoMaduro\\Collision\\' => 21,
+            'NumberToWord\\' => 13,
         ),
         'M' => 
         array (
@@ -495,6 +496,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'NunoMaduro\\Collision\\' => 
         array (
             0 => __DIR__ . '/..' . '/nunomaduro/collision/src',
+        ),
+        'NumberToWord\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/number-to-word/src',
         ),
         'MyFormBuilder\\' => 
         array (
@@ -4012,6 +4017,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Nette\\Utils\\UnknownImageFileException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Validators' => __DIR__ . '/..' . '/nette/utils/src/Utils/Validators.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
+        'NumberToWord\\Converter' => __DIR__ . '/../..' . '/packages/number-to-word/src/Converter.php',
+        'NumberToWord\\Dictionary' => __DIR__ . '/../..' . '/packages/number-to-word/src/Dictionary.php',
+        'NumberToWord\\PersianNumberToWords' => __DIR__ . '/../..' . '/packages/number-to-word/src/PersianNumberToWords.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\Commands\\TestCommand' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/Commands/TestCommand.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\ExceptionHandler' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php',

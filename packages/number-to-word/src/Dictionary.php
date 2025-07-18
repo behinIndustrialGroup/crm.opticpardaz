@@ -1,6 +1,6 @@
 <?php
 
-namespace MojtabaaHN\PersianNumberToWords;
+namespace NumberToWord;
 
 class Dictionary
 {
