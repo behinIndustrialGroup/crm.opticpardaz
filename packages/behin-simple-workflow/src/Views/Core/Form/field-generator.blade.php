@@ -182,7 +182,7 @@
     ]) !!}
 @endif
 @if ($fieldDetails->type == 'button')
-    {!! Form::button($fieldId, [
+    {!! Form::button($fieldName, [
         'class' => $fieldClass,
         'id' => $fieldId,
         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,

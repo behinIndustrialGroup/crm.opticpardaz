@@ -68,6 +68,10 @@
                     @break
 
                     @default
+                        <div class="col-sm-4 mb-3">
+                            <label for="id" class="form-label">{{ trans('Id') }}</label>
+                            <input name="id" id="id" class="form-control" rows="4" dir="ltr" value="{{ is_string($attributes->id ?? null) ? $attributes->id : '' }}">
+                        </div>
                         @if (in_array($field->type, ['select', 'select-multiple']))
                             <div class="mb-3">
                                 <label for="options" class="form-label">{{ trans('Options') }}</label>
