@@ -283,13 +283,17 @@ class ViewModelController extends Controller
         }
 
         $row->save();
-        if($viewModel->script_after_create){
-            $result= ScriptController::runFromView($request, $viewModel->script_after_create);
-            if($result){
+
+        if ($viewModel->script_after_create) {
+            $request->merge(['rowId' => $row->id]);
+
+            $result = ScriptController::runFromView($request, $viewModel->script_after_create);
+
+            if ($result) {
                 return $result;
             }
         }
-        
+
 
         return response(trans('fields.updated'));
     }
