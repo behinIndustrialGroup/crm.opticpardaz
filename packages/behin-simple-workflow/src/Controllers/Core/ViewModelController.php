@@ -108,7 +108,6 @@ class ViewModelController extends Controller
     }
 
 
-
     public function getRows(Request $request)
     {
         // $inbox = InboxController::getById($request->inbox_id);
@@ -284,10 +283,13 @@ class ViewModelController extends Controller
         }
 
         $row->save();
-        $result= ScriptController::runFromView($request, $viewModel->script_after_create);
-        if($result){
-            return $result;
+        if($viewModel->script_after_create){
+            $result= ScriptController::runFromView($request, $viewModel->script_after_create);
+            if($result){
+                return $result;
+            }
         }
+        
 
         return response(trans('fields.updated'));
     }
