@@ -37,6 +37,16 @@
                                             </tr>
                                         @endif
                                     @endforeach
+                                    @if(auth()->user()->access('خلاصه گزارش: تراکنش ها (هزینه ها و دستمزدها)'))
+                                            <tr>
+                                                <td class="d-none">تراکنش ها (هزینه ها و دستمزدها)</td>
+                                                <td>تراکنش ها (هزینه ها و دستمزدها)</td>
+                                                <td class="d-none"></td>
+                                                <td>
+                                                    <a href="{{ route('simpleWorkflowReport.transaction-report.index') }}" class="btn btn-primary btn-sm">مشاهده گزارش</a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                 </tbody>
                             </table>
                         </div>

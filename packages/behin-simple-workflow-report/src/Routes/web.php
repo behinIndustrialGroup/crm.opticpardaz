@@ -7,6 +7,7 @@ use Behin\SimpleWorkflowReport\Controllers\Core\FinReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\ReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
 use Behin\SimpleWorkflowReport\Controllers\Core\SummaryReportController;
+use Behin\SimpleWorkflowReport\Controllers\Core\TransActionController;
 use Behin\SimpleWorkflowReport\Controllers\Scripts\PersonelActivityController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,6 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     });
 
     Route::resource('oppa-report', OPPAReportController::class);
-    Route::resource('personel-activity', PersonelActivityController::class);
+    Route::resource('transaction-report', TransActionController::class);
 
 });

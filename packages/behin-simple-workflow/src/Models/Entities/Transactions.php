@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Behin\SimpleWorkflow\Models\Core\Cases;
  class Transactions extends Model 
 { 
     use SoftDeletes; 
@@ -19,4 +20,6 @@ protected static function boot()
                 $model->id = $model->id ?? substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 10);
             });
         }
-}
+public function case(){
+    return Cases::find($this->case_id);
+}}
