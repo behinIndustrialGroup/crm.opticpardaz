@@ -49,7 +49,10 @@ class ViewModel extends Model
         'read_form',
         'read_form_fields',
         'which_rows_user_can_read',
-        'show_rows_based_on'
+        'show_rows_based_on',
+        'script_after_create',
+        'script_after_update',
+        'script_after_delete',
     ];
 
     protected $casts = [

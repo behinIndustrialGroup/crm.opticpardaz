@@ -65,6 +65,8 @@
                 </td>
             </tr>
         </table>
+
+        {{-- FOR CREATE --}}
         <table class="table table-primary">
             <tr>
                 <td>{{ trans('fields.allow_create_row') }}</td>
@@ -96,6 +98,17 @@
                             {{ trans('fields.yes') }}</option>
                         <option value="0" {{ $view_model->show_create_form_at_the_end == 0 ? 'selected' : '' }}>
                             {{ trans('fields.no') }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ trans('fields.script_after_create') }}</td>
+                <td>
+                    <select name="script_after_create" id="" class="select2">
+                        @foreach ($scripts as $script)
+                            <option value="{{ $script->id }}"
+                                {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                        @endforeach
                     </select>
                 </td>
             </tr>

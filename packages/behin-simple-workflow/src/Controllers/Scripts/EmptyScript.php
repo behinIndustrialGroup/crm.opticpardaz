@@ -12,15 +12,16 @@ use Illuminate\Http\Request;
 class EmptyScript extends Controller
 {
     protected $case;
-    public function __construct($case) {
-        $this->case = $case;
+    public function __construct($case =null) {
+        // $this->case = $case;
         // return VariableController::save(
         //     $this->case->process_id, $this->case->id, 'manager', 2
         // );
     }
 
-    public function execute()
+    public function execute(Request $request)
     {
+        return $request->caseId;
         // throw new \Exception("test2");
         // VariableController::save(
         //         $this->case->process_id, $this->case->id, 'seda', 2

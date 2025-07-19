@@ -40,7 +40,8 @@ class ViewModelController extends Controller
     {
         $entities = EntityController::getAll();
         $forms = FormController::getAll();
-        return view('SimpleWorkflowView::Core.ViewModel.edit', compact('view_model', 'entities', 'forms'));
+        $scripts = ScriptController::getAll();
+        return view('SimpleWorkflowView::Core.ViewModel.edit', compact('view_model', 'entities', 'forms', 'scripts'));
     }
 
     public function update(Request $request, ViewModel $view_model)
@@ -283,6 +284,10 @@ class ViewModelController extends Controller
         }
 
         $row->save();
+        $result= ScriptController::runFromView($request, $viewModel->script_after_create);
+        if($result){
+            return $result;
+        }
 
         return response(trans('fields.updated'));
     }
