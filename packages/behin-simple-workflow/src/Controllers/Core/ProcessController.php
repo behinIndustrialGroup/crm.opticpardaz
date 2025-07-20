@@ -34,7 +34,7 @@ class ProcessController extends Controller
 
     public static function getAll(): object
     {
-        return Process::get();
+        return Process::orderBy('created_at','desc')->get();
     }
 
     public static function listOfProcessThatUserCanStart($userId = null):array

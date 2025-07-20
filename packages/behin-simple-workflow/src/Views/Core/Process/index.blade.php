@@ -21,6 +21,7 @@
                                 <tr>
                                     <th style="width: 1%">#</th>
                                     <th>{{ trans('Name') }}</th>
+                                    <th>{{ trans('Category') }}</th>
                                     <th>{{ trans('Created at') }}</th>
                                     <th>{{ trans('Edit') }}</th>
                                 </tr>
@@ -30,6 +31,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $value->name }}</td>
+                                        <td>{{ $value->category }}</td>
                                         <td>{{ $value->created_at }}</td>
                                         <td class="project-actions text-right">
                                             <a class="btn btn-primary btn-sm" href="{{ route('simpleWorkflow.task.index', $value->id) }}">
