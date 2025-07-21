@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'number',
         'name',
         'email',
         'password',
@@ -27,7 +28,8 @@ class User extends Authenticatable
         'role_id',
         'reset_code',
         'pm_username', 'pm_user_password', 'pm_user_access_token', 'pm_user_access_token_exp_date',
-        'ext_num'
+        'ext_num',
+        'valid_ip'
     ];
 
     /**
@@ -76,6 +78,10 @@ class User extends Authenticatable
 
     function role(){
         return Role::find($this->role_id);
+    }
+
+    function departments(){
+        return UserDepartment::where('user_id', $this->id)->get();
     }
 
 }
