@@ -234,7 +234,7 @@ class RoutingController extends Controller
                         SendPushNotification::dispatch(
                             $inbox->actor,
                             'کار جدید',
-                            $task->name . ' - ' . $inbox->case_name,
+                            'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
                             route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
@@ -247,7 +247,7 @@ class RoutingController extends Controller
                         SendPushNotification::dispatch(
                             $inbox->actor,
                             'کار جدید',
-                            $task->name . ' - ' . $inbox->case_name,
+                            'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
                             route('simpleWorkflow.inbox.view', $inbox->id)
                         );
                     }
@@ -255,7 +255,7 @@ class RoutingController extends Controller
                 if ($task->assignment_type == 'public') {
                     $taskActors = TaskActorController::getActorsByTaskId($task->id)->pluck('actor');
                     foreach ($taskActors as $actor) {
-                        $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
+                        $inbox = InboxController::create($task->id, $caseId, $actor, 'done');
                     }
                 }
             }
@@ -329,6 +329,10 @@ class RoutingController extends Controller
 
                     return 'break';
                 }
+            }
+            if ($task->type == 'end') {
+                $inbox = InboxController::create($task->id, $caseId, null, 'done');
+                return 'break';
             }
         } catch (Exception $th) {
             // BotController::sendMessage(681208098, $th->getMessage());
