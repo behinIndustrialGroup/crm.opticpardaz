@@ -60,7 +60,7 @@
                                             $device_serial_no = $device->serial;
                                             $repairman = '';
                                             foreach ($deviceRepairs as $repair) {
-                                                $repairman .= $repair->repairman()->name . '<br>';
+                                                $repairman .= $repair->repairman()?->name . '<br>';
                                             }
                                         @endphp
 
