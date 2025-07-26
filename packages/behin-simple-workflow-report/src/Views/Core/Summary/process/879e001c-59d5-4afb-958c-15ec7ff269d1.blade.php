@@ -61,7 +61,7 @@
                                             $repairman = '';
                                             foreach ($deviceRepairs as $repair) {
                                                 if($repair->repairman() != null){
-                                                    $repairman .= $repair->repairman()->name . '<br>';
+                                                    $repairman .= $repair->repairman()->name . ' ';
                                                 }
                                             }
                                         @endphp
@@ -83,7 +83,7 @@
                                             <td>{{ $repairman }}</td>
                                             <td>
                                                 @foreach ($deviceRepairs as $repair)
-                                                    {{ json_encode($repair->repair_type) }}<br>
+                                                    {{ $repair->repair_type_text }}<br>
                                                 @endforeach
                                             </td>
                                             <td>
