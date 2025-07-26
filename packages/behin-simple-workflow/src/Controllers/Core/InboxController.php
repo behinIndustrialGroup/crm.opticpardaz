@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use App\Events\NewInboxEvent;
 use App\Models\User;
 use Behin\SimpleWorkflow\Jobs\SendPushNotification;
+use Behin\SimpleWorkflow\Models\Entities\CasesManual;
 
 class InboxController extends Controller
 {
@@ -188,7 +189,8 @@ class InboxController extends Controller
         $title = $task->case_name;
 
         if (!$task->case_name) {
-            $case = CaseController::getById($caseId);
+            $case = CasesManual::find($caseId);
+            return $case->createName();
 
             if (method_exists($case, 'name')) {
                 $case_name = $case->name();
