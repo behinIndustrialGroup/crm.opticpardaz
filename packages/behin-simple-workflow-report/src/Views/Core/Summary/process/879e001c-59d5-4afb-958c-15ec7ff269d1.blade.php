@@ -6,6 +6,7 @@
 @endsection
 
 @php
+    use Behin\SimpleWorkflow\Models\Entities\Case_customer;
     use Behin\SimpleWorkflow\Models\Entities\Device_repair;
 @endphp
 
