@@ -59,8 +59,8 @@
                                             $device_name = $device->name;
                                             $device_serial_no = $device->serial;
                                             $repairman = '';
-                                            foreach ($deviceRepairs->repairman() as $expert) {
-                                                $repairman .= $expert->name . '<br>';
+                                            foreach ($deviceRepairs as $repair) {
+                                                $repairman .= $repair->repairman()->name . '<br>';
                                             }
                                         @endphp
 
