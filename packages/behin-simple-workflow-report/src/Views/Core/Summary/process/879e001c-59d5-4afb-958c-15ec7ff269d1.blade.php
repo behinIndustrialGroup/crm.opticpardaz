@@ -56,17 +56,14 @@
 
                                             $name = $caseCustomer->fullname ?? '';
                                             $mobile = $caseCustomer->mobile ?? '';
-                                            $device_name = $device->name;
-                                            $device_serial_no = $device->serial;
+                                            $device_name = $device->name ?? '';
+                                            $device_serial_no = $device->serial ?? '';
                                             $repairman = '';
                                             foreach ($deviceRepairs as $repair) {
-                                                if($repair->repairman())){
+                                                if($repair->repairman() != null){
                                                     $repairman .= $repair->repairman()->name . '<br>';
                                                 }
                                             }
-                                        @endphp
-
-                                        @php
                                         @endphp
                                         <tr>
                                             {{-- <td>{{ $loop->iteration }}</td> --}}
