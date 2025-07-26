@@ -88,7 +88,7 @@
                                             </td>
                                             <td>
                                                 @foreach ($deviceRepairs as $repair)
-                                                    {{ json_encode($repair->repair_subtype) }}<br>
+                                                    {{ $repair->repair_subtype_text }}<br>
                                                 @endforeach
                                             </td>
                                             @php
