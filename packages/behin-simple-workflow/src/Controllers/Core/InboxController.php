@@ -158,6 +158,9 @@ class InboxController extends Controller
                     'form' => $form
                 ]);
             }
+            if($inbox->actor != Auth::id()){
+                return abort(403, "عذرخواهم ولی دسترسی ندارید");
+            }
             return view('SimpleWorkflowView::Core.Inbox.show')->with([
                 'inbox' => $inbox,
                 'case' => $case,
