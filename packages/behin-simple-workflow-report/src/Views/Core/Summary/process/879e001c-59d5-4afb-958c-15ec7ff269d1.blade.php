@@ -7,6 +7,7 @@
 
 @php
     use Behin\SimpleWorkflow\Models\Entities\Case_customer;
+    use Behin\SimpleWorkflow\Models\Entities\Devices;
     use Behin\SimpleWorkflow\Models\Entities\Device_repair;
 @endphp
 
@@ -50,17 +51,20 @@
                                     @foreach ($process->cases as $case)
                                         @php
                                             $caseCustomer = Case_customer::where('case_number', $case->number)->first();
+                                            $device = Devices::where('case_number', $case->number)->first();
+                                            $deviceRepairs = Device_repair::where('case_number', $case->number)->get();
+
                                             $name = $caseCustomer->fullname ?? '';
                                             $mobile = $caseCustomer->mobile ?? '';
-                                            $device_name = $case->getVariable('device_name');
-                                            $device_serial_no = $case->getVariable('device_serial_no');
-                                            $repairman = $case->getVariable('repairman');
-                                            $repairman = getUserInfo($repairman)?->name ?? '';
-                                            $last_status = $case->getVariable('last_status');
+                                            $device_name = $device->name;
+                                            $device_serial_no = $device->serial;
+                                            $repairman = '';
+                                            foreach ($deviceRepairs->repairman() as $expert) {
+                                                $repairman .= $expert->name . '<br>';
+                                            }
                                         @endphp
 
                                         @php
-                                            $deviceRepairs = Device_repair::where('case_number', $case->number)->get();
                                         @endphp
                                         <tr>
                                             {{-- <td>{{ $loop->iteration }}</td> --}}
