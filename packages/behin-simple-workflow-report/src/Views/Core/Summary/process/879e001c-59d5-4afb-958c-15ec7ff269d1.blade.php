@@ -48,8 +48,9 @@
                                 <tbody>
                                     @foreach ($process->cases as $case)
                                         @php
-                                            $name = $case->getVariable('customer_fullname');
-                                            $mobile = $case->getVariable('customer_mobile');
+                                            $caseCustomer = Case_customer::where('case_number', $case->number)->first();
+                                            $name = $caseCustomer->fullname ?? '';
+                                            $mobile = $caseCustomer->mobile ?? '';
                                             $device_name = $case->getVariable('device_name');
                                             $device_serial_no = $case->getVariable('device_serial_no');
                                             $repairman = $case->getVariable('repairman');
