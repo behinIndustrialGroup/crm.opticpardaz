@@ -43,7 +43,8 @@ class CaseController extends Controller
     {
         if (config('workflow.caseNumberingPerCategory')) {
             $category = ProcessController::getById($processId)?->category;
-            $lastNumber = Cases::where('process_id', $processId)->where('category', $category)->orderBy('number', 'desc')->first()?->number;
+            $processIds = Process::where('category', $category)->pluck('id');
+            $lastNumber = Cases::whereIn('process_id', $processIds)->orderBy('number', 'desc')->first()?->number;
         } elseif (config('workflow.caseNumberingPerProcess')) {
             $lastNumber = Cases::where('process_id', $processId)->orderBy('number', 'desc')->first()?->number;
         } else {
