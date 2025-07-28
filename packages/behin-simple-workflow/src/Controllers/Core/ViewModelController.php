@@ -241,57 +241,59 @@ class ViewModelController extends Controller
 
     public function updateRecord(Request $request)
     {
-        // return $request->all();
-        // $inbox = InboxController::getById($request->inboxId);
-        $case = CaseController::getById($request->caseId);
-        $viewModel = self::getById($request->viewModelId);
+        try {
+            $case = CaseController::getById($request->caseId);
+            $viewModel = self::getById($request->viewModelId);
 
-        if ($viewModel->api_key != $request->api_key) {
-            return response(trans("fields.Api key is not valid"), 403);
-        }
-
-        $model = self::getModelById($viewModel->id);
-
-        $row = $model::findOrNew($request->rowId);
-
-        $isNew = !$row->exists;
-        $data = $request->all();
-        // بررسی داینامیک فایل‌ها
-        foreach ($request->allFiles() as $fieldName => $file) {
-            $savedPaths = [];
-            $path = FileController::store($file, 'simpleWorkflow');
-            if ($path['status'] == 200) {
-                $data[$fieldName] = $path['dir'];
+            if ($viewModel->api_key != $request->api_key) {
+                return response(trans("fields.Api key is not valid"), 403);
             }
-        }
-        $row->fill($data);
 
-        if ($isNew) {
-            $row->case_id = $case->id;
-            $row->case_number = $case->number;
-            $row->created_by = Auth::id();
-            $row->contributers = Auth::id();
-        }
+            $model = self::getModelById($viewModel->id);
 
-        $row->updated_by = Auth::id();
+            $row = $model::findOrNew($request->rowId);
 
-        // اضافه کردن کاربر فعلی به contributers (بدون تکرار)
-        $contribs = explode(',', $row->contributers ?? '');
-        if (!in_array(Auth::id(), $contribs)) {
-            $contribs[] = Auth::id();
+            $isNew = !$row->exists;
+            $data = $request->all();
+            // بررسی داینامیک فایل‌ها
+            foreach ($request->allFiles() as $fieldName => $file) {
+                $savedPaths = [];
+                $path = FileController::store($file, 'simpleWorkflow');
+                if ($path['status'] == 200) {
+                    $data[$fieldName] = $path['dir'];
+                }
+            }
+            $row->fill($data);
+
+            if ($isNew) {
+                $row->case_id = $case->id;
+                $row->case_number = $case->number;
+                $row->created_by = Auth::id();
+                $row->contributers = Auth::id();
+            }
+
+            $row->updated_by = Auth::id();
+
+            // اضافه کردن کاربر فعلی به contributers (بدون تکرار)
+            $contribs = explode(',', $row->contributers ?? '');
+            if (!in_array(Auth::id(), $contribs)) {
+                $contribs[] = Auth::id();
+            }
             $row->contributers = implode(',', array_filter($contribs));
-        }
 
-        $row->save();
+            $row->save();
 
-        if ($viewModel->script_after_create) {
-            $request->merge(['rowId' => $row->id]);
+            if ($viewModel->script_after_create) {
+                $request->merge(['rowId' => $row->id]);
 
-            $result = ScriptController::runFromView($request, $viewModel->script_after_create);
+                $result = ScriptController::runFromView($request, $viewModel->script_after_create);
 
-            if ($result) {
-                return $result;
+                if ($result) {
+                    return $result;
+                }
             }
+        } catch (\Throwable $th) {
+            return response($th->getMessage(), 500);
         }
 
 
