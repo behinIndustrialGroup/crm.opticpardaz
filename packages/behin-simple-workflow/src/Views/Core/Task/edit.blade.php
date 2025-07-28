@@ -5,17 +5,20 @@
     $scripts = getProcessScripts();
     $conditions = getProcessConditions();
     $bgColor = '';
-    if($task->type == 'form'){
+    if ($task->type == 'form') {
         $bgColor = 'primary';
     }
-    if($task->type == 'script'){
+    if ($task->type == 'script') {
         $bgColor = 'success';
     }
-    if($task->type == 'condition'){
+    if ($task->type == 'condition') {
         $bgColor = 'warning';
     }
-    if($task->type == 'end'){
+    if ($task->type == 'end') {
         $bgColor = 'danger';
+    }
+    if ($task->type == 'timed_condition') {
+        $bgColor = 'info';
     }
 @endphp
 
@@ -40,13 +43,13 @@
         @method('PUT')
         <div class="panel-heading p-2 bg-light">
             <a data-toggle="collapse" href="#{{ $task->id }}">{{ $task->name }}</a>
-            <span
-                class="badge bg-{{ $bgColor }}">
+            <span class="badge bg-{{ $bgColor }}">
                 {{ ucfirst($task->type) }}
             </span>
             <div class="row mb-3">
                 <label for="parent_id" class="col-sm-2 col-form-label">{{ trans('ID') }}</label>
-                <input type="text" name="id" id="" class="col-sm-10 form-control" value="{{ $task->id }}" readonly>
+                <input type="text" name="id" id="" class="col-sm-10 form-control"
+                    value="{{ $task->id }}" readonly>
             </div>
             <div class="row mb-3">
                 <label for="parent_id" class="col-sm-2 col-form-label">{{ trans('Name') }}</label>
@@ -100,6 +103,12 @@
                             {{ trans('Edit') }}
                         </a>
                     @endif
+                    @if ($task->type == 'timed_condition' and $task->executive_element_id)
+                        <a
+                            href="{{ route('simpleWorkflow.conditions.edit', ['condition' => $task->executive_element_id]) }}">
+                            {{ trans('Edit') }}
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="row mb-3">
@@ -108,7 +117,8 @@
                     <select name="parent_id" id="parent_id" class="form-control select2">
                         <option value="">{{ trans('None') }}</option>
                         @foreach ($task->process->tasks() as $item)
-                            <option dir="ltr" value="{{ $item->id }}" {{ $item->id == $task->parent_id ? 'selected' : '' }}>
+                            <option dir="ltr" value="{{ $item->id }}"
+                                {{ $item->id == $task->parent_id ? 'selected' : '' }}>
                                 {{ $item->name }} ({{ $item->id }})</option>
                         @endforeach
                     </select>
@@ -160,8 +170,7 @@
                 <div class="col-sm-10 row">
                     <input type="text" name="color" class="form-control col-sm-10" dir="ltr"
                         value="{{ $task->color }}">
-                    <input type="color" id="color" class="col-sm-2" dir="ltr"
-                        value="{{ $task->color }}">
+                    <input type="color" id="color" class="col-sm-2" dir="ltr" value="{{ $task->color }}">
                     <script>
                         document.getElementById('color').addEventListener('change', function() {
                             $('input[name=color]').val(this.value);
@@ -190,9 +199,38 @@
                         value="{{ $task->order }}">
                 </div>
             </div>
+            @if ($task->type == 'timed_condition')
+                <div class="row mb-3">
+                    <label for="order" class="col-sm-2 col-form-label">{{ trans('Timing Type') }}</label>
+                    <div class="col-sm-10 row">
+                        <select name="timing_type" id="" class="form-control">
+                            <option value="static" {{ $task->timing_type == 'static' ? 'selected' : '' }}>
+                                {{ trans('fields.static') }}</option>
+                            <option value="dynamic" {{ $task->timing_type == 'dynamic' ? 'selected' : '' }}>
+                                {{ trans('fields.dynamic') }}</option>
+                        </select>
+                    </div>
+                </div>
+            @endif
+            @if ($task->timing_type == 'static')
+                <div class="row mb-3">
+                    <label for="order" class="col-sm-2 col-form-label">{{ trans('Timing Value') }}</label>
+                    <div class="col-sm-10 row">
+                        <input type="text" name="timing_value" class="form-control col-sm-12" dir="ltr"
+                            value="{{ $task->timing_value }}">
+                    </div>
+                </div>
+            @endif
+            @if ($task->timing_type == 'dynamic')
+                <div class="row mb-3">
+                    <label for="order" class="col-sm-2 col-form-label">{{ trans('Timing Key') }}</label>
+                    <div class="col-sm-10 row">
+                        <input type="text" name="timing_key_name" class="form-control col-sm-12" dir="ltr"
+                            value="{{ $task->timing_key_name }}">
+                    </div>
+                </div>
+            @endif
             <button type="submit" class="btn btn-primary" style="float: left">{{ trans('Edit') }}</button>
-
-
 
         </div>
     </form>
@@ -236,7 +274,8 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <input type="text" name="task_id" id="" value="{{ $task->id }}" class="d-none">
+                            <input type="text" name="task_id" id="" value="{{ $task->id }}"
+                                class="d-none">
                             <input type="text" name="task_name" id="" value="{{ $task->name }}"
                                 class="form-control">
                         </td>

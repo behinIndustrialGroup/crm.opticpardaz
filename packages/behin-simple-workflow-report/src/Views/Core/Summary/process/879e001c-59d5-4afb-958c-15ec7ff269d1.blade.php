@@ -83,7 +83,7 @@
                                             <td>{{ $repairman }}</td>
                                             <td>
                                                 @foreach ($deviceRepairs as $repair)
-                                                    {{ json_encode($repair->repair_type_text) }}<br>
+                                                    {{ $repair->repair_type_text }}<br>
                                                 @endforeach
                                             </td>
                                             <td>

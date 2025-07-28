@@ -20,6 +20,7 @@ use UserProfile\Controllers\ChangePasswordController;
 use UserProfile\Controllers\GetUserAgenciesController;
 use UserProfile\Controllers\NationalIdController;
 use UserProfile\Controllers\UserProfileController;
+use Carbon\Carbon;
 
 Route::get('', function () {
     return view('auth.login');
@@ -49,27 +50,28 @@ Route::get('/pusher/beams-auth', function (Request $request) {
 })->middleware('auth');
 
 Route::get('queue-work', function () {
-    $limit = 5; // تعداد jobهای پردازش شده در هر درخواست
-    $jobs = DB::table('jobs')->orderBy('id')->limit($limit)->get();
+    $limit = 5;
+    $now = Carbon::now()->timestamp;
+
+    $jobs = DB::table('jobs')
+        ->where('available_at', '<=', $now)
+        ->orderBy('id')
+        ->limit($limit)
+        ->get();
 
     foreach ($jobs as $job) {
         try {
-            // دیکد کردن محتوای job
             $payload = json_decode($job->payload, true);
             $command = unserialize($payload['data']['command']);
 
-            // اجرای job
             $command->handle();
 
-            // حذف job پس از اجرا
             DB::table('jobs')->where('id', $job->id)->delete();
 
-            // return 'Job processed: ' . $job->id;
         } catch (Exception $e) {
-            // در صورت خطا، job را به جدول failed_jobs منتقل کنید
             DB::table('failed_jobs')->insert([
-                'connection' => $job->connection,
-                'queue' => $job->queue,
+                'connection' => $job->connection ?? 'database',
+                'queue' => $job->queue ?? 'default',
                 'payload' => $job->payload,
                 'exception' => (string) $e,
                 'failed_at' => now()
@@ -80,6 +82,8 @@ Route::get('queue-work', function () {
             return 'Job failed: ' . $e->getMessage();
         }
     }
+
+    return 'Jobs processed.';
 });
 
 

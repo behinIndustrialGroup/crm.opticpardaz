@@ -5,6 +5,7 @@ namespace Behin\SimpleWorkflow\Controllers\Core;
 use App\Http\Controllers\Controller;
 use BaleBot\BaleBotProvider;
 use BaleBot\Controllers\BotController;
+use Behin\SimpleWorkflow\Jobs\ExecuteNextTaskWithDelay;
 use Behin\SimpleWorkflow\Jobs\SendPushNotification;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Process;
@@ -51,7 +52,7 @@ class RoutingController extends Controller
         $formFields = FormController::getFormFields($formId);
 
         foreach ($vars as $key => $value) {
-            if(!in_array($key, $formFields)){
+            if (!in_array($key, $formFields)) {
                 continue;
             }
             if (gettype($value) == 'object') {
@@ -150,7 +151,7 @@ class RoutingController extends Controller
                 // همه باید وضعیت انجام شده تغییر کنند
             }
         }
-        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+        if ($newInbox = InboxController::caseIsInUserInbox($caseId)) {
             return response()->json([
                 'status' => 200,
                 'msg' => trans('Saved'),
@@ -217,7 +218,7 @@ class RoutingController extends Controller
                 // همه باید وضعیت انجام شده تغییر کنند
             }
         }
-        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+        if ($newInbox = InboxController::caseIsInUserInbox($caseId)) {
             return redirect()->route('simpleWorkflow.inbox.view', ['inboxId' => $newInbox->id]);
         }
         return redirect()->route('simpleWorkflow.inbox.index');
@@ -271,7 +272,7 @@ class RoutingController extends Controller
                 if ($task->next_element_id) {
                     $nextTask = TaskController::getById($task->next_element_id);
                     $result = self::executeNextTask($nextTask, $caseId);
-                    if($result == 'break'){
+                    if ($result == 'break') {
                         return 'break';
                     }
                     if ($result) {
@@ -281,7 +282,7 @@ class RoutingController extends Controller
                 $taskChildren = $task->children();
                 foreach ($taskChildren as $task) {
                     $result = self::executeNextTask($task, $caseId);
-                    if($result == 'break'){
+                    if ($result == 'break') {
                         return 'break';
                     }
                     if ($result) {
@@ -298,7 +299,7 @@ class RoutingController extends Controller
                     $nextTask = $condition->nextIfTrue();
                     if ((bool)$nextTask) {
                         $result = self::executeNextTask($nextTask, $caseId);
-                        if($result == 'break'){
+                        if ($result == 'break') {
                             return 'break';
                         }
                         if ($result) {
@@ -308,7 +309,7 @@ class RoutingController extends Controller
                         if ($task->next_element_id) {
                             $nextTask = TaskController::getById($task->next_element_id);
                             $result = self::executeNextTask($nextTask, $caseId);
-                            if($result == 'break'){
+                            if ($result == 'break') {
                                 return 'break';
                             }
                             if ($result) {
@@ -318,7 +319,7 @@ class RoutingController extends Controller
                         $taskChildren = $task->children();
                         foreach ($taskChildren as $task) {
                             $result = self::executeNextTask($task, $caseId);
-                            if($result == 'break'){
+                            if ($result == 'break') {
                                 return 'break';
                             }
                             if ($result) {
@@ -332,6 +333,38 @@ class RoutingController extends Controller
             }
             if ($task->type == 'end') {
                 $inbox = InboxController::create($task->id, $caseId, null, 'done');
+                return 'break';
+            }
+            if ($task->type == 'timed_condition') {
+                // 1. بررسی اینکه زمان‌بندی استاتیک است یا داینامیک
+                $delayMinutes = 0;
+                if ($task->timing_type == 'static') {
+                    // فیلدی مانند `timing_value` در تسک ذخیره شده است (مثلاً 10 دقیقه)
+                    Log::info('Timing value: ' . $task->timing_value);
+                    $delayMinutes = intval($task->timing_value);
+                } elseif ($task->timing_type == 'dynamic') {
+                    // متغیر مثل "nexttime" از پرونده گرفته می‌شود
+                    $key = $task->timing_key_name;
+                    $variable = CaseController::getById($caseId)->getVariable($key);
+                    Log::info('Variable: ' . $variable);
+                    $delayMinutes = (int)$variable;
+                    
+                }
+
+                if ($delayMinutes > 0) {
+                    Log::info('Delay minutes: ' . $delayMinutes);
+                    $taskChildren = $task->children();
+                    foreach ($taskChildren as $task) {
+                        ExecuteNextTaskWithDelay::dispatch($task, $caseId)->delay(now()->addMinutes($delayMinutes));
+                    }
+                } else {
+                    // اگر زمان‌بندی معتبر نبود، فوراً اجرا شود یا خطا داده شود
+                    return response()->json([
+                        'status' => 400,
+                        'msg' => 'زمان‌بندی معتبر نیست'
+                    ]);
+                }
+
                 return 'break';
             }
         } catch (Exception $th) {
