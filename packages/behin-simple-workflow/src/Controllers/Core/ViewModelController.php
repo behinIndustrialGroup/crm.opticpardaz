@@ -9,6 +9,7 @@ use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\ViewModel;
 use BehinFileControl\Controllers\FileController;
 use BehinUserRoles\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -292,7 +293,7 @@ class ViewModelController extends Controller
                     return $result;
                 }
             }
-        } catch (\Throwable $th) {
+        } catch (Exception $th) {
             return response($th->getMessage(), 500);
         }
 
