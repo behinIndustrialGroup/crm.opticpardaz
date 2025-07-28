@@ -6,5 +6,7 @@ return [
         'customer_fullname',
         'device_name', 
         'device_serial_no'
-    ]
+    ],
+    'caseNumberingPerCategory' => true,
+    'caseNumberingPerProcess' => false
 ];
