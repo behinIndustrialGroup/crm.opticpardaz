@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 class FileController extends Controller
 {
     public static function store($file, $dir = 'docs'){
-        Log::info('Uploaded file format:');
-        Log::info($file->getMimeType());
         if(!in_array($file->getMimeType(), config('file_control.valid_file_type'))){
             return [
                 'status' => 400,
