@@ -266,12 +266,8 @@ class ViewModelController extends Controller
                 }
             }
             foreach ($data as $key => $value) {
-                if (isset($value) && is_array($value)) {
-                    $data[$key] = implode(',', $value); // یا json_encode برای ذخیره به صورت JSON
-                }
+                $row->$key = $value;
             }
-            
-            $row->fill($data);
 
             if ($isNew) {
                 $row->case_id = $case->id;
