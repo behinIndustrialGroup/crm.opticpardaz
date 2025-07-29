@@ -4,6 +4,13 @@ namespace MyFormBuilder\Fields;
 
 class FileField extends AbstractField
 {
+    /**
+     * Renders the HTML for a file upload field, including a label, any existing file
+     * download links, and the file input element. Considers attributes like 
+     * 'required', 'readonly', and 'value' to customize the rendering.
+     * 
+     * @return string The generated HTML for the file upload field.
+     */
     public function render(): string
     {
         $s = '<div class="form-group">';
@@ -13,17 +20,17 @@ class FileField extends AbstractField
             $s .= ' <span class="text-danger">*</span>';
         }
         $s .= '</label><br>';
-        if($this->attributes['value']){
+        if($this->attributes['value'] && is_string($this->attributes['value'])){
             $s .= '<a href="' . url('public/' . $this->attributes['value']) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
         }
-        // else{
-        //     foreach($this->attributes['value'] as $value){
-        //         $s .= '<a href="' . url('public/' . $value) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
-        //     }
-        // }
+        if($this->attributes['value'] && is_array($this->attributes['value'])){
+            foreach($this->attributes['value'] as $value){
+                $s .= '<a href="' . url('public/' . $value) . '" target="_blank" download>' . trans('fields.Download') . '</a><br>';
+            }
+        }
 
         if($this->attributes['readonly'] == 'on'){
-            $s .= '<input type="file" name="' . $this->name . '" disabled>';
+            $s .= '<input type="file"  name="' . $this->name . '" disabled>';
         }else{
             $s .= '<input type="file" name="' . $this->name . '" ';
             foreach($this->attributes as $key => $value){

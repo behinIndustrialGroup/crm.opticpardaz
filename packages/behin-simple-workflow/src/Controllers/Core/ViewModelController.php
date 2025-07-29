@@ -265,6 +265,7 @@ class ViewModelController extends Controller
                     $data[$fieldName] = $path['dir'];
                 }
             }
+            // $data[$fieldName] = $savedPaths;
 
             $fillable = $row->getFillable();
             foreach ($data as $key => $value) {
