@@ -265,8 +265,12 @@ class ViewModelController extends Controller
                     $data[$fieldName] = $path['dir'];
                 }
             }
+
+            $fillable = $row->getFillable();
             foreach ($data as $key => $value) {
-                $row->$key = $value;
+                if (in_array($key, $fillable)) {
+                    $row->$key = $value;
+                }
             }
 
             if ($isNew) {
