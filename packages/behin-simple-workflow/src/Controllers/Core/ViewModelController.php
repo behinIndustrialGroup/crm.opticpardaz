@@ -12,6 +12,7 @@ use BehinUserRoles\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ViewModelController extends Controller
@@ -264,6 +265,12 @@ class ViewModelController extends Controller
                     $data[$fieldName] = $path['dir'];
                 }
             }
+            foreach ($data as $key => $value) {
+                if (isset($value) && is_array($value)) {
+                    $data[$key] = implode(',', $value); // یا json_encode برای ذخیره به صورت JSON
+                }
+            }
+            
             $row->fill($data);
 
             if ($isNew) {
@@ -285,7 +292,7 @@ class ViewModelController extends Controller
             $row->save();
 
             if ($viewModel->script_after_create) {
-                return $viewModel->script_after_create;
+                Log::info("here");
                 $request->merge(['rowId' => $row->id]);
 
                 $result = ScriptController::runFromView($request, $viewModel->script_after_create);
