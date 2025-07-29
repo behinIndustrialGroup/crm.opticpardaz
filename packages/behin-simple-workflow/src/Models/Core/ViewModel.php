@@ -55,6 +55,10 @@ class ViewModel extends Model
         'script_after_delete',
     ];
 
+    public function entity(){
+        return $this->belongsTo(Entity::class);
+    }
+
     protected $casts = [
         'which_rows_user_can_update' => 'array',
         'which_rows_user_can_delete' => 'array',

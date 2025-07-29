@@ -37,6 +37,7 @@
             <input type="hidden" name="inboxId" id="inboxId" value="{{ $inbox->id ?? '' }}">
             <input type="hidden" name="caseId" id="caseId" value="{{ $case->id }}">
             <input type="hidden" name="viewModelId" id="viewModelId" value="{{ $viewModel->id }}">
+            <input type="hidden" name="{{ $viewModel->entity->name }}_id" id="{{ $viewModel->entity->name }}_id" value="{{ $row->id ?? '' }}">
             <input type="hidden" name="rowId" id="rowId" value="{{ $row->id ?? '' }}">
             <input type="hidden" name="api_key" id="api_key" value="{{ $viewModel->api_key }}">
             @if (View::exists('SimpleWorkflowView::Custom.Form.' . $form->id))
