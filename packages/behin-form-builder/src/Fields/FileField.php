@@ -23,9 +23,9 @@ class FileField extends AbstractField
         // }
 
         if($this->attributes['readonly'] == 'on'){
-            $s .= '<input type="file" multiple name="' . $this->name . '" disabled>';
+            $s .= '<input type="file" name="' . $this->name . '" disabled>';
         }else{
-            $s .= '<input type="file" multiple name="' . $this->name . '" ';
+            $s .= '<input type="file" name="' . $this->name . '" ';
             foreach($this->attributes as $key => $value){
                 if($key != 'value'){
                     if($key == 'required'){

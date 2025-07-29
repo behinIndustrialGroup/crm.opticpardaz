@@ -92,7 +92,7 @@
 @if ($fieldDetails->type == 'date')
     {!! Form::date($fieldId, [
         'value' => $fieldValue,
-        'class' => 'form-control persian-date',
+        'class' => 'form-control',
         'id' => $fieldId,
         'placeholder' => $fieldAttributes?->placeholder,
         'required' => $required,

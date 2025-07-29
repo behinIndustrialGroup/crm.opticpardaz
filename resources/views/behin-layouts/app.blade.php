@@ -221,7 +221,6 @@
                 digitGroupSeparator: ',',
                 decimalCharacter: '.',
                 decimalPlaces: 0,
-                unformatOnSubmit: true
             });
         }
     </script>
