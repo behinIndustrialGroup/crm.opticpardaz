@@ -285,6 +285,7 @@ class ViewModelController extends Controller
             $row->save();
 
             if ($viewModel->script_after_create) {
+                return $viewModel->script_after_create;
                 $request->merge(['rowId' => $row->id]);
 
                 $result = ScriptController::runFromView($request, $viewModel->script_after_create);
