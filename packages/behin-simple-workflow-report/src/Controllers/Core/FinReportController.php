@@ -12,6 +12,7 @@ use Behin\SimpleWorkflow\Controllers\Core\VariableController;
 use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\TaskActor;
 use Behin\SimpleWorkflow\Models\Core\Variable;
+use Behin\SimpleWorkflow\Models\Entities\Repair_incomes;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +30,10 @@ class FinReportController extends Controller
     public function totalPayment()
     {
         $vars = VariableController::getAll($fields = ['payment_amount'])->pluck('payment_amount');
+        $incomes = Repair_incomes::pluck('payment_amount');
         $sum = 0;
         $ar = [];
-        foreach ($vars as $var) {
+        foreach ($incomes as $var) {
             $var = str_replace(',', '', $var);
             $var = str_replace(' ', '', $var);
             $var = str_replace('ریال', '', $var);
