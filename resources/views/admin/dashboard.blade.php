@@ -157,7 +157,7 @@
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="{{ route('simpleWorkflowReport.report.index') }}"
+                    <a href="{{ route('simpleWorkflowReport.summary-report.index') }}"
                         class="small-box-footer">{{ trans('مشاهده') }} <i class="fa fa-arrow-circle-left"></i></a>
                 </div>
             </div>
