@@ -67,7 +67,6 @@ Route::get('queue-work', function () {
             $command->handle();
 
             DB::table('jobs')->where('id', $job->id)->delete();
-
         } catch (Exception $e) {
             DB::table('failed_jobs')->insert([
                 'connection' => $job->connection ?? 'database',
@@ -97,10 +96,35 @@ Route::get('build-app', function () {
     return redirect()->back();
 });
 
-Route::get('test', function(){
+Route::get('test2', function () {
+    $cases = Cases::where('process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')->groupBy('id')->get();
+    foreach ($cases as $case) {
+
+        if ($case->getVariable('payment_amount')) {
+            if (!Repair_incomes::where('case_id', $case->id)->where('payment_amount', $case->getVariable('payment_amount'))->exists()) {
+                Repair_incomes::create([
+                    'case_id' => $case->id,
+                    'case_number' => $case->number,
+                    'payment_method' => $case->getVariable('payment_method'),
+                    'payment_receipt' => $case->getVariable('payment_receipt'),
+                    'payment_date' => $case->getVariable('payment_date'),
+                    'payment_amount' => $case->getVariable('payment_amount'),
+                    'payment_description' => $case->getVariable('payment_description'),
+                    'transaction_number' => $case->getVariable('transaction_number'),
+                    'cheque_number' => $case->getVariable('cheque_number'),
+                    'cheque_due_date' => $case->getVariable('cheque_due_date'),
+                    'customer_account_status_image' => $case->getVariable('customer_account_status_image'),
+                    'cheque_image' => $case->getVariable('cheque_image')
+                ]);
+            }
+        }
+    }
+});
+
+Route::get('test', function () {
     $cases = Cases::where('process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')->groupBy('id')->get();
     echo "<table>";
-    foreach($cases as $case){
+    foreach ($cases as $case) {
         try {
             // Customer info
             if ($case->getVariable('customer_fullname')) {
@@ -209,10 +233,8 @@ Route::get('test', function(){
                     ]);
                 }
             }
-
         } catch (Exception $e) {
             echo $case->id .  " Error: " . $e->getMessage() . '<br>';
         }
     }
-
 });
