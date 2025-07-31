@@ -129,22 +129,23 @@
                 </div>
             </div>
         @endauth
+        @if (auth()->user()->access('لیست کارها'))
+            <div class="col-sm-3 ">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ trans('لیست کارها') }}</h3>
 
-        <div class="col-sm-3 ">
-            <!-- small box -->
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>{{ trans('لیست کارها') }}</h3>
-
-                    <p>{{ trans('لیست کارهایی که ابلاغ شده است') }}</p>
+                        <p>{{ trans('لیست کارهایی که ابلاغ شده است') }}</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="{{ route('todoList.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i
+                            class="fa fa-arrow-circle-left"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="{{ route('todoList.index') }}" class="small-box-footer">{{ trans('مشاهده') }} <i
-                        class="fa fa-arrow-circle-left"></i></a>
             </div>
-        </div>
+        @endif
         @if (auth()->user()->access('منو >>گزارشات کارتابل>>لیست'))
             <div class="col-sm-3 ">
                 <!-- small box -->
