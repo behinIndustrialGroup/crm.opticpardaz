@@ -6,9 +6,6 @@
 @if ($modalShow)
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <p class="mb-0" style="float: right">
-                <button class="btn btn-sm btn-secondary">{{ trans('fields.Case Number') }}: {{ $case->number }}</button>
-            </p>
             <p class="mb-0" style="float: left">
                 <button class="btn btn-sm btn-secondary"
                     onclick="close_admin_modal()">{{ trans('fields.close') }}</button>
@@ -97,6 +94,7 @@
             show_message(response)
             console.log(response)
             get_view_model_rows('{{ $viewModel->id }}', '{{ $viewModel->api_key }}')
+            close_admin_modal()
         })
     }
 </script>
