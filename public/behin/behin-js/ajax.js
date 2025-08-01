@@ -221,6 +221,7 @@ function open_admin_modal_with_data(data, title = '', id = Math.random()) {
                         '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
                             '<span aria-hidden="true">&times;</span>' +
                         '</button>' +
+                        '<p>Modal content goes here.</p>' +
                     '</div>' +
                 '</div>' +
             '</div>' +
