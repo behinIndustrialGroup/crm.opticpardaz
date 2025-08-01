@@ -170,8 +170,11 @@ class ViewModelController extends Controller
         if ($viewModel->allow_read_row) {
             if ($viewModel->show_rows_based_on == 'case_id') {
                 $rows = $model::where('case_id', $case->id);
-            } else {
+            }
+            elseif ($viewModel->show_rows_based_on == 'case_number') {
                 $rows = $model::where('case_number', $case->number);
+            }else{
+                $rows = $model::query();
             }
 
             $rows = $rows->where(function ($query) use ($readCondition) {
