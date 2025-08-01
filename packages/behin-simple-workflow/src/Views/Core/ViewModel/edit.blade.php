@@ -289,19 +289,19 @@
             <div class="card-body">
                 <h6>{{ trans('fields.Open update form') }}</h6>
                 <code>
-                    open_view_model_form('{{ $viewModel->update_form }}', '{{ $viewModel->id }}', row_id, '{{ $viewModel->api_key }}')
+                    open_view_model_form('{{ $view_model->update_form }}', '{{ $view_model->id }}', row_id, '{{ $view_model->api_key }}')
                 </code>
             </div>
             <div class="card-body">
                 <h6>{{ trans('fields.Open create new form') }}</h6>
                 <code>
-                    open_view_model_create_new_form('{{ $viewModel->create_form }}', '{{ $viewModel->id }}', '{{ $viewModel->api_key }}')
+                    open_view_model_create_new_form('{{ $view_model->create_form }}', '{{ $view_model->id }}', '{{ $view_model->api_key }}')
                 </code>
             </div>
             <div class="card-body">
                 <h6>{{ trans('fields.Delete row') }}</h6>
                 <code>
-                    delete_view_model_row('{{ $viewModel->id }}', row_id, '{{ $viewModel->api_key }}')
+                    delete_view_model_row('{{ $view_model->id }}', row_id, '{{ $view_model->api_key }}')
                 </code>
             </div>
         </div>
