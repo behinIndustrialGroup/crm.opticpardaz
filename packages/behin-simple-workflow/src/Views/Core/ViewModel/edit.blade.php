@@ -115,8 +115,8 @@
                 <td>{{ trans('fields.script_after_create') }}</td>
                 <td>
                     <select name="script_after_create" id="" class="select2">
-                        @foreach ($scripts as $script)
                         <option value=""></option>
+                        @foreach ($scripts as $script)
                             <option value="{{ $script->id }}"
                                 {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
                         @endforeach
@@ -271,8 +271,8 @@
                 <td>{{ trans('fields.script_before_show_rows') }}</td>
                 <td>
                     <select name="script_before_show_rows" id="" class="select2">
-                        @foreach ($scripts as $script)
                         <option value=""></option>
+                        @foreach ($scripts as $script)
                             <option value="{{ $script->id }}"
                                 {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
                         @endforeach
