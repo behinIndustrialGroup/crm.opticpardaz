@@ -208,30 +208,35 @@ function open_admin_modal(url, title = ''){
     )
 }
 
-function open_admin_modal_with_data(data, title = '', id = randomString()){
-    var modal = $('<div class="modal fade" id="admin-modal-' + id + '" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
-                    '<div class="modal-dialog modal-lg">' +
-                    '<div class="modal-content">' +
-                    '<div class="modal-body" id="modal-body" style="padding: 0">' +
-                    '<h4 class="modal-title" id="myModalLabel" style="font-weight: bold">'+ title +'</h4>' +
-                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                    '<span aria-hidden="true">&times;</span>' +
-                    '</button>' +
-                    '<p>Modal content goes here.</p>' +
+function open_admin_modal_with_data(data, title = '', id = Math.random()) {
+    var modalId = 'admin-modal-' + id;
+    var modalBodyId = 'modal-body-' + id;
+
+    var modal = $(
+        '<div class="modal fade" id="' + modalId + '" role="dialog" aria-labelledby="modal-title-' + id + '" aria-hidden="true">' +
+            '<div class="modal-dialog modal-lg">' +
+                '<div class="modal-content">' +
+                    '<div class="modal-body" id="' + modalBodyId + '" style="padding: 0">' +
+                        '<h4 class="modal-title" id="modal-title-' + id + '" style="font-weight: bold">' + title + '</h4>' +
+                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
                     '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>');
+                '</div>' +
+            '</div>' +
+        '</div>'
+    );
 
     $('body').append(modal);
 
-    $('#admin-modal-' + id).on('hidden.bs.modal', function () {
+    $('#' + modalId).on('hidden.bs.modal', function () {
         $(this).remove();
-      });
+    });
 
-    $('#admin-modal-' + id + ' #modal-body').html(data);
-    $('#admin-modal-' + id).modal('show')
+    $('#' + modalBodyId).append(data);
+    $('#' + modalId).modal('show');
 }
+
 
 function close_admin_modal(){
     $('#admin-modal').modal('hide');
