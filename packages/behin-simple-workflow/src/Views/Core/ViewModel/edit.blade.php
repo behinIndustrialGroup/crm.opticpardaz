@@ -1,4 +1,14 @@
 @extends('behin-layouts.app')
+@section('style')
+    <style>
+        table tr td:first-child {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
 
 @section('content')
     <h1>Edit ViewModel</h1>
@@ -254,6 +264,18 @@
                         <option value="user-updated-it"
                             {{ in_array('user-updated-it', $view_model->which_rows_user_can_read) ? 'selected' : '' }}>
                             {{ trans('fields.user updated it') }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ trans('fields.script_before_show_rows') }}</td>
+                <td>
+                    <select name="script_before_show_rows" id="" class="select2">
+                        @foreach ($scripts as $script)
+                        <option value=""></option>
+                            <option value="{{ $script->id }}"
+                                {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                        @endforeach
                     </select>
                 </td>
             </tr>

@@ -53,6 +53,7 @@ class ViewModel extends Model
         'script_after_create',
         'script_after_update',
         'script_after_delete',
+        'script_before_show_rows',
     ];
 
     public function entity(){

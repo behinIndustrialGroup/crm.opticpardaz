@@ -109,6 +109,34 @@ class ViewModelController extends Controller
         }
     }
 
+    public static function userCanUpdateRow($row, $updateCondition)
+    {
+        if (
+            in_array('all', $updateCondition) ||
+            (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
+            (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
+            (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function userCanDeleteRow($row, $deleteCondition)
+    {
+        if (
+            in_array('all', $deleteCondition) ||
+            (in_array('user-created-it', $deleteCondition) && $row->created_by == Auth::id()) ||
+            (in_array('user-contributed-it', $deleteCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
+            (in_array('user-updated-it', $deleteCondition) && $row->updated_by == Auth::id())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     public function getRows(Request $request)
     {
@@ -166,10 +194,18 @@ class ViewModelController extends Controller
 
             $rows = $rows->orderBy('updated_at', 'desc')
                 ->take($max_number_of_rows)
-                ->get();
+                ->get()->each(function ($row) use ($viewModel, $updateCondition, $deleteCondition) {
+                    $row->show_as = $viewModel->show_as;
+                    $row->alllow_update = self::userCanUpdateRow($row, $updateCondition);
+                    $row->alllow_delete = self::userCanDeleteRow($row, $deleteCondition);
+                });
+            if($viewModel->script_before_show_rows){
+                $request->merge(['rows' => $rows]);
+                $rows = ScriptController::runFromView($request, $viewModel->script_before_show_rows);
+            }
 
             foreach ($rows as $row) {
-                if ($viewModel->show_as == 'table') {
+                if ($row->show_as == 'table') {
                     $s .= "<tr>";
                     foreach ($columns as $column) {
                         try {
@@ -185,27 +221,17 @@ class ViewModelController extends Controller
                         }
                     }
                     $s .= "<td>";
-                    if (
-                        in_array('all', $updateCondition) ||
-                        (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
-                        (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
-                        (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
-                    ) {
+                    if ($row->alllow_update) {
                         $s .= "<i class='fa fa-edit btn btn-sm btn-success p-1 m-1' onclick='open_view_model_form(`$viewModel->update_form`, `$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
                     }
 
-                    if (
-                        in_array('all', $deleteCondition) ||
-                        (in_array('user-created-it', $deleteCondition) && $row->created_by == Auth::id()) ||
-                        (in_array('user-contributed-it', $deleteCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
-                        (in_array('user-updated-it', $deleteCondition) && $row->updated_by == Auth::id())
-                    ) {
+                    if ($row->alllow_delete) {
                         $s .= "<i class='fa fa-trash btn-sm btn-danger p-1 m-1' onclick='delete_view_model_row(`$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
                     }
                     $s .= "</td>";
                     $s .= "</tr>";
                 }
-                if ($viewModel->show_as == 'box') {
+                if ($row->show_as == 'box') {
                     $request = new Request([
                         'api_key' => $viewModel->api_key,
                         'row_id' => $row->id,
@@ -213,12 +239,7 @@ class ViewModelController extends Controller
                         'viewModel_id' => $viewModel->id,
                     ]);
                     $s .= "<div class='card'>";
-                    if (
-                        in_array('all', $updateCondition) ||
-                        (in_array('user-created-it', $updateCondition) && $row->created_by == Auth::id()) ||
-                        (in_array('user-contributed-it', $updateCondition) && in_array(Auth::id(), explode(',', $row->contributers ?? ''))) ||
-                        (in_array('user-updated-it', $updateCondition) && $row->updated_by == Auth::id())
-                    ) {
+                    if ($row->alllow_update) {
                         $s .= FormController::open($request, $viewModel->update_form, false);
                     } else {
                         $s .= FormController::openReadForm($request, $viewModel->read_form, false);
@@ -293,7 +314,6 @@ class ViewModelController extends Controller
             $row->save();
 
             if ($viewModel->script_after_create) {
-                Log::info("here");
                 $request->merge(['rowId' => $row->id]);
 
                 $result = ScriptController::runFromView($request, $viewModel->script_after_create);
