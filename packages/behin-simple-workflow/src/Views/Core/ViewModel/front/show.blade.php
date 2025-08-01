@@ -8,7 +8,7 @@
         <div class="card-body">
             <p class="mb-0" style="float: left">
                 <button class="btn btn-sm btn-danger"
-                    onclick="close_admin_modal()">{{ trans('fields.close') }}</button>
+                    onclick="close_admin_modal(`{{ $viewModel->id }}`)">{{ trans('fields.close') }}</button>
             </p>
         </div>
     </div>

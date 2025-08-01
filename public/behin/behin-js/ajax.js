@@ -208,11 +208,14 @@ function open_admin_modal(url, title = ''){
     )
 }
 
-function open_admin_modal_with_data(data, title = '', id = Math.random()){
+function open_admin_modal_with_data(data, title = '', id = null){
+    if(id == null){
+        id = Math.floor(Math.random() * 100000000);
+    }
     var modal = $('<div class="modal fade" id="admin-modal-' + id + '" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                     '<div class="modal-dialog modal-lg">' +
                     '<div class="modal-content">' +
-                    '<div class="modal-body" id="modal-body" style="padding: 0">' +
+                    '<div class="modal-body" id="modal-body-' + id + '" style="padding: 0">' +
                     '<h4 class="modal-title" id="myModalLabel" style="font-weight: bold">'+ title +'</h4>' +
                     '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
                     '<span aria-hidden="true">&times;</span>' +
@@ -229,12 +232,12 @@ function open_admin_modal_with_data(data, title = '', id = Math.random()){
         $(this).remove();
       });
 
-    $('#admin-modal-' + id + ' #modal-body').html(data);
+    $('#admin-modal-' + id + ' #modal-body-' + id).html(data);
     $('#admin-modal-' + id).modal('show')
 }
 
-function close_admin_modal(){
-    $('#admin-modal').modal('hide');
+function close_admin_modal(id){
+    $('#admin-modal-' + id).modal('hide');
 }
 
 function get_view_model_rows(viewModel_id, api_key){
@@ -272,7 +275,7 @@ function open_view_model_create_new_form(form_id, viewModel_id, api_key){
     fd.append('inbox_id', $('#inboxId').val() ?? '');
     fd.append('case_id', $('#caseId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
-        open_admin_modal_with_data(response)
+        open_admin_modal_with_data(response, 'Create New', viewModel_id)
     })
 }
 
