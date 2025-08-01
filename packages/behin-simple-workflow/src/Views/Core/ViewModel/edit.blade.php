@@ -2,9 +2,9 @@
 @section('style')
     <style>
         table tr td:first-child {
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
             white-space: nowrap;
         }
     </style>
