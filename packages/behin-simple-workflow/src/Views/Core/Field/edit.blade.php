@@ -109,8 +109,7 @@
                         <div class="mb-3">
                             <label for="script-editor" class="form-label">Script</label>
                             <small class="d-block">نیازی به تگ <code>&lt;script&gt;</code> نیست</small>
-                            <div id="script-editor" style="height: 500px; width: 100%; font-size: 16px;">
-                                {{ $attributes->script ?? '' }}</div>
+                            <div id="script-editor" style="height: 500px; width: 100%; font-size: 16px;">{{ $attributes->script ?? '' }}</div>
                             <textarea name="script" id="script" class="d-none" dir="ltr">{{ $attributes->script ?? '' }}</textarea>
                             <script>
                                 const editor = ace.edit("script-editor");
