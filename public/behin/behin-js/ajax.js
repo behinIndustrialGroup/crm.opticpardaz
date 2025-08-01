@@ -263,7 +263,7 @@ function open_view_model_form(form_id, viewModel_id, row_id, api_key){
     fd.append('inbox_id', $('#inboxId').val() ?? '');
     fd.append('case_id', $('#caseId').val() ?? '');
     send_ajax_formdata_request(url, fd, function(response){
-        open_admin_modal_with_data(response)
+        open_admin_modal_with_data(response, 'Edit', viewModel_id)
     })
 }
 
