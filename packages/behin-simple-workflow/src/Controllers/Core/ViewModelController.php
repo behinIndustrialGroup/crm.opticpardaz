@@ -296,12 +296,15 @@ class ViewModelController extends Controller
             }
 
             if ($isNew) {
-                $row->case_id = $case->id;
-                $row->case_number = $case->number;
+                if (in_array('case_id', $fillable)) {
+                    $row->case_id = $case->id;
+                }
+                if (in_array('case_number', $fillable)) {
+                    $row->case_number = $case->number;
+                }
                 $row->created_by = Auth::id();
                 $row->contributers = Auth::id();
             }
-
             $row->updated_by = Auth::id();
 
             // اضافه کردن کاربر فعلی به contributers (بدون تکرار)
