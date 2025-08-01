@@ -274,7 +274,7 @@
                         <option value=""></option>
                         @foreach ($scripts as $script)
                             <option value="{{ $script->id }}"
-                                {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                                {{ $view_model->script_before_show_rows == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
                         @endforeach
                     </select>
                 </td>
