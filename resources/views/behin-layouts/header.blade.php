@@ -16,14 +16,18 @@ use App\CustomClasses\Access;
       </li> --}}
         @if (access('send-sms'))
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ url('admin/send-sms') }}" class="nav-link btn btn-default">
+                <a href="{{ url('admin/send-sms') }}" class="nav-link btn-sm btn-default">
                     ارسال پیامک
                 </a>
             </li>
         @endif
-        {{-- <a href="{{ route('send-notification') }}" class="btn btn-sm btn-warning">
-            تست نوتیفیکیشن
-        </a> --}}
+        @if (access('تست نوتیفیکیشن'))
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{{ route('send-notification') }}" class="nav-link btn-sm btn-default">
+                    تست نوتیفیکیشن
+                </a>
+            </li>
+        @endif
         {{-- <button id="notification-btn" class="btn btn-sm btn-warning">فعال کردن نوتیفیکیشن</button> --}}
     </ul>
 
