@@ -179,9 +179,7 @@
             send_ajax_get_request(
                 '{{ route('simpleWorkflow.task-jump.show', [$task->id , $inbox->id , $case->id , $process->id] ) }}',
                 function(response) {
-                    open_admin_modal_with_data(response, '', function() {
-                        initial_view()
-                    })
+                    open_admin_modal_with_data(response, '')
                 }
             )
         }
