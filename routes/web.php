@@ -101,8 +101,8 @@ Route::get('test2', function () {
     $cases = Cases::where('process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')->groupBy('id')->get();
     foreach ($cases as $case) {
         if ($case->getVariable('pre_invoice')) {
-            if (!Pre_invoice::where('case_id', $case->id)->exists()) {
-                Pre_invoice::create([
+            if (!Pre_invoices::where('case_id', $case->id)->exists()) {
+                Pre_invoices::create([
                     'case_id' => $case->id,
                     'case_number' => $case->number,
                     'file' => $case->getVariable('pre_invoice'),
