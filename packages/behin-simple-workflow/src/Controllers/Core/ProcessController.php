@@ -5,6 +5,10 @@ namespace Behin\SimpleWorkflow\Controllers\Core;
 use App\Http\Controllers\Controller;
 use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\TaskActor;
+use Behin\SimpleWorkflow\Models\Core\Task;
+use Behin\SimpleWorkflow\Models\Core\TaskJump;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,5 +110,120 @@ class ProcessController extends Controller
 
     public static function startFromScript($taskId, $creator, $caseNumber = null, $parentId){
         return self::start($taskId, true, false, false, $caseNumber, $creator, $parentId);
+    }
+
+    public function exportView($processId): View
+    {
+        $process = Process::findOrFail($processId);
+        $data = $process->toArray();
+        $data['tasks'] = [];
+
+        foreach ($process->tasks() as $task) {
+            $taskArr = $task->toArray();
+            $taskArr['actors'] = $task->actors()->get()->toArray();
+            $taskArr['jumps'] = $task->jumps()->get()->toArray();
+            $data['tasks'][] = $taskArr;
+        }
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        return view('SimpleWorkflowView::Core.Process.export', compact('json'));
+    }
+
+    public function importView(): View
+    {
+        return view('SimpleWorkflowView::Core.Process.import');
+    }
+    /**
+     * Export the complete definition of a process including its tasks,
+     * actors and jumps. The result is returned as JSON so it can be
+     * imported in another instance of the application.
+     */
+    public function export($processId)
+    {
+        $process = Process::findOrFail($processId);
+        $data = $process->toArray();
+        $data['tasks'] = [];
+
+        foreach ($process->tasks() as $task) {
+            $taskArr = $task->toArray();
+            $taskArr['actors'] = $task->actors()->get()->toArray();
+            $taskArr['jumps'] = $task->jumps()->get()->toArray();
+            $data['tasks'][] = $taskArr;
+        }
+
+        return response()->json($data);
+    }
+
+    /**
+     * Import a process definition previously exported by the export
+     * method. All tasks and their relations are recreated while the
+     * new identifiers are mapped so relationships stay intact.
+     */
+    public function import(Request $request)
+    {
+        $payload = $request->json()->all();
+        $process = null;
+
+        DB::transaction(function () use ($payload, &$process) {
+            $processData = Arr::except($payload, ['tasks']);
+            $process = Process::create($processData);
+
+            $tasksMap = [];
+
+            foreach ($payload['tasks'] ?? [] as $task) {
+                $oldId = $task['id'] ?? null;
+                $actors = $task['actors'] ?? [];
+                $jumps = $task['jumps'] ?? [];
+                $parentOld = $task['parent_id'] ?? null;
+                $nextOld = $task['next_element_id'] ?? null;
+
+                $taskData = Arr::except($task, ['id', 'actors', 'jumps', 'parent_id', 'next_element_id']);
+                $taskData['process_id'] = $process->id;
+                $taskData['parent_id'] = null;
+                $taskData['next_element_id'] = null;
+
+                $newTask = Task::create($taskData);
+
+                $tasksMap[$oldId] = [
+                    'model' => $newTask,
+                    'parent_old' => $parentOld,
+                    'next_old' => $nextOld,
+                    'jumps' => $jumps,
+                ];
+
+                foreach ($actors as $actor) {
+                    TaskActor::create([
+                        'task_id' => $newTask->id,
+                        'actor' => $actor['actor'] ?? null,
+                    ]);
+                }
+            }
+
+            foreach ($tasksMap as $oldId => $entry) {
+                $task = $entry['model'];
+
+                if ($entry['parent_old'] && isset($tasksMap[$entry['parent_old']])) {
+                    $task->parent_id = $tasksMap[$entry['parent_old']]['model']->id;
+                }
+
+                if ($entry['next_old'] && isset($tasksMap[$entry['next_old']])) {
+                    $task->next_element_id = $tasksMap[$entry['next_old']]['model']->id;
+                }
+
+                $task->save();
+
+                foreach ($entry['jumps'] as $jump) {
+                    $next = $jump['next_task_id'] ?? null;
+                    if ($next && isset($tasksMap[$next])) {
+                        TaskJump::create([
+                            'task_id' => $task->id,
+                            'next_task_id' => $tasksMap[$next]['model']->id,
+                        ]);
+                    }
+                }
+            }
+        });
+
+        return response()->json(['status' => 'ok', 'process_id' => $process->id]);
     }
 }

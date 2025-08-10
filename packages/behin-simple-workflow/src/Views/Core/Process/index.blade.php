@@ -12,6 +12,7 @@
                     <div class="card-header">
                         <h3 class="card-title">{{ trans('Process List') }}</h3>
                         <div class="card-tools">
+                            <a href="{{ route('simpleWorkflow.process.importView') }}" class="btn btn-primary">{{ trans('Import') }}</a>
                             <a href="{{ route('simpleWorkflow.process.create') }}" class="btn btn-success">{{ trans('Create') }}</a>
                         </div>
                     </div>
@@ -23,7 +24,7 @@
                                     <th>{{ trans('Name') }}</th>
                                     <th>{{ trans('Category') }}</th>
                                     <th>{{ trans('Created at') }}</th>
-                                    <th>{{ trans('Edit') }}</th>
+                                    <th>{{ trans('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,6 +39,10 @@
                                                 <i class="fas fa-pencil-alt"></i>
                                                 {{ trans('Edit') }}
                                             </a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('simpleWorkflow.process.exportView', $value->id) }}">
+                                                <i class="fas fa-file-export"></i>
+                                                {{ trans('Export') }}
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -48,5 +53,4 @@
             </div>
         </div>
     </div>
-
 @endsection

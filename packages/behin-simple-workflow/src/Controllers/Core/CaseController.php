@@ -13,14 +13,13 @@ use Illuminate\Support\Facades\Log;
 
 class CaseController extends Controller
 {
-    public static function getById($id)
-    {
+    public static function getById($id) {
         return Cases::find($id);
     }
 
     public static function create($processId, $creator, $name = null, $inDraft = false, $caseNumber = null, $parentId = null)
     {
-        if ($inDraft) {
+        if($inDraft) {
             return Cases::create([
                 'process_id' => $processId,
                 'number' => null,
@@ -29,7 +28,7 @@ class CaseController extends Controller
                 'parent_id' => $parentId
             ]);
         }
-        $newNumber = $caseNumber ? $caseNumber : self::getNewCaseNumber($processId);
+        $newNumber = $caseNumber? $caseNumber : self::getNewCaseNumber($processId);
         return Cases::create([
             'process_id' => $processId,
             'number' => $newNumber,
@@ -39,23 +38,22 @@ class CaseController extends Controller
         ]);
     }
 
-    public static function getNewCaseNumber($processId)
-    {
+    public static function getNewCaseNumber($processId){
         if (config('workflow.caseNumberingPerCategory')) {
             $category = ProcessController::getById($processId)?->category;
             $processIds = Process::where('category', $category)->pluck('id');
             $lastNumber = Cases::whereIn('process_id', $processIds)->orderBy('number', 'desc')->first()?->number;
-        } elseif (config('workflow.caseNumberingPerProcess')) {
+        }
+        elseif(config('workflow.caseNumberingPerProcess')){
             $lastNumber = Cases::where('process_id', $processId)->orderBy('number', 'desc')->first()?->number;
-        } else {
+        }else{
             $lastNumber = Cases::orderBy('number', 'desc')->first()?->number;
         }
         $newNumber = $lastNumber ? $lastNumber + 1 : config('workflow.caseStartValue');
         return $newNumber;
     }
 
-    public static function setCaseNumber($caseId, $number)
-    {
+    public static function setCaseNumber($caseId, $number){
         Cases::where('id', $caseId)->update(['number' => $number]);
     }
 
@@ -69,8 +67,8 @@ class CaseController extends Controller
         return Cases::all();
     }
 
-    public static function getAllByCaseNumber($caseNumber)
-    {
+    public static function getAllByCaseNumber($caseNumber){
         return Cases::where('number', $caseNumber)->get();
     }
+
 }

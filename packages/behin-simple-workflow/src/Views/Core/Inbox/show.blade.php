@@ -7,7 +7,6 @@
 @endphp
 
 @section('content')
-    @include('SimpleWorkflowView::Core.Partial.back-btn')
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">{{ $task->name }} - {{ $inbox->case_name }}</h6>
@@ -90,11 +89,9 @@
                 <button class="btn btn-sm btn-outline-info m-1"
                     onclick="createCaseNumberAndSave()">{{ trans('fields.Create Case Number and Save') }}</button>
             @else
-                @if ($task->jumps->count() > 0)
-                    <button class="btn btn-sm btn-outline-warning m-1" onclick="showJumpModal()">
-                        <i class="fa fa-send"></i> {{ trans('fields.Send Manully') }}
-                    </button>
-                @endif
+                <button class="btn btn-sm btn-outline-warning m-1" onclick="showJumpModal()">
+                    <i class="fa fa-send"></i> {{ trans('fields.Send Manully') }}
+                </button>
                 <button class="btn btn-sm btn-outline-primary m-1" onclick="saveForm()">
                     <i class="fa fa-save"></i> {{ trans('fields.Save') }}
                 </button>

@@ -7,7 +7,6 @@
 @section('content')
     <div class="container">
         <div class="">
-            @include('SimpleWorkflowView::Core.Partial.back-btn')
             <div class="card table-responsive">
                 <div class="card-header bg-info">
                     تاریخچه انجام کار پرونده شماره {{ $rows[0]->case->number }}
@@ -37,6 +36,12 @@
                                     <td>{{ trans('fields.' . $row->status) }}</td>
                                     <td dir="ltr">{{ toJalali($row->created_at)->format('Y-m-d H:i') }}</td>
                                     <td dir="ltr">{{ $row->updated_at != $row->created_at ? toJalali($row->updated_at)->format('Y-m-d H:i') : '' }}</td>
+                                    <td>
+                                        <a href="{{ route('simpleWorkflow.inbox.edit', $row->id) }}"
+                                            class="btn btn-sm btn-primary">{{ trans('fields.Edit') }}</a>
+                                        <a href="{{ route('simpleWorkflow.inbox.changeStatus', $row->id) }}"
+                                            class="btn btn-sm btn-warning">{{ trans('fields.Change Status') }}</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -299,6 +299,20 @@
     <div class="row card col-sm-12">
         @include('SimpleWorkflowView::Core.TaskJump.edit', ['task' => $task])
     </div>
+    <div class="card col-sm-12">
+        <form action="{{ route('simpleWorkflow.task.update', $task->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="task_id" value="{{ $task->id }}">
+            <div class="row col-sm-12">
+                <div class="row col-sm-6">
+                    <label for="number_of_task_to_back">{{ trans('fields.Number of task to back') }}</label>
+                    <input type="text" name="number_of_task_to_back" id="number_of_task_to_back" class="form-control" dir="ltr" value="{{ $task->number_of_task_to_back }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="float: left">{{ trans('Edit') }}</button>
+        </form>
+    </div>
 @endsection
 
 @section('script')
