@@ -7,6 +7,9 @@ use Behin\SimpleWorkflow\Models\Core\Process;
 use Behin\SimpleWorkflow\Models\Core\TaskActor;
 use Behin\SimpleWorkflow\Models\Core\Task;
 use Behin\SimpleWorkflow\Models\Core\TaskJump;
+use Behin\SimpleWorkflow\Models\Core\Form;
+use Behin\SimpleWorkflow\Models\Core\Script;
+use Behin\SimpleWorkflow\Models\Core\Condition;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
@@ -122,6 +125,20 @@ class ProcessController extends Controller
             $taskArr = $task->toArray();
             $taskArr['actors'] = $task->actors()->get()->toArray();
             $taskArr['jumps'] = $task->jumps()->get()->toArray();
+
+            $executive = $task->executiveElement();
+            if ($executive) {
+                switch ($task->type) {
+                    case 'form':
+                    case 'script':
+                        $taskArr['executive'] = Arr::only($executive->toArray(), ['id', 'name', 'executive_file', 'content']);
+                        break;
+                    case 'condition':
+                        $taskArr['executive'] = Arr::only($executive->toArray(), ['id', 'name', 'content', 'next_if_true']);
+                        break;
+                }
+            }
+
             $data['tasks'][] = $taskArr;
         }
 
@@ -148,6 +165,18 @@ class ProcessController extends Controller
             $taskArr = $task->toArray();
             $taskArr['actors'] = $task->actors()->get()->toArray();
             $taskArr['jumps'] = $task->jumps()->get()->toArray();
+            $executive = $task->executiveElement();
+            if ($executive) {
+                switch ($task->type) {
+                    case 'form':
+                    case 'script':
+                        $taskArr['executive'] = Arr::only($executive->toArray(), ['id', 'name', 'executive_file', 'content']);
+                        break;
+                    case 'condition':
+                        $taskArr['executive'] = Arr::only($executive->toArray(), ['id', 'name', 'content', 'next_if_true']);
+                        break;
+                }
+            }
             $data['tasks'][] = $taskArr;
         }
 
@@ -176,8 +205,9 @@ class ProcessController extends Controller
                 $jumps = $task['jumps'] ?? [];
                 $parentOld = $task['parent_id'] ?? null;
                 $nextOld = $task['next_element_id'] ?? null;
+                $executive = $task['executive'] ?? null;
 
-                $taskData = Arr::except($task, ['id', 'actors', 'jumps', 'parent_id', 'next_element_id']);
+                $taskData = Arr::except($task, ['id', 'actors', 'jumps', 'parent_id', 'next_element_id', 'executive']);
                 $taskData['process_id'] = $process->id;
                 $taskData['parent_id'] = null;
                 $taskData['next_element_id'] = null;
@@ -189,6 +219,8 @@ class ProcessController extends Controller
                     'parent_old' => $parentOld,
                     'next_old' => $nextOld,
                     'jumps' => $jumps,
+                    'condition' => null,
+                    'condition_next_old' => null,
                 ];
 
                 foreach ($actors as $actor) {
@@ -196,6 +228,50 @@ class ProcessController extends Controller
                         'task_id' => $newTask->id,
                         'actor' => $actor['actor'] ?? null,
                     ]);
+                }
+                if ($executive) {
+                    switch ($task['type'] ?? null) {
+                        case 'form':
+                            $formData = Arr::only($executive, ['name', 'executive_file', 'content']);
+                            $form = null;
+                            if (!empty($executive['id']) && ($existing = Form::find($executive['id']))) {
+                                $existing->update($formData);
+                                $form = $existing;
+                            } else {
+                                $form = Form::create($formData);
+                            }
+                            $newTask->executive_element_id = $form->id;
+                            $newTask->save();
+                            break;
+                        case 'script':
+                            $scriptData = Arr::only($executive, ['name', 'executive_file', 'content']);
+                            $script = null;
+                            if (!empty($executive['id']) && ($existing = Script::find($executive['id']))) {
+                                $existing->update($scriptData);
+                                $script = $existing;
+                            } else {
+                                $script = Script::create($scriptData);
+                            }
+                            $newTask->executive_element_id = $script->id;
+                            $newTask->save();
+                            break;
+                        case 'condition':
+                            $nextIfTrueOld = $executive['next_if_true'] ?? null;
+                            $condData = Arr::only($executive, ['name', 'content']);
+                            $condData['next_if_true'] = null;
+                            $condition = null;
+                            if (!empty($executive['id']) && ($existing = Condition::find($executive['id']))) {
+                                $existing->update($condData);
+                                $condition = $existing;
+                            } else {
+                                $condition = Condition::create($condData);
+                            }
+                            $newTask->executive_element_id = $condition->id;
+                            $newTask->save();
+                            $tasksMap[$oldId]['condition'] = $condition;
+                            $tasksMap[$oldId]['condition_next_old'] = $nextIfTrueOld;
+                            break;
+                    }
                 }
             }
 
@@ -220,6 +296,10 @@ class ProcessController extends Controller
                             'next_task_id' => $tasksMap[$next]['model']->id,
                         ]);
                     }
+                }
+                if ($entry['condition'] && $entry['condition_next_old'] && isset($tasksMap[$entry['condition_next_old']])) {
+                    $entry['condition']->next_if_true = $tasksMap[$entry['condition_next_old']]['model']->id;
+                    $entry['condition']->save();
                 }
             }
         });
