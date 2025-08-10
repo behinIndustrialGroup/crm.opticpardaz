@@ -36,12 +36,6 @@
             font-family: Vazir !important;
             color: white !important;
         }
-        .task-timed_condition  rect{
-            fill: #8408f1 !important; /* زرد برای سایر تسک‌ها */
-            stroke: #6d00d3 !important;
-            font-family: Vazir !important;
-            color: white !important;
-        }
         .task-form  {
             fill: #007bff !important; /* آبی برای تسک‌های نوع فرم */
             stroke: #0056b3 !important; /* حاشیه تیره‌تر */
@@ -68,12 +62,6 @@
             font-family: Vazir !important;
             color: white !important;
         }
-        .task-timed_condition  {
-            fill: #8408f1 !important; /* زرد برای سایر تسک‌ها */
-            stroke: #6d00d3 !important;
-            font-family: Vazir !important;
-            color: white !important;
-        }
     </style>
     <div class="container">
         <h2>{{ $process->name }}</h2>
@@ -93,8 +81,6 @@
                             $taskClass = 'task-condition';
                         if($task->type == 'end')
                             $taskClass = 'task-end';
-                        if($task->type == 'timed_condition')
-                            $taskClass = 'task-timed_condition';
                     @endphp
                     {{ $task->id }}["<a type='submit' target="_blank" class="{{ $taskClass }}"
                         href='{{ route('simpleWorkflow.task.edit', $task->id) }}'>{{ $task->name }}</a>"]:::{{ $taskClass }}
@@ -134,7 +120,6 @@
                         <option value="condition">{{ trans('Condition') }}</option>
                         <option value="script">{{ trans('Script') }}</option>
                         <option value="end">{{ trans('End') }}</option>
-                        <option value="timed_condition">{{ trans('Timed Condition') }}</option>
                     </select>
                 </div>
             </div>

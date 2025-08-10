@@ -23,6 +23,10 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::get('start-list', [ ProcessController::class, 'startListView' ])->name('startListView');
         Route::get('start/{taskId}/{force?}/{redirect?}/{inDraft}', [ ProcessController::class, 'start' ])->name('start');
         Route::get('check-error/{processId}', [ ProcessController::class, 'processHasError' ])->name('processHasError');
+        Route::get('{processId}/export-view', [ ProcessController::class, 'exportView' ])->name('exportView');
+        Route::get('import-view', [ ProcessController::class, 'importView' ])->name('importView');
+        Route::get('{processId}/export', [ ProcessController::class, 'export' ])->name('export');
+        Route::post('import', [ ProcessController::class, 'import' ])->name('import');
     });
 
     Route::name('task.')->prefix('task')->group(function(){
@@ -54,12 +58,13 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::resource('scripts', ScriptController::class);
     Route::post('scripts/{id}/test', [ ScriptController::class, 'test' ])->name('scripts.test');
     Route::any('scripts/{id}/run', [ ScriptController::class, 'runFromView' ])->name('scripts.run');
+    Route::post('/scripts/autocomplete', [ScriptController::class, 'autocomplete'])->name('scripts.autocomplete');
+
 
     Route::resource('conditions', ConditionController::class);
     Route::post('conditions/{id}/test', [ ConditionController::class, 'runConditionForTest' ])->name('conditions.test');
     Route::resource('task-actors', TaskActorController::class);
     Route::resource('fields', FieldController::class);
-    Route::get('fields/{field}/copy', [FieldController::class, 'copy'])->name('fields.copy');
 
     Route::name('inbox.')->prefix('inbox')->group(function(){
         Route::get('', [ InboxController::class, 'index' ])->name('index');
@@ -70,6 +75,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 
         Route::get('edit/{inboxId}', [ InboxController::class, 'edit' ])->name('edit');
         Route::put('update/{inboxId}', [ InboxController::class, 'update' ])->name('update');
+        Route::get('change-status/{inboxId}', [ InboxController::class, 'changeStatus' ])->name('changeStatus');
         Route::get('delete/{inboxId}', [ InboxController::class, 'delete' ])->name('delete');
         Route::get('case-history/{caseNumber?}', [InboxController::class, 'caseHistory'])->name('caseHistoryView');
     });
@@ -78,6 +84,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::post('create-case-number-and-save', [ RoutingController::class, 'createCaseNumberAndSave' ])->name('createCaseNumberAndSave');
         Route::post('save', [ RoutingController::class, 'save' ])->name('save');
         Route::post('save-and-next', [ RoutingController::class, 'saveAndNext' ])->name('saveAndNext');
+        Route::post('jump-back', [ RoutingController::class, 'jumpBack' ])->name('jumpBack');
         Route::post('jump-to', [ RoutingController::class, 'jumpTo' ])->name('jumpTo');
         Route::get('view/{inboxId}', [ InboxController::class, 'view' ])->name('view');
     });

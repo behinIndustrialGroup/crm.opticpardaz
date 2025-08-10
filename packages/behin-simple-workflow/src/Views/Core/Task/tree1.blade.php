@@ -12,9 +12,6 @@
         if ($child->type == 'end') {
             $taskClass = 'task-end';
         }
-        if ($child->type == 'timed_condition') {
-            $taskClass = 'task-timed_condition';
-        }
 
     @endphp
     {{ $task->id }} --> {{ $child->id }}["<a type='submit' target="_blank" class="{{ $taskClass }}"

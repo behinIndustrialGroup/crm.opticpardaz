@@ -41,6 +41,8 @@ return [
     'device_name' => 'نام دستگاه',
     'Save' => 'ذخیره',
     'Save and next' => 'ذخیره و مرحله بعد',
+    'Back to previous step' => 'بازگشت به مرحله قبل',
+    'Previous Task Not Found' => 'تسک قبلی یافت نشد',
     'customer_init_description' => 'توضیحات اولیه مشتری',
     'mapa_expert' => 'کارشناس مپا',
     'customer_is_ok' => 'تایید حضور مشتری',

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name')->nullable();
             $table->string('executive_file')->nullable();
-            $table->json('content')->nullable();
+            $table->longText('content')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wf_forms');
+        Schema::dropIfExists('wf_scripts');
     }
 };

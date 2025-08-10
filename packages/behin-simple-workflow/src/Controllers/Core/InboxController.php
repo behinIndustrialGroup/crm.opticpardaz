@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Log;
 use App\Events\NewInboxEvent;
 use App\Models\User;
 use Behin\SimpleWorkflow\Jobs\SendPushNotification;
-use Behin\SimpleWorkflow\Models\Entities\CasesManual;
 
 class InboxController extends Controller
 {
@@ -46,8 +45,7 @@ class InboxController extends Controller
         return $inbox;
     }
 
-    public static function caseIsInUserInbox($caseId)
-    {
+    public static function caseIsInUserInbox($caseId){
         return Inbox::where('case_id', $caseId)->whereIn('status', ['new', 'opened', 'inProgress', 'draft'])->where('actor', Auth::id())->first();
     }
 
@@ -78,6 +76,7 @@ class InboxController extends Controller
         }
         $inboxRow->save();
     }
+
 
     public function index(): View
     {
@@ -135,6 +134,16 @@ class InboxController extends Controller
         ]);
     }
 
+    public function changeStatus($id)
+    {
+        $inbox = self::getById($id);
+        $inbox->status = $inbox->status == 'done' ? 'new' : 'done';
+        $inbox->save();
+        return redirect()->back()->with([
+            'success' => trans('fields.Inbox updated successfully')
+        ]);
+    }
+
     public static function view($inboxId)
     {
         $inbox = InboxController::getById($inboxId);
@@ -148,7 +157,7 @@ class InboxController extends Controller
             if (!isset($form->content)) {
                 return redirect()->route('simpleWorkflow.inbox.index')->with('error', trans('Form not found'));
             }
-            if ($task->assignment_type == 'public') {
+            if($task->assignment_type == 'public'){
                 return view('SimpleWorkflowView::Core.Inbox.public-show')->with([
                     'inbox' => $inbox,
                     'case' => $case,
@@ -157,9 +166,6 @@ class InboxController extends Controller
                     'variables' => $variables,
                     'form' => $form
                 ]);
-            }
-            if($inbox->actor != Auth::id()){
-                return abort(403, trans("fields.Sorry you don't have permission to see this page"));
             }
             return view('SimpleWorkflowView::Core.Inbox.show')->with([
                 'inbox' => $inbox,
@@ -191,18 +197,6 @@ class InboxController extends Controller
         // دریافت عنوان تسک
         $title = $task->case_name;
 
-        if (!$task->case_name) {
-            $case = CasesManual::find($caseId);
-            return $case->createName();
-
-            if (method_exists($case, 'name')) {
-                $case_name = $case->name();
-                if ($case_name) {
-                    return $case_name;
-                }
-            }
-        }
-
         // جایگزینی متغیرها در عنوان
         $patterns = config('workflow.patterns');
         // Log::info(json_encode($patterns));
@@ -224,17 +218,27 @@ class InboxController extends Controller
         return $title;
     }
 
-    public static function caseHistory($caseNumber)
-    {
+    public static function caseHistory($caseNumber){
         $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
-        $rows = Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
+        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
         return view('SimpleWorkflowView::Core.Inbox.history', compact('rows'));
     }
 
-    public static function caseHistoryList($caseNumber)
-    {
+    public static function caseHistoryList($caseNumber, $limit = null){
         $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
-        $rows = Inbox::whereIn('case_id', $cases)->orderBy('created_at')->get();
-        return $rows;
+        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at');
+        if($limit)
+            return $rows->limit($limit)->get();
+        return $rows->get();
+    }
+
+    public static function caseHistoryListBefore($caseNumber, $inboxId, $limit = null){
+        $cases = CaseController::getAllByCaseNumber($caseNumber)->pluck('id');
+        $inbox = InboxController::getById($inboxId);
+        $rows= Inbox::whereIn('case_id', $cases)->orderBy('created_at','desc')->whereNot('id', $inboxId)->whereDate('created_at', '<=', $inbox->created_at);
+        if($limit)
+            return $rows->limit($limit)->get();
+        return $rows->get();
     }
 }
+

@@ -27,7 +27,7 @@
     {!! Form::help($fieldId, [
         'options' => isset($fieldAttributes?->options) ? $fieldAttributes?->options : null,
         'class' => '',
-        'id' => $fieldDetails->id ?? $fieldId,
+        'id' => $fieldId,
         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
         'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
     ]) !!}
@@ -92,7 +92,7 @@
 @if ($fieldDetails->type == 'date')
     {!! Form::date($fieldId, [
         'value' => $fieldValue,
-        'class' => 'form-control',
+        'class' => 'form-control persian-date',
         'id' => $fieldId,
         'placeholder' => $fieldAttributes?->placeholder,
         'required' => $required,
@@ -140,11 +140,11 @@
     ]) !!}
 @endif
 @if ($fieldDetails->type == 'file')
-    {{-- @php
+    @php
         $fieldValues = isset($variables) ? $variables->where('key', $field->fieldName)->pluck('value') : [];
-    @endphp --}}
+    @endphp
     {!! Form::file($fieldId, [
-        'value' => $fieldValue ?? [],
+        'value' => $fieldValues,
         'class' => 'form-control',
         'id' => $fieldId,
         'placeholder' => $fieldAttributes?->placeholder,
@@ -182,9 +182,9 @@
     ]) !!}
 @endif
 @if ($fieldDetails->type == 'button')
-    {!! Form::button($fieldName, [
+    {!! Form::button($fieldId, [
         'class' => $fieldClass,
-        'id' => $fieldAttributes?->id ?? $fieldName,
+        'id' => $fieldId,
         'style' => isset($fieldAttributes?->style) ? $fieldAttributes?->style : null,
         'script' => isset($fieldAttributes?->script) ? $fieldAttributes?->script : null,
     ]) !!}

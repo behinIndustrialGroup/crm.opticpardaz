@@ -3,16 +3,16 @@
     $content = collect($content)->sortBy('order')->toArray();
     $task = $inbox->task ?? '';
 @endphp
-@if ($modalShow)
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <p class="mb-0" style="float: left">
-                <button class="btn btn-sm btn-danger"
-                    onclick="close_admin_modal(`{{ $viewModel->id }}`)">{{ trans('fields.close') }}</button>
-            </p>
-        </div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <p class="mb-0" style="float: right">
+            <button class="btn btn-sm btn-secondary">{{ trans('fields.Case Number') }}: {{ $case->number }}</button>
+        </p>
+        <p class="mb-0" style="float: left">
+            <button class="btn btn-sm btn-secondary" onclick="close_admin_modal()">{{ trans('fields.close') }}</button>
+        </p>
     </div>
-@endif
+</div>
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -23,18 +23,16 @@
     </div>
 @endif
 <div class="mb-4">
-    @if ($modalShow)
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">{{ $form->name }}</h6>
-        </div>
-    @endif
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ $form->name }}</h6>
+    </div>
     <div class="card-body">
-        <form action="javascript:void(0)" method="POST" id="modal-form-{{ $row->id ?? '' }}" enctype="multipart/form-data">
+        <form action="javascript:void(0)" method="POST" id="modal-form"
+            enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="inboxId" id="inboxId" value="{{ $inbox->id ?? '' }}">
             <input type="hidden" name="caseId" id="caseId" value="{{ $case->id }}">
             <input type="hidden" name="viewModelId" id="viewModelId" value="{{ $viewModel->id }}">
-            <input type="hidden" name="{{ $viewModel->entity->name }}_id" id="{{ $viewModel->entity->name }}_id" value="{{ $row->id ?? '' }}">
             <input type="hidden" name="rowId" id="rowId" value="{{ $row->id ?? '' }}">
             <input type="hidden" name="api_key" id="api_key" value="{{ $viewModel->api_key }}">
             @if (View::exists('SimpleWorkflowView::Custom.Form.' . $form->id))
@@ -77,8 +75,7 @@
                         @endif
                     @endforeach
                 </div>
-                <button class="btn btn-sm btn-success view-model-update-btn"
-                    onclick="updateViewModelRecord(`{{ $row->id ?? '' }}`)">{{ trans('fields.Save') }}</button>
+                <button class="btn btn-sm btn-success" onclick="updateViewModelRecord()">{{ trans('fields.Save') }}</button>
 
             @endif
         </form>
@@ -86,15 +83,12 @@
 </div>
 <script>
     initial_view()
-
-    function updateViewModelRecord(row_id) {
-        var fd = new FormData($(`#modal-form-${row_id}`)[0]);
+    function updateViewModelRecord(){
+        var fd = new FormData($('#modal-form')[0]);
         var url = "{{ route('simpleWorkflow.view-model.update-record') }}"
-        send_ajax_formdata_request(url, fd, function(response) {
+        send_ajax_formdata_request(url, fd, function(response){
             show_message(response)
-            console.log(response)
             get_view_model_rows('{{ $viewModel->id }}', '{{ $viewModel->api_key }}')
-            close_admin_modal()
         })
     }
 </script>
