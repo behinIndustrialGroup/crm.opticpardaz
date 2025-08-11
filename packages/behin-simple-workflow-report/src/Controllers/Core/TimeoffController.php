@@ -43,7 +43,7 @@ class TimeoffController extends Controller
         $thisYear = $todayShamsi->getYear();
         $thisMonth = str_pad($todayShamsi->getMonth(), 2, '0', STR_PAD_LEFT);
         $startOfThisJalaliYear = Jalalian::fromFormat('Y-m-d', $thisYear . '-01-01')->toCarbon()->timestamp;
-        $users = User::whereNotIn('id', [1, 43]);
+        $users = User::query();
         if ($userId) {
             $users = $users->where('id', $userId)->orderBy('number')->get();
         } else {
