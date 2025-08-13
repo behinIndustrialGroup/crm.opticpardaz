@@ -29,9 +29,10 @@
                     @foreach ($rows as $index => $row)
                         <tr ondblclick="window.location.href = '{{ route('simpleWorkflow.inbox.view', $row->id) }}'">
                             <td>
-                                {{ $index + 1 }}
                                 <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
                                     class="btn btn-sm btn-primary"><i class="fa fa-external-link"></i></a>
+                                {{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}
+                                
                                 @if ($row->status == 'draft')
                                     <a href="{{ route('simpleWorkflow.inbox.delete', $row->id) }}"
                                         class="btn btn-sm btn-danger">{{ trans('fields.Delete') }}
