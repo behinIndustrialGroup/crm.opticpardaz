@@ -81,7 +81,7 @@ return [
             ]
         ],
         'tickets' => [
-            'icon' => 'ticket',
+            'icon' => 'support_agent',
             'fa_name' => 'تیکت پشتیبانی',
             'submenu' => [
                 'create' => [ 'fa_name' => 'ایجاد', 'route-name' => 'ATRoutes.index', 'route-url' => '' ],
