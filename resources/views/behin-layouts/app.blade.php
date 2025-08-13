@@ -57,7 +57,7 @@
         href="{{ url('public/behin/behin-dist/plugins/mapp/css/fa/style.css') . '?' . config('app.version') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <!-- Material Icons اضافه -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url('public/behin/behin-dist/dist/css/icon.css') . '?' . config('app.version') }}" rel="stylesheet">
 
     <!-- استایل سفارشی متریال -->
     <style>
