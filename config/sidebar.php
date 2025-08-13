@@ -4,14 +4,14 @@ return [
     'menu' =>[
 
         'dashboard' => [
-            'icon' => 'fa fa-dashboard',
+            'icon' => 'dashboard',
             'fa_name' => 'داشبرد',
             'submenu' => [
                 'dashboard' => [ 'fa_name' => 'داشبرد من', 'route-name' => '', 'route-url' => 'admin' ],
             ]
         ],
         'workflow-inbox' => [
-            'icon' => '',
+            'icon' => 'inbox',
             'fa_name' => 'کارتابل',
             'submenu' => [
                 'new-process' => [ 'fa_name' => 'فرایند جدید', 'route-name' => 'simpleWorkflow.process.startListView' ],
@@ -20,7 +20,7 @@ return [
             ]
         ],
         'workflow-report' => [
-            'icon' => '',
+            'icon' => 'report',
             'fa_name' => 'گزارشات کارتابل',
             'submenu' => [
                 'list' => [ 'fa_name' => 'لیست', 'route-name' => 'simpleWorkflowReport.index' ],
@@ -31,7 +31,7 @@ return [
             ]
         ],
         'workflow' => [
-            'icon' => '',
+            'icon' => 'account_tree',
             'fa_name' => 'گردش کار',
             'submenu' => [
                 'process' => [ 'fa_name' => 'فرایند', 'route-name' => 'simpleWorkflow.process.index' ],
@@ -46,14 +46,14 @@ return [
             ]
         ],
         'translations' => [
-            'icon' => 'fa fa-language',
+            'icon' => 'language',
             'fa_name' => 'ترجمه',
             'submenu' => [
                 'index' => [ 'fa_name' => 'ترجمه', 'route-name' => '', 'route-url' => '/translations' ],
             ]
         ],
         'cases' => [
-            'icon' => 'fa fa-list',
+            'icon' => 'list',
             'fa_name' => 'کارپوشه',
             'submenu' => [
                 'new-case' => [ 'fa_name' => 'فرایند جدید', 'route-name' => 'MkhodrooProcessMaker.forms.start', 'route-url' => '' ],
@@ -63,7 +63,7 @@ return [
             ]
         ],
         'cases-report' => [
-            'icon' => 'fa fa-list',
+            'icon' => 'list',
             'fa_name' => 'گزارشات کارپوشه',
             'submenu' => [
                 'all' => [ 'fa_name' => 'همه', 'route-name' => 'pmAdmin.form.allCasesForm', 'route-url' => '' ],
@@ -72,7 +72,7 @@ return [
             ]
         ],
         'users' => [
-            'icon' => 'fa fa-user',
+            'icon' => 'person',
             'fa_name' => 'کاربران',
             'submenu' => [
                 'dashboard' => [ 'fa_name' => 'همه', 'route-name' => '', 'route-url' => 'user/all' ],
@@ -81,7 +81,7 @@ return [
             ]
         ],
         'tickets' => [
-            'icon' => 'fa fa-ticket',
+            'icon' => 'ticket',
             'fa_name' => 'تیکت پشتیبانی',
             'submenu' => [
                 'create' => [ 'fa_name' => 'ایجاد', 'route-name' => 'ATRoutes.index', 'route-url' => '' ],

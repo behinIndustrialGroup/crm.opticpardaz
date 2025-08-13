@@ -51,11 +51,61 @@
     {{-- <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.css') }}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet"
+        href="{{ url('public/behin/behin-dist/plugins/mapp/css/mapp.min.css') . '?' . config('app.version') }}">
+    <link rel="stylesheet"
+        href="{{ url('public/behin/behin-dist/plugins/mapp/css/fa/style.css') . '?' . config('app.version') }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <!-- Material Icons اضافه -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <!-- استایل سفارشی متریال -->
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .btn {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .main-header.navbar {
+            background-color: #1976d2 !important;
+        }
+        .main-sidebar {
+            border-top-right-radius: 12px;
+            background-color: #212121 !important;
+        }
+        .main-footer {
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+        }
+        /* جدول‌ها کمی متریال‌تر */
+        table.dataTable {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        table.dataTable thead {
+            background-color: #eeeeee;
+        }
+    </style>
     @yield('style')
 
     <script src="{{ url('public/behin/behin-dist/plugins/jquery/jquery.min.js') . '?' . config('app.version') }}"></script>
+    {{-- <script type="text/javascript" src="https://cdn.map.ir/web-sdk/1.4.2/js/jquery-3.2.1.min.js"></script> --}}
     <script
         src="{{ url('public/behin/behin-dist/plugins/datatables/jquery.dataTables.js') . '?' . config('app.version') }}">
     </script>
@@ -67,7 +117,9 @@
     <script
         src="{{ url('public/behin/behin-dist/persian-date-picker/persian-datepicker.js') . '?' . config('app.version') }}">
     </script>
-    <script src="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.js') . '?' . config('app.version') }}"></script>
+
+
+    <script src="{{ url('public/behin/behin-dist/plugins/mapp/js/mapp.env.js') . '?' . config('app.version') }}"></script>
 
     <script>
         window.appUrl = "{{ env('APP_URL') }}";
@@ -75,11 +127,9 @@
     <script src="{{ url('public/behin/behin-js/ajax.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dataTable.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/dropzone.js') . '?' . config('app.version') }}"></script>
-    <script
-        src="{{ url('public/behin/behin-dist/plugins/autonumeric/autoNumeric.min.js') . '?' . config('app.version') }}">
-    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="{{ url('public/behin/behin-dist/plugins/autonumeric/autoNumeric.min.js') . '?' . config('app.version') }}"></script>
 
-    <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
 
 
     @yield('script_in_head')
@@ -93,9 +143,19 @@
 
         @include('behin-layouts.main-sidebar')
         <div class="content-wrapper">
-
             <section class="content">
                 <div class="container-fluid">
+                    @if(!isset($disableBackBtn))
+                        <div class="card">
+                            <div class="card-header">
+                                <a href="javascript:history.back()" class="btn btn-outline-primary float-left">
+                                    <i class="fa fa-arrow-left"></i> {{ trans('fields.Back') }}
+                                </a>
+                            </div>
+                        </div>
+                    @endisset
+                </div>
+                <div class="container-fluid p-2">
                     @yield('content')
                 </div>
             </section>
@@ -103,9 +163,9 @@
 
 
 
-        {{-- <footer class="main-footer"> --}}
-        {{-- <strong> &copy; 2018 <a href="http://github.com/hesammousavi/">حسام موسوی</a>.</strong> --}}
-        {{-- </footer> --}}
+        <footer class="main-footer">
+            {{-- <strong> &copy; 2018 <a href="http://github.com/hesammousavi/">حسام موسوی</a>.</strong> --}}
+        </footer>
 
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
@@ -133,13 +193,18 @@
     {{-- <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
         <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script> --}}
+    <script src="{{ url('public/behin/behin-dist/plugins/mapp/js/mapp.min.js') . '?' . config('app.version') }}"></script>
+    <script src="{{ url('public/behin/behin-dist/plugins/toastr/toastr.min.js') . '?' . config('app.version') }}"></script>
+    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     <script>
         const beamsClient = new PusherPushNotifications.Client({
             instanceId: "{{ config('broadcasting.pusher.instanceId') }}",
         });
+        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
+            url: "{{ url('/pusher/beams-auth') }}"
+        });
 
-
-        beamsClient.stop().catch(console.error);
         beamsClient.getUserId()
             .then(userId => {
                 if (!userId) {
@@ -147,58 +212,48 @@
                         const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
                             url: "{{ url('/pusher/beams-auth') }}"
                         });
-                        beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
+                        beamsClient.setUserId(
+                            "{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
                             beamsTokenProvider)
                     })
-                }else{
+                } else {
                     console.log('User ID:', userId);
                 }
             })
             .catch(console.error);
-        beamsClient
-            .start()
-            .then(() => {
-                // beamsClient.stop().catch(console.error);
-                beamsClient.setUserId("{{ config('broadcasting.pusher.prefix_user') }}{{ Auth::id() }}",
-                    beamsTokenProvider)
-            })
-            .catch(console.error);
     </script>
     <script>
-        // document.getElementById('notification-btn').addEventListener('click', () => {
-        //     checkNotificationPermission();
-        // });
+        function checkNotificationPermission() {
+            if (!('Notification' in window)) {
+                alert('این مرورگر از نوتیفیکیشن پشتیبانی نمی‌کند.');
+                return;
+            }
 
-        // function checkNotificationPermission() {
-        //     if (!('Notification' in window)) {
-        //         alert('این مرورگر از نوتیفیکیشن پشتیبانی نمی‌کند.');
-        //         return;
-        //     }
-
-        //     if (Notification.permission === 'granted') {
-        //         new Notification('نوتیفیکیشن فعال است', {
-        //             body: 'شما قبلاً مجوز داده‌اید!',
-        //             icon: '{{ url('public/behin/logo.ico') }}'
-        //         });
-        //     } else if (Notification.permission === 'denied') {
-        //         alert('شما مجوز نوتیفیکیشن را رد کرده‌اید. لطفاً از تنظیمات مرورگر آن را فعال کنید.');
-        //     } else {
-        //         Notification.requestPermission().then(permission => {
-        //             if (permission === 'granted') {
-        //                 new Notification('متشکریم!', {
-        //                     body: 'شما نوتیفیکیشن را فعال کردید.'
-        //                 });
-        //             }
-        //         });
-        //     }
-        // }
-    </script>
+            if (Notification.permission === 'granted') {
+                new Notification('نوتیفیکیشن فعال است', {
+                    body: 'شما قبلاً مجوز داده‌اید!',
+                    icon: '{{ url('public/behin/logo.ico') }}'
+                });
+            } else if (Notification.permission === 'denied') {
+                alert('شما مجوز نوتیفیکیشن را رد کرده‌اید. لطفاً از تنظیمات مرورگر آن را فعال کنید.');
+            } else {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('متشکریم!', {
+                            body: 'شما نوتیفیکیشن را فعال کردید.'
+                        });
+                    }
+                });
+            }
+        }
+    </script> --}}
     <script>
         function logout() {
-            beamsClient.stop().catch(console.error);
+            // beamsClient.stop().catch(console.error);
             window.location = "{{ route('logout') }}"
         }
     </script>
+
 
 
     <script>
@@ -217,20 +272,28 @@
                     }
                 }
             });
+            $('.timepicker').timepicker({
+                timeFormat: 'HH:mm', // فرمت 24 ساعته
+                interval: 1, // نمایش با فاصله 5 دقیقه‌ای
+                minTime: '00:00',
+                maxTime: '23:55',
+                dynamic: true,
+                dropdown: true,
+                scrollbar: true
+            });
             AutoNumeric.multiple('.formatted-digit', {
                 digitGroupSeparator: ',',
                 decimalCharacter: '.',
                 decimalPlaces: 0,
+                unformatOnSubmit: true
             });
         }
     </script>
 
     <script src="{{ url('public/behin/behin-js/loader.js') . '?' . config('app.version') }}"></script>
     <script src="{{ url('public/behin/behin-js/scripts.js') . '?' . config('app.version') }}"></script>
-
     @yield('script')
     </div>
-
 
 
 </body>
