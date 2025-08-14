@@ -86,7 +86,7 @@
                         <i class="ion ion-bag"></i>
                     </div>
                     <a href="{{ route('simpleWorkflow.process.start', [
-                        'taskId' => '879e001c-59d5-4afb-958c-15ec7ff269d1',
+                        'taskId' => '7434396b-54ec-4624-840e-e7b24db73eaf',
                         'inDraft' => 0,
                         'force' => 1,
                         'redirect' => true,
