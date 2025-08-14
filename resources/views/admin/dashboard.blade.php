@@ -85,7 +85,12 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="{{ route('simpleWorkflow.process.startListView') }}" class="small-box-footer">{{ trans('مشاهده') }} <i
+                    <a href="{{ route('simpleWorkflow.process.start', [
+                        'taskId' => '879e001c-59d5-4afb-958c-15ec7ff269d1',
+                        'inDraft' => 0,
+                        'force' => 1,
+                        'redirect' => true,
+                        ]) }}" class="small-box-footer">{{ trans('مشاهده') }} <i
                             class="fa fa-arrow-circle-left"></i></a>
                 </div>
             </div>
