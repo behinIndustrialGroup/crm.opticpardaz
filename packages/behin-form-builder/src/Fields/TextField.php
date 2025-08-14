@@ -9,7 +9,6 @@ class TextField extends AbstractField
     public function render(): string
     {
         $readonly = $this->attributes['readonly'] ?? '';
-        $isPrice = isset($this->attributes['isPrice']) ? $this->attributes['isPrice'] : '';
         $s = '<div class="form-group">';
         $s .= '<label>';
         $s .= trans('fields.' . $this->name);
@@ -19,7 +18,6 @@ class TextField extends AbstractField
         $s .= '</label>';
         $s .= '<input type="text" name="' . $this->name . '" ';
         $s .= 'list="' . $this->name . '_list" ';
-
         foreach($this->attributes as $key => $value){
             if($key == 'required'){
                 if($value == 'on'){
@@ -31,7 +29,7 @@ class TextField extends AbstractField
                     $s .= 'readonly ';
                 }
             }
-            elseif($key == 'script' || $key == 'datalist_from_database' || $key == 'isPrice'){
+            elseif($key == 'script' || $key == 'datalist_from_database'){
 
             }
             else{
@@ -39,11 +37,6 @@ class TextField extends AbstractField
             }
         }
         $s .= '>';
-        if($isPrice){
-            $s .= '<script>';
-            $s .= $isPrice;
-            $s .= '</script>';
-        }
         if(isset($this->attributes['script'])){
             $s .= '<script>';
             $s .= $this->attributes['script'];

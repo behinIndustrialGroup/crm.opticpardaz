@@ -26,7 +26,7 @@ class FormattedDigitField extends AbstractField
         $s .= 'list="' . $this->name . '_list" ';
 
         // اگر کلاس خاصی برای AutoNumeric نیاز داریم اضافه کنیم
-        $s .= 'class="form-control formatted-digit" inputmode="numeric"';
+        $s .= 'class="form-control formatted-digit" inputmode="numeric" pattern="[0-9]*"';
 
         // ویژگی‌های دیگر input
         foreach ($this->attributes as $key => $value) {
