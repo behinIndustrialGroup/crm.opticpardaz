@@ -283,6 +283,7 @@
 
 <script>
     initial_view()
+
     function initial_view() {
         $('.select2').select2();
         $('.select2').css('width', '100%')
@@ -315,27 +316,34 @@
         });
 
         $('table tbody td').each(function() {
-            let content = $(this).text().trim();
-            if (content.length > 25) {
-                let visibleText = content.substr(0, 25);
-                let hiddenText = content.substr(25);
+            let $cell = $(this);
+            let originalHtml = $cell.html();
+            let textOnly = $cell.text().trim();
 
-                $(this).html(
-                    `<span class="short-text">${visibleText}</span>
-                 <span class="more-text">${hiddenText}</span>
-                 <span class="show-more-btn material-icons">more_horiz</span>`
-                );
+            // اگر شامل دکمه یا اسپن بود، هیچی تغییر نده
+            if ($cell.find('button').length > 0 || $cell.find('span').length > 0) {
+                return;
+            }
+
+            if (textOnly.length > 25) {
+                let shortText = textOnly.substr(0, 25) ;
+
+                $cell.html(`
+            <span class="short-text">${shortText}</span>
+            <span class="full-text" style="display:none;">${originalHtml}</span>
+            <button class="toggle-btn show-more-btn material-icons" style="border:none;background:none;cursor:pointer;">more_horiz</button>
+        `);
             }
         });
 
-        // رویداد نمایش/مخفی‌سازی متن
-        $(document).on('click', '.show-more-btn', function() {
-            let cell = $(this).closest('td');
-            cell.find('.more-text').toggle();
-            $(this).text(
-                cell.find('.more-text').is(':visible') ? 'expand_less' : 'more_horiz'
-            );
+        // هندل کلیک روی نمایش بیشتر/کمتر
+        $(document).on('click', '.toggle-btn', function() {
+            let $cell = $(this).closest('td');
+            $cell.find('.short-text, .full-text').toggle();
+            $(this).text($(this).text() === 'more_horiz' ? 'expand_less' : 'more_horiz');
         });
+
+
     }
 </script>
 
