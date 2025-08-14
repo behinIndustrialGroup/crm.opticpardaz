@@ -29,7 +29,7 @@
                     @foreach ($rows as $index => $row)
                         <tr ondblclick="window.location.href = '{{ route('simpleWorkflow.inbox.view', $row->id) }}'">
                             <td>
-                                <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
+                            <a href="{{ route('simpleWorkflow.inbox.view', $row->id) }}"
                                     class="btn btn-sm btn-primary"><i class="fa fa-external-link"></i></a>
                                 {{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}
                                 
