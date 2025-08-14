@@ -318,10 +318,11 @@
         $('table tbody td').each(function() {
             let $cell = $(this);
             let originalHtml = $cell.html();
+            console.log(originalHtml)
             let textOnly = $cell.text().trim();
 
             // اگر شامل دکمه یا اسپن بود، هیچی تغییر نده
-            if ($cell.find('button').length > 0 || $cell.find('span').length > 0) {
+            if (originalHtml.includes('button') || originalHtml.includes('span') || originalHtml.includes('a')) {
                 return;
             }
 
