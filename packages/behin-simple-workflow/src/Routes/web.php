@@ -102,6 +102,12 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::post('entities/export', [EntityController::class, 'export'])->name('entities.export');
     Route::post('entities/import', [EntityController::class, 'import'])->name('entities.import');
     Route::get('entities/{entity}/create-table', [EntityController::class, 'createTable'])->name('entities.createTable');
+    Route::get('entities/{entity}/records', [EntityController::class, 'records'])->name('entities.records');
+    Route::get('entities/{entity}/records/create', [EntityController::class, 'createRecord'])->name('entities.createRecord');
+    Route::post('entities/{entity}/records', [EntityController::class, 'storeRecord'])->name('entities.storeRecord');
+    Route::get('entities/{entity}/records/{id}/edit', [EntityController::class, 'editRecord'])->name('entities.editRecord');
+    Route::put('entities/{entity}/records/{id}', [EntityController::class, 'updateRecord'])->name('entities.updateRecord');
+    Route::delete('entities/{entity}/records/{id}', [EntityController::class, 'deleteRecord'])->name('entities.deleteRecord');
 
     Route::resource('task-jump', TaskJumpController::class);
     Route::get('task-jump/{task_id}/{inbox_id}/{case_id}/{process_id}', [TaskJumpController::class, 'show'])->name('task-jump.show');

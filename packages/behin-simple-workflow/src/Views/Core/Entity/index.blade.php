@@ -56,6 +56,7 @@
                             <td class="text-left">{{ $entity->name }}</td>
                             <td>
                                 <a href="{{ route('simpleWorkflow.entities.edit', $entity->id) }}">{{ trans('fields.Edit') }}</a> |
+                                <a href="{{ route('simpleWorkflow.entities.records', $entity->id) }}">{{ trans('fields.Edit Records') }}</a> |
                                 <a href="{{ route('simpleWorkflow.entities.destroy', $entity->id) }}" onclick="return confirm('{{ trans('messages.confirmDelete') }}')">{{ trans('fields.Delete') }}</a>
                             </td>
                         </tr>
