@@ -178,11 +178,14 @@ function runScript(scriptId, data,callback){
     );
 }
 
-function open_admin_modal(url, title = ''){
-    var modal = $('<div class="modal fade" id="admin-modal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+function open_admin_modal(url, title = '', id=null){
+    if(id == null){
+        id = Math.floor(Math.random() * 100000000);
+    }
+    var modal = $('<div class="modal fade" id="admin-modal-' + id + '"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                     '<div class="modal-dialog modal-lg">' +
                     '<div class="modal-content">' +
-                    '<div class="modal-body" id="modal-body">' +
+                    '<div class="modal-body" id="modal-body-' + id + '">' +
                     '<h4 class="modal-title" id="myModalLabel">'+ title +'</h4>' +
                     '<p>Modal content goes here.</p>' +
                     '</div>' +
@@ -194,7 +197,7 @@ function open_admin_modal(url, title = ''){
 
     $('body').append(modal);
 
-    $('#admin-modal').on('hidden.bs.modal', function () {
+    $('#admin-modal-' + id).on('hidden.bs.modal', function () {
         $(this).remove();
       });
 
@@ -202,8 +205,8 @@ function open_admin_modal(url, title = ''){
     send_ajax_get_request(
         url,
         function(data){
-            $('#admin-modal #modal-body').html(data);
-            $('#admin-modal').modal('show')
+            $('#admin-modal-' + id + ' #modal-body-' + id).html(data);
+            $('#admin-modal-' + id).modal('show')
         }
     )
 }

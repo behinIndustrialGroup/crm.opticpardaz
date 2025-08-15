@@ -34,6 +34,7 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::post('create', [ TaskController::class, 'create' ])->name('create');
         Route::get('{task}/edit', [ TaskController::class, 'edit' ])->name('edit');
         Route::put('{task}/update', [ TaskController::class, 'update' ])->name('update');
+        Route::delete('{task}/delete', [ TaskController::class, 'destroy' ])->name('delete');
 
         Route::get('actor/{taskId}', [ TaskController::class, 'index' ])->name('actor');
 
@@ -96,6 +97,8 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 
 
     Route::resource('entities', EntityController::class);
+    Route::post('entities/export', [EntityController::class, 'export'])->name('entities.export');
+    Route::post('entities/import', [EntityController::class, 'import'])->name('entities.import');
     Route::get('entities/{entity}/create-table', [EntityController::class, 'createTable'])->name('entities.createTable');
 
     Route::resource('task-jump', TaskJumpController::class);
@@ -103,6 +106,8 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 
     Route::resource('view-model', ViewModelController::class);
     Route::get('view-model/{view_model}/copy', [ViewModelController::class, 'copy'])->name('view-model.copy');
+    Route::post('view-model/export', [ViewModelController::class, 'export'])->name('view-model.export');
+    Route::post('view-model/import', [ViewModelController::class, 'import'])->name('view-model.import');
     Route::post('get-view-model-rows', [ViewModelController::class, 'getRows'])->name('view-model.get-rows');
     Route::post('update-view-model-record', [ViewModelController::class, 'updateRecord'])->name('view-model.update-record');
     Route::post('delete-view-model-record', [ViewModelController::class, 'deleteRecord'])->name('view-model.delete-record');

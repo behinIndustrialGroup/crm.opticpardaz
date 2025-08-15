@@ -86,6 +86,63 @@ class EntityController extends Controller
         return redirect()->route('simpleWorkflow.entities.edit', $entity->id)->with('success', 'Entity updated successfully.');
     }
 
+    /**
+     * Export selected entities to a json file.
+     */
+    public function export(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        $entities = Entity::whereIn('id', $ids)->get();
+
+        if ($entities->isEmpty()) {
+            return redirect()->back()->with('error', 'No entities selected.');
+        }
+
+        // Single entity should be exported as an object, multiple as an array
+        $data = $entities->count() === 1 ? $entities->first()->toArray() : $entities->toArray();
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return response()->streamDownload(function () use ($json) {
+            echo $json;
+        }, 'entities.json');
+    }
+
+    /**
+     * Import entities from uploaded json file.
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        $content = $request->file('file')->get();
+        $data = json_decode($content, true);
+
+        if (is_null($data)) {
+            return redirect()->back()->with('error', 'Invalid file format.');
+        }
+
+        $items = isset($data[0]) ? $data : [$data];
+        $fillable = (new Entity())->getFillable();
+
+        foreach ($items as $item) {
+            // Remove attributes that are not fillable or should be generated
+            $attributes = array_intersect_key($item, array_flip($fillable));
+
+            $entity = new Entity();
+            $entity->fill($attributes);
+
+            if (isset($item['db_table_name'])) {
+                $entity->db_table_name = $item['db_table_name'];
+            }
+
+            $entity->save();
+        }
+
+        return redirect()->back()->with('success', 'Entities imported successfully.');
+    }
+
     public static function getAll()
     {
         return Entity::orderBy('created_at')->get();
