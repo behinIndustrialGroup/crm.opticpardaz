@@ -105,6 +105,8 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
     Route::get('entities/{entity}/records', [EntityController::class, 'records'])->name('entities.records');
     Route::get('entities/{entity}/records/create', [EntityController::class, 'createRecord'])->name('entities.createRecord');
     Route::post('entities/{entity}/records', [EntityController::class, 'storeRecord'])->name('entities.storeRecord');
+    Route::post('entities/{entity}/records/export', [EntityController::class, 'exportRecords'])->name('entities.records.export');
+    Route::post('entities/{entity}/records/import', [EntityController::class, 'importRecords'])->name('entities.records.import');
     Route::get('entities/{entity}/records/{id}/edit', [EntityController::class, 'editRecord'])->name('entities.editRecord');
     Route::put('entities/{entity}/records/{id}', [EntityController::class, 'updateRecord'])->name('entities.updateRecord');
     Route::delete('entities/{entity}/records/{id}', [EntityController::class, 'deleteRecord'])->name('entities.deleteRecord');

@@ -9,7 +9,18 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <a href="{{ route('simpleWorkflow.entities.createRecord', $entity->id) }}" class="btn btn-primary mb-3">{{ trans('fields.Add Record') }}</a>
+    <div class="mb-3 d-flex flex-wrap align-items-center">
+        <a href="{{ route('simpleWorkflow.entities.createRecord', $entity->id) }}" class="btn btn-primary me-2">{{ trans('fields.Add Record') }}</a>
+        <form action="{{ route('simpleWorkflow.entities.records.export', $entity->id) }}" method="POST" class="me-2">
+            @csrf
+            <button class="btn btn-default">{{ trans('fields.Export') }}</button>
+        </form>
+        <form action="{{ route('simpleWorkflow.entities.records.import', $entity->id) }}" method="POST" enctype="multipart/form-data" class="d-flex">
+            @csrf
+            <input type="file" name="file" class="form-control form-control-sm me-2" required>
+            <button class="btn btn-default">{{ trans('fields.Import') }}</button>
+        </form>
+    </div>
     <table class="table table-strpped" id="recordsTable">
         <thead>
             <tr>

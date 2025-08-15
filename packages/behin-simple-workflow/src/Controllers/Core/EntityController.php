@@ -278,6 +278,70 @@ class EntityController extends Controller
         return view('SimpleWorkflowView::Core.Entity.records', compact('entity', 'records', 'columns'));
     }
 
+    /**
+     * Export all records of an entity as a json file.
+     */
+    public function exportRecords(Entity $entity)
+    {
+        if (!$entity->db_table_name || !Schema::hasTable($entity->db_table_name)) {
+            return redirect()->back()->with('error', 'Entity table not found.');
+        }
+
+        $records = DB::table($entity->db_table_name)->whereNull('deleted_at')->get();
+
+        if ($records->isEmpty()) {
+            return redirect()->back()->with('error', 'No records to export.');
+        }
+
+        $json = json_encode($records, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return response()->streamDownload(function () use ($json) {
+            echo $json;
+        }, $entity->name . '_records.json');
+    }
+
+    /**
+     * Import records for an entity from uploaded json file.
+     */
+    public function importRecords(Request $request, Entity $entity)
+    {
+        $request->validate([
+            'file' => 'required|file',
+        ]);
+
+        if (!$entity->db_table_name || !Schema::hasTable($entity->db_table_name)) {
+            return redirect()->back()->with('error', 'Entity table not found.');
+        }
+
+        $content = $request->file('file')->get();
+        $data = json_decode($content, true);
+
+        if (is_null($data)) {
+            return redirect()->back()->with('error', 'Invalid file format.');
+        }
+
+        $items = isset($data[0]) ? $data : [$data];
+        $columns = $this->getColumnNames($entity);
+        $userId = auth()->id();
+
+        foreach ($items as $item) {
+            $record = array_intersect_key($item, array_flip($columns));
+            $record = array_merge([
+                'id' => $item['id'] ?? Str::random(10),
+                'created_by' => $item['created_by'] ?? $userId,
+                'updated_by' => $item['updated_by'] ?? $userId,
+                'contributers' => $item['contributers'] ?? '',
+                'created_at' => $item['created_at'] ?? now(),
+                'updated_at' => $item['updated_at'] ?? now(),
+                'deleted_at' => null,
+            ], $record);
+
+            DB::table($entity->db_table_name)->updateOrInsert(['id' => $record['id']], $record);
+        }
+
+        return redirect()->route('simpleWorkflow.entities.records', $entity->id)->with('success', 'Records imported successfully.');
+    }
+
     public function editRecord(Entity $entity, $id)
     {
         if (!$entity->db_table_name || !Schema::hasTable($entity->db_table_name)) {
