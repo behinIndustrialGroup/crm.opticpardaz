@@ -20,6 +20,8 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
         Route::get('', [ ProcessController::class, 'index' ])->name('index');
         Route::get('create', [ ProcessController::class, 'create' ])->name('create');
         Route::post('store', [ ProcessController::class, 'store' ])->name('store');
+        Route::get('{processId}/edit', [ ProcessController::class, 'edit' ])->name('edit');
+        Route::put('{processId}', [ ProcessController::class, 'update' ])->name('update');
         Route::get('start-list', [ ProcessController::class, 'startListView' ])->name('startListView');
         Route::get('start/{taskId}/{force?}/{redirect?}/{inDraft}', [ ProcessController::class, 'start' ])->name('start');
         Route::get('check-error/{processId}', [ ProcessController::class, 'processHasError' ])->name('processHasError');
