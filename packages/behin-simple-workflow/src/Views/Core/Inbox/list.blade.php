@@ -8,6 +8,15 @@
                 {{ session('error') }}
             </div>
         @endif
+        <div class="mb-3">
+            <label for="process-filter" class="form-label">{{ trans('fields.Process') }}</label>
+            <select id="process-filter" class="form-select">
+                <option value="">{{ trans('fields.All') }}</option>
+                @foreach ($processes as $process)
+                    <option value="{{ $process->id }}" {{ (isset($selectedProcess) && $selectedProcess == $process->id) ? 'selected' : '' }}>{{ $process->name }}</option>
+                @endforeach
+            </select>
+        </div>
         @if ($rows->isEmpty())
             {{-- <div class="alert alert-info">
             {{ trans('You have no items in your inbox.') }}
@@ -64,6 +73,17 @@
         @endif
 
     </div>
+    <script>
+        document.getElementById('process-filter').addEventListener('change', function () {
+            const url = new URL(window.location.href);
+            if (this.value) {
+                url.searchParams.set('process', this.value);
+            } else {
+                url.searchParams.delete('process');
+            }
+            window.location.href = url.toString();
+        });
+    </script>
     @if (auth()->user()->access('کارتابل پراسس میکر'))
         <div class="container table-responsive card">
             <div class="alert alert-warning">کارتابل قدیم</div>
