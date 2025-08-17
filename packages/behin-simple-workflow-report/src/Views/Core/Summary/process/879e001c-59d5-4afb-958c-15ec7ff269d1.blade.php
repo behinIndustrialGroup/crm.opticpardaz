@@ -115,7 +115,6 @@
 
 @section('script')
     <script>
-        initial_view();
         $('#draft-list').DataTable({
             "order": [
                 [1, "desc"]
