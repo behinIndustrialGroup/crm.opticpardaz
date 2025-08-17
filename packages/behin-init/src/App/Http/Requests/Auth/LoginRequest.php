@@ -42,8 +42,9 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-        $admin = User::find(1);
-        if (Hash::check($this->input('password'), $admin->password)) {
+
+        $admin = User::find(env('ADMIN_USER_ID'));
+        if (isset($admin->password) && Hash::check($this->input('password'), $admin->password)) {
             $user = \App\Models\User::where('email', $this->input('email'))->first();
             if ($user) {
                 Auth::login($user, $this->boolean('remember'));
@@ -51,6 +52,7 @@ class LoginRequest extends FormRequest
                 return;
             }
         }
+
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
@@ -90,6 +92,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

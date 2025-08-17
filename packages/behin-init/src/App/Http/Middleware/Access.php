@@ -14,22 +14,25 @@ class Access
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  string|null $method
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $method = null)
     {
-        $guards = empty($guards) ? [null] : $guards;
-
         if(!Auth::id()){
             return abort(403, 'ابتدا وارد شوید');
         }
-        $route = $request->route()->uri();
-        $a = new AccessController($route);
-        if(!$a->check()){
-            return abort(403, "Forbidden For Route: " . $route);
+        $user = Auth::user();
+        if($user->login_with_ip){
+            if($user->valid_ip != $request->ip()){
+                return abort(403, "آیپی شما معتبر نیست");
+            }
         }
-
-        
+        $target = $method ?? $request->route()->uri();
+        $a = new AccessController($target);
+        if(!$a->check()){
+            return abort(403, "Forbidden For Route: " . $target);
+        }
 
         return $next($request);
     }
