@@ -46,7 +46,17 @@
                                                     <a href="{{ route('simpleWorkflowReport.transaction-report.index') }}" class="btn btn-primary btn-sm">مشاهده گزارش</a>
                                                 </td>
                                             </tr>
-                                        @endif
+                                    @endif
+                                    @if(auth()->user()->access('خلاصه گزارش: مبالغ دریافتی پرونده ها'))
+                                            <tr>
+                                                <td class="d-none">مبالغ دریافتی پرونده‌ها</td>
+                                                <td>مبالغ دریافتی پرونده‌ها</td>
+                                                <td class="d-none"></td>
+                                                <td>
+                                                    <a href="{{ route('simpleWorkflowReport.repair-income-report.index') }}" class="btn btn-primary btn-sm">مشاهده گزارش</a>
+                                                </td>
+                                            </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
