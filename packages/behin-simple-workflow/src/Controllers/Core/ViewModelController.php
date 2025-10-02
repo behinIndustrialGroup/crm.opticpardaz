@@ -264,9 +264,18 @@ class ViewModelController extends Controller
                 if ($row->show_as == 'table') {
                     $s .= "<tr>";
                     foreach ($columns as $column) {
+                        $column = trim($column);
                         try {
                             if (str_contains($column, '()->')) {
                                 $value = $this->resolveColumnPath($row, $column);
+                            } elseif (Str::endsWith($column, '()')) {
+                                $method = Str::beforeLast($column, '()');
+
+                                if ($method && method_exists($row, $method)) {
+                                    $value = $row->$method();
+                                } else {
+                                    $value = 'تابع تعریف نشده است';
+                                }
                             } else {
                                 $value = $row->$column ?? null;
                             }
