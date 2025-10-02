@@ -73,6 +73,8 @@ return array (
   'Task Title' => 'عنوان وظیفه',
   'Process Title' => 'عنوان فرایند',
   'User Inbox' => 'کارتابل کاربر',
+  'script_before_create' => 'اسکریپت قبل از ایجاد رکورد',
+  'script_after_create' => 'اسکریپت بعد از ایجاد رکورد',
   'Start from task' => 'اولین وظیفه',
   'Start' => 'شروع',
   'Start Process' => 'شروع فرایند',
