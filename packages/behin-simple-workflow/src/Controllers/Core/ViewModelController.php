@@ -344,6 +344,25 @@ class ViewModelController extends Controller
             }
             // $data[$fieldName] = $savedPaths;
 
+            if ($isNew && $viewModel->script_before_create) {
+                $request->merge(['rowData' => $data]);
+
+                $result = ScriptController::runFromView($request, $viewModel->script_before_create);
+
+                if ($result) {
+                    return $result;
+                }
+
+                $data = $request->all();
+                if (isset($data['rowData']) && is_array($data['rowData'])) {
+                    $data = array_merge($data, $data['rowData']);
+                }
+                unset($data['rowData']);
+                if ($request->has('rowData')) {
+                    $request->request->remove('rowData');
+                }
+            }
+
             $fillable = $row->getFillable();
             foreach ($data as $key => $value) {
                 if (in_array($key, $fillable)) {
