@@ -54,7 +54,7 @@ class RoutingController extends Controller
         $formFields = FormController::getFormFields($formId);
 
         foreach ($vars as $key => $value) {
-            if(!in_array($key, $formFields)){
+            if (!in_array($key, $formFields)) {
                 continue;
             }
             if (gettype($value) == 'object') {
@@ -159,7 +159,7 @@ class RoutingController extends Controller
                 // همه باید وضعیت انجام شده تغییر کنند
             }
         }
-        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+        if ($newInbox = InboxController::caseIsInUserInbox($caseId)) {
             return response()->json([
                 'status' => 200,
                 'msg' => trans('Saved'),
@@ -217,7 +217,7 @@ class RoutingController extends Controller
         $previousInbox->status = 'new';
         $previousInbox->save();
 
-        if($previousInbox->actor == Auth::id()){
+        if ($previousInbox->actor == Auth::id()) {
             return redirect()->route('simpleWorkflow.inbox.view', ['inboxId' => $previousInbox->id]);
         }
         return redirect()->route('simpleWorkflow.inbox.index');
@@ -277,7 +277,7 @@ class RoutingController extends Controller
                 // همه باید وضعیت انجام شده تغییر کنند
             }
         }
-        if($newInbox = InboxController::caseIsInUserInbox($caseId)){
+        if ($newInbox = InboxController::caseIsInUserInbox($caseId)) {
             return redirect()->route('simpleWorkflow.inbox.view', ['inboxId' => $newInbox->id]);
         }
         return redirect()->route('simpleWorkflow.inbox.index');
@@ -285,32 +285,17 @@ class RoutingController extends Controller
 
     public static function executeNextTask($task, $caseId)
     {
-        try {
-            if ($task->type == 'form') {
-                if ($task->assignment_type == 'normal' or $task->assignment_type == null) {
-                    $taskActors = TaskActorController::getActorsByTaskId($task->id);
-                    foreach ($taskActors as $ta) {
-                        $actors = collect();
-                        if ($ta->role_id) {
-                            $actors = User::where('role_id', $ta->role_id)->pluck('id');
-                        } else {
-                            $actors->push($ta->actor);
-                        }
-                        foreach ($actors as $actor) {
-                            $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
-                            SendPushNotification::dispatch(
-                                $inbox->actor,
-                                'کار جدید',
-                                'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
-                                route('simpleWorkflow.inbox.view', $inbox->id)
-                            );
-                        }
+        if ($task->type == 'form') {
+            if ($task->assignment_type == 'normal' or $task->assignment_type == null) {
+                $taskActors = TaskActorController::getActorsByTaskId($task->id);
+                foreach ($taskActors as $ta) {
+                    $actors = collect();
+                    if ($ta->role_id) {
+                        $actors = User::where('role_id', $ta->role_id)->pluck('id');
+                    } else {
+                        $actors->push($ta->actor);
                     }
-                    // echo json_encode($taskActors);
-                }
-                if ($task->assignment_type == 'dynamic') {
-                    $taskActors = TaskActorController::getDynamicTaskActors($task->id, $caseId)->pluck('actor');
-                    foreach ($taskActors as $actor) {
+                    foreach ($actors as $actor) {
                         $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
                         SendPushNotification::dispatch(
                             $inbox->actor,
@@ -320,131 +305,140 @@ class RoutingController extends Controller
                         );
                     }
                 }
-                if ($task->assignment_type == 'public') {
-                    $taskActors = TaskActorController::getActorsByTaskId($task->id);
-                    foreach ($taskActors as $ta) {
-                        $actors = collect();
-                        if ($ta->role_id) {
-                            $actors = User::where('role_id', $ta->role_id)->pluck('id');
-                        } else {
-                            $actors->push($ta->actor);
-                        }
-                        foreach ($actors as $actor) {
-                            $inbox = InboxController::create($task->id, $caseId, $actor, 'done');
-                        }
+                // echo json_encode($taskActors);
+            }
+            if ($task->assignment_type == 'dynamic') {
+                $taskActors = TaskActorController::getDynamicTaskActors($task->id, $caseId)->pluck('actor');
+                foreach ($taskActors as $actor) {
+                    $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
+                    SendPushNotification::dispatch(
+                        $inbox->actor,
+                        'کار جدید',
+                        'کار جدید بهتون ارجاع داده شد: ' . $inbox->case_name,
+                        route('simpleWorkflow.inbox.view', $inbox->id)
+                    );
+                }
+            }
+            if ($task->assignment_type == 'public') {
+                $taskActors = TaskActorController::getActorsByTaskId($task->id);
+                foreach ($taskActors as $ta) {
+                    $actors = collect();
+                    if ($ta->role_id) {
+                        $actors = User::where('role_id', $ta->role_id)->pluck('id');
+                    } else {
+                        $actors->push($ta->actor);
+                    }
+                    foreach ($actors as $actor) {
+                        $inbox = InboxController::create($task->id, $caseId, $actor, 'done');
                     }
                 }
             }
-            if ($task->type == 'script') {
-                $script = ScriptController::getById($task->executive_element_id);
-                $result = ScriptController::runScript($task->executive_element_id, $caseId);
+        }
+        if ($task->type == 'script') {
+            $script = ScriptController::getById($task->executive_element_id);
+            $result = ScriptController::runScript($task->executive_element_id, $caseId);
+            if ($result) {
+                return response()->json([
+                    'status' => 400,
+                    'msg' => $result
+                ]);
+            }
+            if ($task->next_element_id) {
+                $nextTask = TaskController::getById($task->next_element_id);
+                $result = self::executeNextTask($nextTask, $caseId);
+                if ($result == 'break') {
+                    return 'break';
+                }
                 if ($result) {
-                    return response()->json([
-                        'status' => 400,
-                        'msg' => $result
-                    ]);
-                }
-                if ($task->next_element_id) {
-                    $nextTask = TaskController::getById($task->next_element_id);
-                    $result = self::executeNextTask($nextTask, $caseId);
-                    if($result == 'break'){
-                        return 'break';
-                    }
-                    if ($result) {
-                        return $result;
-                    }
-                }
-                $taskChildren = $task->children();
-                foreach ($taskChildren as $task) {
-                    $result = self::executeNextTask($task, $caseId);
-                    if($result == 'break'){
-                        return 'break';
-                    }
-                    if ($result) {
-                        return $result;
-                    }
+                    return $result;
                 }
             }
-            if ($task->type == 'condition') {
-                $condition = ConditionController::getById($task->executive_element_id);
-                $result = ConditionController::runCondition($task->executive_element_id, $caseId);
-                // print($result);
+            $taskChildren = $task->children();
+            foreach ($taskChildren as $task) {
+                $result = self::executeNextTask($task, $caseId);
+                if ($result == 'break') {
+                    return 'break';
+                }
+                if ($result) {
+                    return $result;
+                }
+            }
+        }
+        if ($task->type == 'condition') {
+            $condition = ConditionController::getById($task->executive_element_id);
+            $result = ConditionController::runCondition($task->executive_element_id, $caseId);
+            // print($result);
 
-                if ($result) {
-                    $nextTask = $condition->nextIfTrue();
-                    if ((bool)$nextTask) {
+            if ($result) {
+                $nextTask = $condition->nextIfTrue();
+                if ((bool)$nextTask) {
+                    $result = self::executeNextTask($nextTask, $caseId);
+                    if ($result == 'break') {
+                        return 'break';
+                    }
+                    if ($result) {
+                        return $result;
+                    }
+                } else {
+                    if ($task->next_element_id) {
+                        $nextTask = TaskController::getById($task->next_element_id);
                         $result = self::executeNextTask($nextTask, $caseId);
-                        if($result == 'break'){
+                        if ($result == 'break') {
                             return 'break';
                         }
                         if ($result) {
                             return $result;
                         }
-                    } else {
-                        if ($task->next_element_id) {
-                            $nextTask = TaskController::getById($task->next_element_id);
-                            $result = self::executeNextTask($nextTask, $caseId);
-                            if($result == 'break'){
-                                return 'break';
-                            }
-                            if ($result) {
-                                return $result;
-                            }
-                        }
-                        $taskChildren = $task->children();
-                        foreach ($taskChildren as $task) {
-                            $result = self::executeNextTask($task, $caseId);
-                            if($result == 'break'){
-                                return 'break';
-                            }
-                            if ($result) {
-                                return $result;
-                            }
-                        }
                     }
-
-                    return 'break';
-                }
-            }
-            if ($task->type == 'end') {
-                $inbox = InboxController::create($task->id, $caseId, null, 'done');
-                return 'break';
-            }
-            if ($task->type == 'timed_condition') {
-                // 1. بررسی اینکه زمان‌بندی استاتیک است یا داینامیک
-                $delayMinutes = 0;
-                if ($task->timing_type == 'static') {
-                    // فیلدی مانند `timing_value` در تسک ذخیره شده است (مثلاً 10 دقیقه)
-                    Log::info('Timing value: ' . $task->timing_value);
-                    $delayMinutes = intval($task->timing_value);
-                } elseif ($task->timing_type == 'dynamic') {
-                    // متغیر مثل "nexttime" از پرونده گرفته می‌شود
-                    $key = $task->timing_key_name;
-                    $variable = CaseController::getById($caseId)->getVariable($key);
-                    Log::info('Variable: ' . $variable);
-                    $delayMinutes = (int)$variable;
-                    
-                }
-
-                if ($delayMinutes > 0) {
-                    Log::info('Delay minutes: ' . $delayMinutes);
                     $taskChildren = $task->children();
                     foreach ($taskChildren as $task) {
-                        ExecuteNextTaskWithDelay::dispatch($task, $caseId)->delay(now()->addMinutes($delayMinutes));
+                        $result = self::executeNextTask($task, $caseId);
+                        if ($result == 'break') {
+                            return 'break';
+                        }
+                        if ($result) {
+                            return $result;
+                        }
                     }
-                } else {
-                    // اگر زمان‌بندی معتبر نبود، فوراً اجرا شود یا خطا داده شود
-                    return response()->json([
-                        'status' => 400,
-                        'msg' => 'زمان‌بندی معتبر نیست'
-                    ]);
                 }
 
                 return 'break';
             }
-        } catch (Exception $th) {
-            // BotController::sendMessage(681208098, $th->getMessage());
-            return response()->json(['status' => 400, 'msg' => $th->getMessage()]);
+        }
+        if ($task->type == 'end') {
+            $inbox = InboxController::create($task->id, $caseId, null, 'done');
+            return 'break';
+        }
+        if ($task->type == 'timed_condition') {
+            // 1. بررسی اینکه زمان‌بندی استاتیک است یا داینامیک
+            $delayMinutes = 0;
+            if ($task->timing_type == 'static') {
+                // فیلدی مانند `timing_value` در تسک ذخیره شده است (مثلاً 10 دقیقه)
+                Log::info('Timing value: ' . $task->timing_value);
+                $delayMinutes = intval($task->timing_value);
+            } elseif ($task->timing_type == 'dynamic') {
+                // متغیر مثل "nexttime" از پرونده گرفته می‌شود
+                $key = $task->timing_key_name;
+                $variable = CaseController::getById($caseId)->getVariable($key);
+                Log::info('Variable: ' . $variable);
+                $delayMinutes = (int)$variable;
+            }
+
+            if ($delayMinutes > 0) {
+                Log::info('Delay minutes: ' . $delayMinutes);
+                $taskChildren = $task->children();
+                foreach ($taskChildren as $task) {
+                    ExecuteNextTaskWithDelay::dispatch($task, $caseId)->delay(now()->addMinutes($delayMinutes));
+                }
+            } else {
+                // اگر زمان‌بندی معتبر نبود، فوراً اجرا شود یا خطا داده شود
+                return response()->json([
+                    'status' => 400,
+                    'msg' => 'زمان‌بندی معتبر نیست'
+                ]);
+            }
+
+            return 'break';
         }
     }
 }
