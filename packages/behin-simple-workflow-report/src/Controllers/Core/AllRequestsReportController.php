@@ -10,6 +10,8 @@ use Behin\SimpleWorkflowReport\Exports\AllRequestsReportExport;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -19,17 +21,36 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AllRequestsReportController extends Controller
 {
+    /**
+     * @return View|JsonResponse
+     */
     public function index(Request $request)
     {
         $filters = $request->except('page');
         $perPage = (int) ($filters['per_page'] ?? 15);
+        $perPage = $perPage > 0 ? $perPage : 15;
+        $currentPage = max((int) $request->input('page', 1), 1);
         $filters = Arr::where($filters, fn($value) => $value !== null && $value !== '');
 
         $query = $this->applyFilters($this->baseQuery(), $filters);
         /** @var LengthAwarePaginator $rows */
-        $rows = $query->paginate($perPage);
+        $rows = $query->paginate($perPage, ['*'], 'page', $currentPage);
         $rows->appends($filters);
-        $rows->setCollection($this->prepareRows($rows->getCollection()));
+        $preparedRows = $this->prepareRows($rows->getCollection());
+        $rows->setCollection($preparedRows);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'data' => $preparedRows->values(),
+                'pagination' => [
+                    'total' => $rows->total(),
+                    'per_page' => $rows->perPage(),
+                    'current_page' => $rows->currentPage(),
+                    'last_page' => $rows->lastPage(),
+                ],
+                'filters' => $filters,
+            ]);
+        }
 
         return view('SimpleWorkflowReportView::Core.AllRequests.index', [
             'rows' => $rows,
@@ -38,7 +59,7 @@ class AllRequestsReportController extends Controller
         ]);
     }
 
-    protected function baseQuery()
+    protected function baseQuery(): Builder
     {
         $latestDevice = DB::table('wf_entity_devices as d1')
             ->select('d1.id', 'd1.case_number', 'd1.name', 'd1.serial')
@@ -144,7 +165,7 @@ class AllRequestsReportController extends Controller
             ->whereNull('c.deleted_at');
     }
 
-    protected function applyFilters($query, array $filters)
+    protected function applyFilters(Builder $query, array $filters): Builder
     {
         $filters = Arr::where($filters, fn($value) => $value !== null && $value !== '');
 
@@ -235,7 +256,7 @@ class AllRequestsReportController extends Controller
         return $query;
     }
 
-    protected function applyApprovalFilter($query, string $column, string $value): void
+    protected function applyApprovalFilter(Builder $query, string $column, string $value): void
     {
         $value = strtolower($value);
 
