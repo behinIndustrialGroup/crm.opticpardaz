@@ -3,6 +3,7 @@
 use Behin\SimpleWorkflowReport\Controllers\Scripts\OPPAReportController;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Variable;
+use Behin\SimpleWorkflowReport\Controllers\Core\AllRequestsReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\FinReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\ReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
@@ -10,6 +11,7 @@ use Behin\SimpleWorkflowReport\Controllers\Core\SummaryReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\TransActionController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RepairIncomeReportController;
 use Behin\SimpleWorkflowReport\Controllers\Scripts\PersonelActivityController;
+use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Support\Facades\Route;
 
 Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['web', 'auth'])->group(function () {
@@ -26,6 +28,12 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
             echo $case->getVariable('device_name') . " | " . $case->number . "<a href='". url("public/$image->value")."' download='". $case->number .".jpg'>Download</a><br>";
         }
     });
+
+    
+    Route::get('all-requests/export', [AllRequestsReportController::class, 'export'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.export');
+    Route::get('all-requests/{case_number}', [AllRequestsReportController::class, 'show'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.show');
+    Route::get('all-requests', [AllRequestsReportController::class, 'index'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.index');
+
 
     Route::resource('oppa-report', OPPAReportController::class);
     Route::resource('transaction-report', TransActionController::class);
