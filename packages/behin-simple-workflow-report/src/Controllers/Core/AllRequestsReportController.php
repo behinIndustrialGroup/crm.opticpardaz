@@ -61,51 +61,65 @@ class AllRequestsReportController extends Controller
 
     protected function baseQuery(): Builder
     {
-        $latestDevice = DB::table('wf_entity_devices as d1')
-            ->select('d1.id', 'd1.case_number', 'd1.name', 'd1.serial')
-            ->whereNull('d1.deleted_at')
-            ->whereRaw('d1.id = (
-                SELECT d2.id FROM wf_entity_devices d2
-                WHERE d2.case_number = d1.case_number AND d2.deleted_at IS NULL
-                ORDER BY d2.created_at DESC
-                LIMIT 1
-            )');
-
-        $latestRepair = DB::table('wf_entity_device_repair as dr1')
-            ->select(
-                'dr1.id',
-                'dr1.case_number',
-                'dr1.device_id',
-                'dr1.repairman',
-                'dr1.repair_type',
-                'dr1.repair_subtype',
-                'dr1.repair_start_timestamp',
-                'dr1.updated_at',
-                'dr1.repairman_assitant',
-                'dr1.repair_is_approved',
-                'dr1.repair_is_approved_by',
-                'dr1.repair_is_approved_2',
-                'dr1.repair_is_approved_by_2',
-                'dr1.repair_is_approved_3',
-                'dr1.repair_is_approved_by_3'
+        $latestDevice = DB::table('wf_entity_devices as d')
+            ->select('d.case_number', 'd.name', 'd.serial')
+            ->joinSub(
+                DB::table('wf_entity_devices as inner_d')
+                    ->select('inner_d.case_number', DB::raw('MAX(inner_d.id) as latest_id'))
+                    ->whereNull('inner_d.deleted_at')
+                    ->groupBy('inner_d.case_number'),
+                'latest_device',
+                function ($join) {
+                    $join->on('latest_device.case_number', '=', 'd.case_number')
+                        ->on('latest_device.latest_id', '=', 'd.id');
+                }
             )
-            ->whereNull('dr1.deleted_at')
-            ->whereRaw('dr1.id = (
-                SELECT dr2.id FROM wf_entity_device_repair dr2
-                WHERE dr2.case_number = dr1.case_number AND dr2.deleted_at IS NULL
-                ORDER BY dr2.created_at DESC
-                LIMIT 1
-            )');
+            ->whereNull('d.deleted_at');
 
-        $latestCost = DB::table('wf_entity_repair_cost as rc1')
-            ->select('rc1.id', 'rc1.case_number', 'rc1.cost')
-            ->whereNull('rc1.deleted_at')
-            ->whereRaw('rc1.id = (
-                SELECT rc2.id FROM wf_entity_repair_cost rc2
-                WHERE rc2.case_number = rc1.case_number AND rc2.deleted_at IS NULL
-                ORDER BY rc2.created_at DESC
-                LIMIT 1
-            )');
+        $latestRepair = DB::table('wf_entity_device_repair as dr')
+            ->select(
+                'dr.case_number',
+                'dr.device_id',
+                'dr.repairman',
+                'dr.repair_type',
+                'dr.repair_subtype',
+                'dr.repair_start_timestamp',
+                'dr.updated_at',
+                'dr.repairman_assitant',
+                'dr.repair_is_approved',
+                'dr.repair_is_approved_by',
+                'dr.repair_is_approved_2',
+                'dr.repair_is_approved_by_2',
+                'dr.repair_is_approved_3',
+                'dr.repair_is_approved_by_3'
+            )
+            ->joinSub(
+                DB::table('wf_entity_device_repair as inner_dr')
+                    ->select('inner_dr.case_number', DB::raw('MAX(inner_dr.id) as latest_id'))
+                    ->whereNull('inner_dr.deleted_at')
+                    ->groupBy('inner_dr.case_number'),
+                'latest_repair',
+                function ($join) {
+                    $join->on('latest_repair.case_number', '=', 'dr.case_number')
+                        ->on('latest_repair.latest_id', '=', 'dr.id');
+                }
+            )
+            ->whereNull('dr.deleted_at');
+
+        $latestCost = DB::table('wf_entity_repair_cost as rc')
+            ->select('rc.case_number', 'rc.cost')
+            ->joinSub(
+                DB::table('wf_entity_repair_cost as inner_rc')
+                    ->select('inner_rc.case_number', DB::raw('MAX(inner_rc.id) as latest_id'))
+                    ->whereNull('inner_rc.deleted_at')
+                    ->groupBy('inner_rc.case_number'),
+                'latest_cost',
+                function ($join) {
+                    $join->on('latest_cost.case_number', '=', 'rc.case_number')
+                        ->on('latest_cost.latest_id', '=', 'rc.id');
+                }
+            )
+            ->whereNull('rc.deleted_at');
 
         $totalIncome = DB::table('wf_entity_repair_incomes as ri')
             ->select('ri.case_number', DB::raw('SUM(ri.payment_amount) as total_received'))
@@ -113,16 +127,31 @@ class AllRequestsReportController extends Controller
             ->groupBy('ri.case_number');
 
         $lastStatus = DB::table('wf_inbox as wi')
-            ->select('wi.case_id', DB::raw("GROUP_CONCAT(DISTINCT wt.name ORDER BY wi.created_at DESC SEPARATOR ', ') as last_status"))
-            ->join('wf_task as wt', 'wt.id', '=', 'wi.task_id')
-            ->whereNotIn('wi.status', ['done', 'doneByOther', 'canceled'])
-            ->groupBy('wi.case_id');
+            ->select('wi.case_id', 'wt.name as last_status')
+            ->joinSub(
+                DB::table('wf_inbox as inner_wi')
+                    ->select('inner_wi.case_id', DB::raw('MAX(inner_wi.id) as latest_id'))
+                    ->whereNotIn('inner_wi.status', ['done', 'doneByOther', 'canceled'])
+                    ->groupBy('inner_wi.case_id'),
+                'latest_inbox',
+                function ($join) {
+                    $join->on('latest_inbox.case_id', '=', 'wi.case_id')
+                        ->on('latest_inbox.latest_id', '=', 'wi.id');
+                }
+            )
+            ->join('wf_task as wt', 'wt.id', '=', 'wi.task_id');
 
         $devicePlaque = DB::table('wf_variables as v')
             ->select(
                 'v.case_id',
                 DB::raw("MAX(CASE WHEN v.key IN ('device_plaque_number', 'device-plaque-number', 'device_plaque', 'device_plaque_code') THEN v.value END) as device_plaque")
             )
+            ->whereIn('v.key', [
+                'device_plaque_number',
+                'device-plaque-number',
+                'device_plaque',
+                'device_plaque_code',
+            ])
             ->groupBy('v.case_id');
 
         return DB::table('wf_cases as c')
