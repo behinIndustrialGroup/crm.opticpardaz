@@ -26,6 +26,12 @@
                         @php
                             $filters = $filters ?? [];
                             $hasActiveFilters = collect($filters)->except(['per_page'])->filter(fn($value) => $value !== null && $value !== '')->isNotEmpty();
+                            $approvalOptions = [
+                                '' => 'همه موارد',
+                                'approved' => 'تایید شده',
+                                'rejected' => 'رد شده',
+                                'pending' => 'در انتظار',
+                            ];
                         @endphp
 
                         <div class="mb-3">
@@ -43,51 +49,95 @@
                                             <input type="text" name="case_number" value="{{ $filters['case_number'] ?? '' }}" class="form-control" placeholder="مثال: 1234">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">نام</label>
-                                            <input type="text" name="user_firstname" value="{{ $filters['user_firstname'] ?? '' }}" class="form-control">
+                                            <label class="form-label">نام مشتری</label>
+                                            <input type="text" name="customer_name" value="{{ $filters['customer_name'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">نام خانوادگی</label>
-                                            <input type="text" name="user_lastname" value="{{ $filters['user_lastname'] ?? '' }}" class="form-control">
+                                            <label class="form-label">موبایل مشتری</label>
+                                            <input type="text" name="customer_mobile" value="{{ $filters['customer_mobile'] ?? '' }}" class="form-control" dir="ltr">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">شناسه قبض برق</label>
-                                            <input type="text" name="electricity_bill_id" value="{{ $filters['electricity_bill_id'] ?? '' }}" class="form-control">
+                                            <label class="form-label">نام دستگاه</label>
+                                            <input type="text" name="device_name" value="{{ $filters['device_name'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">نوع نیروگاه</label>
-                                            <input type="text" name="powerhouse_type" value="{{ $filters['powerhouse_type'] ?? '' }}" class="form-control">
+                                            <label class="form-label">سریال دستگاه</label>
+                                            <input type="text" name="device_serial" value="{{ $filters['device_serial'] ?? '' }}" class="form-control" dir="ltr">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">استان محل نیروگاه</label>
-                                            <input type="text" name="powerhouse_province" value="{{ $filters['powerhouse_province'] ?? '' }}" class="form-control">
+                                            <label class="form-label">شماره پلاک دستگاه</label>
+                                            <input type="text" name="device_plaque" value="{{ $filters['device_plaque'] ?? '' }}" class="form-control" dir="ltr">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">ظرفیت درخواستی</label>
-                                            <input type="text" name="requested_capacity_of_powerhouse" value="{{ $filters['requested_capacity_of_powerhouse'] ?? '' }}" class="form-control">
+                                            <label class="form-label">نوع تعمیر</label>
+                                            <input type="text" name="repair_type" value="{{ $filters['repair_type'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">نتیجه اولین تماس</label>
-                                            <input type="text" name="first_call_result" value="{{ $filters['first_call_result'] ?? '' }}" class="form-control">
+                                            <label class="form-label">جزئیات نوع تعمیر</label>
+                                            <input type="text" name="repair_subtype" value="{{ $filters['repair_subtype'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">تمایل به دریافت وام</label>
-                                            <input type="text" name="loan_interest" value="{{ $filters['loan_interest'] ?? '' }}" class="form-control">
+                                            <label class="form-label">تعمیرکار</label>
+                                            <input type="text" name="repairman" value="{{ $filters['repairman'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">مبلغ اولیه</label>
-                                            <input type="text" name="initial_amount" value="{{ $filters['initial_amount'] ?? '' }}" class="form-control">
+                                            <label class="form-label">تاریخ شروع از</label>
+                                            <input type="date" name="repair_start_from" value="{{ $filters['repair_start_from'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">امکان‌سنجی</label>
-                                            <input type="text" name="feasibility_study" value="{{ $filters['feasibility_study'] ?? '' }}" class="form-control">
+                                            <label class="form-label">تاریخ شروع تا</label>
+                                            <input type="date" name="repair_start_to" value="{{ $filters['repair_start_to'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">نتیجه تماس رابط مالی با متقاضی</label>
-                                            <input type="text" name="fin_interface_call_result" value="{{ $filters['fin_interface_call_result'] ?? '' }}" class="form-control">
+                                            <label class="form-label">تاریخ پایان از</label>
+                                            <input type="date" name="repair_end_from" value="{{ $filters['repair_end_from'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">آخرین وضعیت درخواست</label>
+                                            <label class="form-label">تاریخ پایان تا</label>
+                                            <input type="date" name="repair_end_to" value="{{ $filters['repair_end_to'] ?? '' }}" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">تایید اول تعمیرات</label>
+                                            <select name="approval_first" class="form-select">
+                                                @foreach($approvalOptions as $key => $label)
+                                                    <option value="{{ $key }}" {{ ($filters['approval_first'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">تایید دوم تعمیرات</label>
+                                            <select name="approval_second" class="form-select">
+                                                @foreach($approvalOptions as $key => $label)
+                                                    <option value="{{ $key }}" {{ ($filters['approval_second'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">تایید سوم تعمیرات</label>
+                                            <select name="approval_third" class="form-select">
+                                                @foreach($approvalOptions as $key => $label)
+                                                    <option value="{{ $key }}" {{ ($filters['approval_third'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">حداقل هزینه تعیین شده</label>
+                                            <input type="number" step="0.01" name="cost_min" value="{{ $filters['cost_min'] ?? '' }}" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">حداکثر هزینه تعیین شده</label>
+                                            <input type="number" step="0.01" name="cost_max" value="{{ $filters['cost_max'] ?? '' }}" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">حداقل هزینه دریافت شده</label>
+                                            <input type="number" step="0.01" name="income_min" value="{{ $filters['income_min'] ?? '' }}" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">حداکثر هزینه دریافت شده</label>
+                                            <input type="number" step="0.01" name="income_max" value="{{ $filters['income_max'] ?? '' }}" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">آخرین وضعیت</label>
                                             <input type="text" name="last_status" value="{{ $filters['last_status'] ?? '' }}" class="form-control">
                                         </div>
                                         <div class="col-md-3">
@@ -112,58 +162,75 @@
                                 <thead class="table-light">
                                 <tr>
                                     <th>شماره پرونده</th>
-                                    <th>نام</th>
-                                    <th>نام خانوادگی</th>
-                                    <th>کدملی</th>
-                                    <th>موبایل</th>
-                                    <th>شناسه قبض برق</th>
-                                    <th>نوع نیروگاه</th>
-                                    <th>استان محل نیروگاه</th>
-                                    <th>ظرفیت درخواستی</th>
-                                    <th>نتیجه اولین تماس</th>
-                                    <th>تمایل به دریافت وام</th>
-                                    <th>مبلغ اولیه</th>
-                                    <th>امکان‌سنجی</th>
-                                    <th>نتیجه تماس رابط مالی با متقاضی</th>
-                                    <th>آخرین وضعیت درخواست</th>
+                                    <th>نام مشتری</th>
+                                    <th>موبایل مشتری</th>
+                                    <th>نام دستگاه</th>
+                                    <th>سریال دستگاه</th>
+                                    <th>شماره پلاک دستگاه</th>
+                                    <th>نوع تعمیر</th>
+                                    <th>جزئیات نوع تعمیر</th>
+                                    <th>تعمیرکار</th>
+                                    <th>تاریخ شروع تعمیر</th>
+                                    <th>تاریخ پایان تعمیر</th>
+                                    <th>تایید اول تعمیرات</th>
+                                    <th>تایید دوم تعمیرات</th>
+                                    <th>تایید سوم تعمیرات</th>
+                                    <th>دستیاران تعمیر</th>
+                                    <th>هزینه تعیین شده</th>
+                                    <th>هزینه‌های دریافت شده</th>
+                                    <th>آخرین وضعیت</th>
                                     <th class="text-center">جزئیات</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @forelse($rows as $row)
                                     <tr>
-                                        <td>{{ $row->number ?? '---' }}
-                                            <a href="{{ route('simpleWorkflow.inbox.caseHistoryView', [ 'caseNumber' => $row->number ]) }}" target="_blank">
-                                                <i class="material-icons">history</i>
-                                            </a>
-                                        </td>
-                                        <td>{{ $row->user_firstname ?? '---' }}</td>
-                                        <td>{{ $row->user_lastname ?? '---' }}</td>
-                                        <td>{{ $row->user_national_id ?? '---' }}</td>
-                                        <td>{{ $row->mobile ?? '---' }}</td>
-                                        <td dir="ltr">{{ $row->electricity_bill_id ?? '---' }}</td>
-                                        <td>{{ $row->powerhouse_type ?? '---' }}</td>
-                                        <td>{{ $row->powerhouse_place_info_province ?? '---' }}</td>
-                                        <td>{{ $row->requested_capacity_of_powerhouse ?? '---' }}</td>
-                                        <td>{{ $row->first_call_result ?? '---' }}</td>
-                                        <td>{{ $row->loan_interest ?? '---' }}</td>
-                                        <td>{{ $row->initial_amount ?? '---' }}</td>
-                                        <td>{{ $row->feasibility_study ?? '---' }}</td>
-                                        <td>{{ $row->fin_interface_call_result ?? '---' }}</td>
                                         <td>
-                                            @foreach ($row->last_status as $last_status)
-                                                {{ $last_status->task->name ?? '' }}
-                                            @endforeach
+                                            {{ $row->case_number ?? '---' }}
+                                            @if(!empty($row->case_number))
+                                                <a href="{{ route('simpleWorkflow.inbox.caseHistoryView', [ 'caseNumber' => $row->case_number ]) }}" target="_blank">
+                                                    <i class="material-icons">history</i>
+                                                </a>
+                                            @endif
                                         </td>
+                                        <td>{{ $row->customer_name ?? '---' }}</td>
+                                        <td dir="ltr">{{ $row->customer_mobile ?? '---' }}</td>
+                                        <td>{{ $row->device_name ?? '---' }}</td>
+                                        <td dir="ltr">{{ $row->device_serial ?? '---' }}</td>
+                                        <td dir="ltr">{{ $row->device_plaque ?? '---' }}</td>
+                                        <td>{{ $row->repair_type ?: '---' }}</td>
+                                        <td>{{ $row->repair_subtype ?: '---' }}</td>
+                                        <td>{{ $row->repairman ?? '---' }}</td>
+                                        <td>{{ $row->repair_start_at ?? '---' }}</td>
+                                        <td>{{ $row->repair_end_at ?? '---' }}</td>
+                                        <td>{{ $row->approval_first ?? '---' }}</td>
+                                        <td>{{ $row->approval_second ?? '---' }}</td>
+                                        <td>{{ $row->approval_third ?? '---' }}</td>
+                                        <td>{{ $row->assistants ?: '---' }}</td>
+                                        <td>
+                                            @if($row->repair_cost_formatted)
+                                                {{ $row->repair_cost_formatted }}
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($row->received_cost_formatted)
+                                                {{ $row->received_cost_formatted }}
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td>{{ $row->last_status ?? '---' }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('simpleWorkflowReport.all-requests.show', $row->number) }}" class="btn btn-sm btn-outline-primary px-3">
+                                            <a href="{{ route('simpleWorkflowReport.all-requests.show', $row->case_number) }}" class="btn btn-sm btn-outline-primary px-3">
                                                 مشاهده جزئیات
                                             </a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="13" class="text-center text-muted">رکوردی یافت نشد.</td>
+                                        <td colspan="19" class="text-center text-muted">رکوردی یافت نشد.</td>
                                     </tr>
                                 @endforelse
                                 </tbody>
