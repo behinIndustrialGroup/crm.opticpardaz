@@ -191,7 +191,11 @@ class AllRequestsReportController extends Controller
                 'ri.total_received',
                 'ls.last_status',
             ])
-            ->whereNull('c.deleted_at');
+            ->whereNull('c.deleted_at')
+            ->where('c.process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')
+            ->whereNotNull('c.number')
+            ->orderByDesc('c.number')
+            ->groupBy('c.number');
     }
 
     protected function applyFilters(Builder $query, array $filters): Builder
