@@ -57,6 +57,16 @@
                                                 </td>
                                             </tr>
                                     @endif
+                                    @if(access('گزارش مشتری ها'))
+                                            <tr>
+                                                <td class="d-none">گزارش مشتری ها</td>
+                                                <td>گزارش مشتری ها</td>
+                                                <td class="d-none"></td>
+                                                <td>
+                                                    <a href="{{ route('simpleWorkflowReport.customers.index') }}" class="btn btn-primary btn-sm">مشاهده گزارش</a>
+                                                </td>
+                                            </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
