@@ -4,6 +4,7 @@ use Behin\SimpleWorkflowReport\Controllers\Scripts\OPPAReportController;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\Variable;
 use Behin\SimpleWorkflowReport\Controllers\Core\AllRequestsReportController;
+use Behin\SimpleWorkflowReport\Controllers\Core\CustomersReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\FinReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\ReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
@@ -20,6 +21,8 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     Route::resource('summary-report', SummaryReportController::class);
     Route::resource('role', RoleReportFormController::class);
     Route::resource('fin-report', FinReportController::class);
+    Route::get('customers/export', [CustomersReportController::class, 'export'])->name('customers.export');
+    Route::resource('customers', CustomersReportController::class)->except(['create', 'show', 'edit']);
     Route::get('total-payment', [FinReportController::class, 'totalPayment'])->name('totalPayment');
     Route::get('test', function () {
         $images = Variable::where('key', 'device_plaque_image')->whereNotNull('value')->get();
