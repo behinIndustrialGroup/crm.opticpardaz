@@ -39,6 +39,7 @@ class AllRequestsReportExport implements FromCollection, WithHeadings, WithMappi
             'هزینه تعیین شده',
             'هزینه‌های دریافت شده',
             'آخرین وضعیت',
+            'گزارش تعمیرات',
         ];
     }
 
@@ -69,6 +70,7 @@ class AllRequestsReportExport implements FromCollection, WithHeadings, WithMappi
             $row['repair_cost'] ?? null,
             $row['received_cost'] ?? null,
             $row['last_status'] ?? null,
+            $row['repair_report'] ?? null,
         ];
     }
 }

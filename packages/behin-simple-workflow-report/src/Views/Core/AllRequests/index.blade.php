@@ -174,6 +174,7 @@
                                     <th>هزینه تعیین شده</th>
                                     <th>هزینه‌های دریافت شده</th>
                                     <th>آخرین وضعیت</th>
+                                    <th>گزارش تعمیرات</th>
                                     <th class="text-center">جزئیات</th>
                                 </tr>
                                 </thead>
@@ -216,6 +217,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $row->last_status ?? '---' }}</td>
+                                        <td>{{ str_limit($row->repair_report, 100, '...') ?? '---' }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('simpleWorkflowReport.all-requests.show', $row->case_number) }}" class="btn btn-sm btn-outline-primary px-3">
                                                 مشاهده جزئیات

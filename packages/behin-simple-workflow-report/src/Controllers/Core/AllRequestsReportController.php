@@ -93,7 +93,8 @@ class AllRequestsReportController extends Controller
                 'dr.repair_is_approved_2',
                 'dr.repair_is_approved_by_2',
                 'dr.repair_is_approved_3',
-                'dr.repair_is_approved_by_3'
+                'dr.repair_is_approved_by_3',
+                'dr.repair_report'
             )
             ->joinSub(
                 DB::table('wf_entity_device_repair as inner_dr')
@@ -191,6 +192,7 @@ class AllRequestsReportController extends Controller
                 'dr.repair_is_approved_by_2',
                 'dr.repair_is_approved_3',
                 'dr.repair_is_approved_by_3',
+                'dr.repair_report',
                 'rc.cost as repair_cost',
                 'ri.total_received',
                 'ls.last_status',
