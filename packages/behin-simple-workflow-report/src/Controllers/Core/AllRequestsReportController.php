@@ -85,7 +85,6 @@ class AllRequestsReportController extends Controller
                 'dr.repair_subtype',
                 'dr.repair_start_timestamp',
                 'dr.repair_start_date_alt',
-                'dr.repair_end_timestamp',
                 'dr.repair_end_date_alt',
                 'dr.updated_at',
                 'dr.repairman_assitant',
