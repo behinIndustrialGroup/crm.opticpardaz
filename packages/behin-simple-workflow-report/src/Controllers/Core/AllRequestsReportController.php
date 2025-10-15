@@ -362,6 +362,13 @@ class AllRequestsReportController extends Controller
             $startAt = $this->formatDate($row->repair_start_date_alt ?? null);
             $endAt = $this->formatDate($row->repair_end_date_alt ?? null);
 
+            if($startAt and $endAt){
+                $repairDuration = (int)$row->repair_end_date_alt - (int)$row->repair_start_date_alt;
+                $repairDuration = $repairDuration / 86400;
+            }else{
+                $repairDuration = null;
+            }
+
             return (object) [
                 'id' => $row->id,
                 'case_number' => $row->number,
@@ -375,6 +382,7 @@ class AllRequestsReportController extends Controller
                 'repairman' => $row->repairman_name,
                 'repair_start_at' => $startAt,
                 'repair_end_at' => $endAt,
+                'repair_duration' => $repairDuration,
                 'approval_first' => $this->formatApproval($row->repair_is_approved ?? null, $userNames->get($row->repair_is_approved_by ?? null)),
                 'approval_second' => $this->formatApproval($row->repair_is_approved_2 ?? null, $userNames->get($row->repair_is_approved_by_2 ?? null)),
                 'approval_third' => $this->formatApproval($row->repair_is_approved_3 ?? null, $userNames->get($row->repair_is_approved_by_3 ?? null)),

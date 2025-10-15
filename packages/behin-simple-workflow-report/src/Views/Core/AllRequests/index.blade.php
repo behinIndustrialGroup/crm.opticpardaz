@@ -171,6 +171,7 @@
                                     <th>تعمیرکار</th>
                                     <th>تاریخ شروع تعمیر</th>
                                     <th>تاریخ پایان تعمیر</th>
+                                    <th>مدت تعمیر</th>
                                     <th>تایید اول تعمیرات</th>
                                     <th>تایید دوم تعمیرات</th>
                                     <th>تایید سوم تعمیرات</th>
@@ -202,6 +203,7 @@
                                         <td>{{ $row->repairman ?? '---' }}</td>
                                         <td>{{ $row->repair_start_at ?? '---' }}</td>
                                         <td>{{ $row->repair_end_at ?? '---' }}</td>
+                                        <td>{{ $row->repair_duration ?? '---' }}</td>
                                         <td>{{ $row->approval_first ?? '---' }}</td>
                                         <td>{{ $row->approval_second ?? '---' }}</td>
                                         <td>{{ $row->approval_third ?? '---' }}</td>
