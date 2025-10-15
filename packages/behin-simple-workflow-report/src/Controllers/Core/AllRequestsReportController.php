@@ -182,6 +182,7 @@ class AllRequestsReportController extends Controller
                 'dr.repair_start_timestamp',
                 'dr.repair_start_date_alt',
                 'dr.updated_at as repair_end_timestamp',
+                'dr.repair_end_date_alt',
                 'dr.repairman_assitant',
                 'dr.repair_is_approved',
                 'dr.repair_is_approved_by',
@@ -356,7 +357,7 @@ class AllRequestsReportController extends Controller
             $receivedCost = $this->normalizeAmount($row->total_received ?? null);
 
             $startAt = $this->formatDate($row->repair_start_date_alt ?? null);
-            $endAt = $this->formatDate($row->repair_end_timestamp ?? null);
+            $endAt = $this->formatDate($row->repair_end_date_alt ?? null);
 
             return (object) [
                 'id' => $row->id,
@@ -484,9 +485,8 @@ class AllRequestsReportController extends Controller
         if (empty($value)) {
             return null;
         }
-        return $value;
         try {
-            return toJalali((int)$value);
+            return toJalali((int)$value/1000);
             return Carbon::parse($value)->format('Y/m/d H:i');
         } catch (\Throwable $exception) {
             return is_string($value) ? $value : null;
