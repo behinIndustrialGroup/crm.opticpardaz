@@ -484,6 +484,7 @@ class AllRequestsReportController extends Controller
         }
 
         try {
+            return toJalali((int)$value);
             return Carbon::parse($value)->format('Y/m/d H:i');
         } catch (\Throwable $exception) {
             return is_string($value) ? $value : null;
