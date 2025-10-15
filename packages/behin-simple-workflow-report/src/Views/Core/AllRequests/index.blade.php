@@ -65,10 +65,6 @@
                                             <input type="text" name="device_serial" value="{{ $filters['device_serial'] ?? '' }}" class="form-control" dir="ltr">
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label">شماره پلاک دستگاه</label>
-                                            <input type="text" name="device_plaque" value="{{ $filters['device_plaque'] ?? '' }}" class="form-control" dir="ltr">
-                                        </div>
-                                        <div class="col-md-3">
                                             <label class="form-label">نوع تعمیر</label>
                                             <input type="text" name="repair_type" value="{{ $filters['repair_type'] ?? '' }}" class="form-control">
                                         </div>
@@ -166,7 +162,6 @@
                                     <th>موبایل مشتری</th>
                                     <th>نام دستگاه</th>
                                     <th>سریال دستگاه</th>
-                                    <th>شماره پلاک دستگاه</th>
                                     <th>نوع تعمیر</th>
                                     <th>جزئیات نوع تعمیر</th>
                                     <th>تعمیرکار</th>
@@ -197,7 +192,6 @@
                                         <td dir="ltr">{{ $row->customer_mobile ?? '---' }}</td>
                                         <td>{{ $row->device_name ?? '---' }}</td>
                                         <td dir="ltr">{{ $row->device_serial ?? '---' }}</td>
-                                        <td dir="ltr">{{ $row->device_plaque ?? '---' }}</td>
                                         <td>{{ $row->repair_type ?: '---' }}</td>
                                         <td>{{ $row->repair_subtype ?: '---' }}</td>
                                         <td>{{ $row->repairman ?? '---' }}</td>
