@@ -37,6 +37,7 @@ class AllRequestsReportController extends Controller
         $rows = $query->paginate($perPage, ['*'], 'page', $currentPage);
         $rows->appends($filters);
         $preparedRows = $this->prepareRows($rows->getCollection());
+        dd($preparedRows);
         $rows->setCollection($preparedRows);
 
         if ($request->expectsJson()) {
