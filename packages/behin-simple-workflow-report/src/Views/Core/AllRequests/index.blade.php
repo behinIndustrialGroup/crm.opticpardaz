@@ -39,9 +39,9 @@
                         @endphp
 
                         <div class="mb-3">
-                            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#advanced-filters" aria-expanded="{{ $hasActiveFilters ? 'true' : 'false' }}" aria-controls="advanced-filters">
+                            {{-- <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#advanced-filters" aria-expanded="{{ $hasActiveFilters ? 'true' : 'false' }}" aria-controls="advanced-filters">
                                 فیلتر پیشرفته
-                            </button>
+                            </button> --}}
                         </div>
 
                         <div class="collapse {{ $hasActiveFilters ? 'show' : '' }}" id="advanced-filters">
