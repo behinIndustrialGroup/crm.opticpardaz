@@ -11,6 +11,7 @@ use BehinUserRoles\UserRolesServiceProvider;
 use FileService\FileServiceProvider;
 use TodoList\TodoListProvider;
 use UserProfile\UserProfileProvider;
+use Maatwebsite\Excel\ExcelServiceProvider;
 
 return [
     App\Providers\AppServiceProvider::class,
@@ -31,4 +32,5 @@ return [
     Barryvdh\TranslationManager\ManagerServiceProvider::class,
     TelegramBot\TelegramBotProvider::class,
     BaleBot\BaleBotProvider::class,
+    ExcelServiceProvider::class,
 ];
