@@ -1,5 +1,9 @@
 @extends('behin-layouts.app')
 
+@php
+    use Illuminate\Support\Str;
+@endphp
+
 @section('title', 'لیست تمام درخواست‌ها')
 
 @section('content')
@@ -217,7 +221,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $row->last_status ?? '---' }}</td>
-                                        <td>{{ str_limit($row->repair_report, 100, '...') ?? '---' }}</td>
+                                        <td>{{ Str::limit($row->repair_report ?? '---', 100, '...') }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('simpleWorkflowReport.all-requests.show', $row->case_number) }}" class="btn btn-sm btn-outline-primary px-3">
                                                 مشاهده جزئیات
