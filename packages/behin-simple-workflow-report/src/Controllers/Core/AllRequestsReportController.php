@@ -84,6 +84,7 @@ class AllRequestsReportController extends Controller
                 'dr.repair_type',
                 'dr.repair_subtype',
                 'dr.repair_start_timestamp',
+                'dr.repair_start_date_alt',
                 'dr.updated_at',
                 'dr.repairman_assitant',
                 'dr.repair_is_approved',
@@ -353,7 +354,7 @@ class AllRequestsReportController extends Controller
             $repairCost = $this->normalizeAmount($row->repair_cost ?? null);
             $receivedCost = $this->normalizeAmount($row->total_received ?? null);
 
-            $startAt = $this->formatDate($row->repair_start_timestamp ?? null);
+            $startAt = $this->formatDate($row->repair_start_date_alt ?? null);
             $endAt = $this->formatDate($row->repair_end_timestamp ?? null);
 
             return (object) [
