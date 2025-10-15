@@ -35,6 +35,7 @@ class AllRequestsReportController extends Controller
         $query = $this->applyFilters($this->baseQuery(), $filters);
         /** @var LengthAwarePaginator $rows */
         $rows = $query->paginate($perPage, ['*'], 'page', $currentPage);
+        dd($rows);
         $rows->appends($filters);
         $preparedRows = $this->prepareRows($rows->getCollection());
         dd($preparedRows);
