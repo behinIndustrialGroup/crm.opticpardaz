@@ -482,7 +482,7 @@ class AllRequestsReportController extends Controller
         if (empty($value)) {
             return null;
         }
-
+        return $value;
         try {
             return toJalali((int)$value);
             return Carbon::parse($value)->format('Y/m/d H:i');
