@@ -385,6 +385,7 @@ class AllRequestsReportController extends Controller
                 'received_cost_formatted' => $receivedCost !== null ? number_format($receivedCost) : null,
                 'last_status' => $row->last_status,
                 'customer_mobile_raw' => $row->customer_mobile,
+                'repair_report' => $row->repair_report,
             ];
         });
     }
