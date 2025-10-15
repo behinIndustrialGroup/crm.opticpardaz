@@ -182,6 +182,7 @@ class AllRequestsReportController extends Controller
                 'repairman.name as repairman_name',
                 'dr.repairman as repairman_id',
                 'dr.repair_start_timestamp',
+                'dr.repair_start_date_alt',
                 'dr.updated_at as repair_end_timestamp',
                 'dr.repairman_assitant',
                 'dr.repair_is_approved',
