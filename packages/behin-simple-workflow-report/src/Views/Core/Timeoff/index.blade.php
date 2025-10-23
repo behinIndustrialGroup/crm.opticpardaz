@@ -314,8 +314,8 @@
                             <tbody>
                                 @forelse($monthlyBreakdown as $month)
                                     @php
-                                        $monthIndex = (int) $month->request_month;
-                                        $monthLabel = ($monthNames[$monthIndex] ?? $monthIndex) . ' ' . $month->request_year;
+                                        $monthIndex = (int) $month->month;
+                                        $monthLabel = ($monthNames[$monthIndex] ?? $monthIndex) . ' ' . $month->year;
                                     @endphp
                                     <tr>
                                         <td>{{ $monthLabel }}</td>

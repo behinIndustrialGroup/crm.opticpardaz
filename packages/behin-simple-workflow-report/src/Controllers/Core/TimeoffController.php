@@ -242,14 +242,14 @@ class TimeoffController extends Controller
             $query->where('start_timestamp', '<=', $toTimestamp);
         }
 
-        if (!empty($filters['year'])) {
-            $query->where('request_year', $filters['year']);
-        }
-
         if (!$skipMonth && !empty($filters['year']) && !empty($filters['month'])) {
             $this->applyMonthRange($query, (int) $filters['year'], (int) $filters['month']);
         } elseif (!$skipMonth && empty($filters['year']) && !empty($filters['month'])) {
             $this->applyMonthRange($query, Jalalian::now()->getYear(), (int) $filters['month']);
+        }
+
+        if (!empty($filters['year'])) {
+            $this->applyYearRange($query, (int) $filters['year']);
         }
     }
 
@@ -309,24 +309,50 @@ class TimeoffController extends Controller
         $query = Timeoffs::query();
         $this->applyFilters($query, $filters, true);
 
-        if (!empty($filters['year'])) {
-            $query->where('request_year', $filters['year']);
-        }
+        $records = $query->get(['duration', 'approved', 'request_timestamp', 'start_timestamp']);
 
-        return $query
-            ->select(
-                'request_year',
-                'request_month',
-                DB::raw('COUNT(*) as total_requests'),
-                DB::raw('SUM(duration) as total_hours'),
-                DB::raw('SUM(CASE WHEN approved = 1 THEN duration ELSE 0 END) as approved_hours'),
-                DB::raw('SUM(CASE WHEN approved = 0 THEN duration ELSE 0 END) as rejected_hours'),
-                DB::raw('SUM(CASE WHEN approved IS NULL THEN duration ELSE 0 END) as pending_hours')
-            )
-            ->groupBy('request_year', 'request_month')
-            ->orderByDesc('request_year')
-            ->orderByDesc('request_month')
-            ->get();
+        $grouped = $records->groupBy(function ($item) {
+            $timestamp = $item->request_timestamp ?: $item->start_timestamp;
+
+            if (!$timestamp) {
+                return null;
+            }
+
+            $carbon = Carbon::createFromTimestamp($timestamp);
+            $jalali = Jalalian::fromCarbon($carbon);
+
+            return sprintf('%04d-%02d', $jalali->getYear(), $jalali->getMonth());
+        })->filter();
+
+        return $grouped
+            ->map(function (Collection $items, string $key) {
+                [$year, $month] = array_map('intval', explode('-', $key));
+
+                $totalHours = $items->sum('duration');
+                $approvedHours = $items->filter(function ($row) {
+                    return (string) $row->approved === '1';
+                })->sum('duration');
+                $rejectedHours = $items->filter(function ($row) {
+                    return (string) $row->approved === '0';
+                })->sum('duration');
+                $pendingHours = $items->filter(function ($row) {
+                    return $row->approved === null;
+                })->sum('duration');
+
+                return (object) [
+                    'year' => $year,
+                    'month' => $month,
+                    'total_requests' => $items->count(),
+                    'total_hours' => $totalHours,
+                    'approved_hours' => $approvedHours,
+                    'rejected_hours' => $rejectedHours,
+                    'pending_hours' => $pendingHours,
+                ];
+            })
+            ->sortByDesc(function ($item) {
+                return sprintf('%04d-%02d', $item->year, $item->month);
+            })
+            ->values();
     }
 
     protected function resolveUsersInfo(LengthAwarePaginator $rows, Collection $perUserSummary): Collection
@@ -381,6 +407,19 @@ class TimeoffController extends Controller
             $query->whereBetween('start_timestamp', [$start, $end]);
         } catch (\Throwable $exception) {
             // ignore invalid month filter
+        }
+    }
+
+    protected function applyYearRange(Builder $query, int $year): void
+    {
+        try {
+            $jalali = Jalalian::fromFormat('Y-m-d', sprintf('%04d-01-01', $year));
+            $carbon = $jalali->toCarbon();
+            $start = $carbon->copy()->startOfYear()->timestamp;
+            $end = $carbon->copy()->endOfYear()->timestamp;
+            $query->whereBetween('start_timestamp', [$start, $end]);
+        } catch (\Throwable $exception) {
+            // ignore invalid year filter
         }
     }
 
