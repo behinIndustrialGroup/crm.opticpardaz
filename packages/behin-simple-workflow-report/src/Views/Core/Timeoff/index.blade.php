@@ -406,8 +406,8 @@
                                 </td>
                                 <td>{{ $row->type ?? '---' }}</td>
                                 <td>
-                                    {{ number_format($row->duration, 2) }} ساعت
-                                    <div class="text-muted small">{{ number_format($row->duration / $hoursPerDay, 2) }} روز</div>
+                                    {{ number_format($row->normalized_duration ?? $row->duration, 2) }} ساعت
+                                    <div class="text-muted small">{{ number_format(($row->normalized_duration ?? $row->duration) / $hoursPerDay, 2) }} روز</div>
                                 </td>
                                 <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
                                 <td>{{ $row->start_timestamp ? toJalali($row->start_timestamp)->format('Y/m/d H:i') : '---' }}</td>

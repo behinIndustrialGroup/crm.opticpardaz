@@ -30,6 +30,12 @@ class TimeoffController extends Controller
             ->paginate($filters['per_page'])
             ->appends($request->query());
 
+        $rows->getCollection()->transform(function ($row) {
+            $row->normalized_duration = $this->normalizeDuration((float) $row->duration, $row->type);
+
+            return $row;
+        });
+
         $summary = $this->buildSummaryStatistics(clone $baseQuery);
         $perUserSummary = $this->buildPerUserSummary(clone $baseQuery);
         $monthlyBreakdown = $this->buildMonthlyBreakdown($filters);
@@ -255,15 +261,19 @@ class TimeoffController extends Controller
 
     protected function buildSummaryStatistics(Builder $query): array
     {
+        $durationExpression = DB::raw($this->normalizedDurationExpression());
+
         $totalRequests = (clone $query)->count();
-        $totalHours = (clone $query)->sum('duration');
+        $totalHours = (clone $query)->sum($durationExpression);
         $approvedRequests = (clone $query)->where('approved', 1)->count();
-        $approvedHours = (clone $query)->where('approved', 1)->sum('duration');
+        $approvedHours = (clone $query)->where('approved', 1)->sum($durationExpression);
         $pendingRequests = (clone $query)->whereNull('approved')->count();
-        $pendingHours = (clone $query)->whereNull('approved')->sum('duration');
+        $pendingHours = (clone $query)->whereNull('approved')->sum($durationExpression);
         $rejectedRequests = (clone $query)->where('approved', 0)->count();
-        $rejectedHours = (clone $query)->where('approved', 0)->sum('duration');
-        $dailyHours = (clone $query)->where('type', '!=', 'ساعتی')->sum('duration');
+        $rejectedHours = (clone $query)->where('approved', 0)->sum($durationExpression);
+        $dailyHours = (clone $query)->where('type', '!=', 'ساعتی')->sum(
+            DB::raw('duration * ' . self::HOURS_PER_DAY)
+        );
         $hourlyHours = (clone $query)->where('type', 'ساعتی')->sum('duration');
 
         return [
@@ -288,16 +298,18 @@ class TimeoffController extends Controller
 
     protected function buildPerUserSummary(Builder $query): Collection
     {
+        $normalizedExpression = $this->normalizedDurationExpression();
+
         return (clone $query)
             ->select(
                 'user',
                 DB::raw('COUNT(*) as total_requests'),
-                DB::raw('SUM(duration) as total_hours'),
+                DB::raw('SUM(' . $normalizedExpression . ') as total_hours'),
                 DB::raw('SUM(CASE WHEN type = "ساعتی" THEN duration ELSE 0 END) as hourly_hours'),
-                DB::raw('SUM(CASE WHEN type != "ساعتی" THEN duration ELSE 0 END) as daily_hours'),
-                DB::raw('SUM(CASE WHEN approved = 1 THEN duration ELSE 0 END) as approved_hours'),
-                DB::raw('SUM(CASE WHEN approved = 0 THEN duration ELSE 0 END) as rejected_hours'),
-                DB::raw('SUM(CASE WHEN approved IS NULL THEN duration ELSE 0 END) as pending_hours')
+                DB::raw('SUM(CASE WHEN type != "ساعتی" THEN duration * ' . self::HOURS_PER_DAY . ' ELSE 0 END) as daily_hours'),
+                DB::raw('SUM(CASE WHEN approved = 1 THEN ' . $normalizedExpression . ' ELSE 0 END) as approved_hours'),
+                DB::raw('SUM(CASE WHEN approved = 0 THEN ' . $normalizedExpression . ' ELSE 0 END) as rejected_hours'),
+                DB::raw('SUM(CASE WHEN approved IS NULL THEN ' . $normalizedExpression . ' ELSE 0 END) as pending_hours')
             )
             ->groupBy('user')
             ->orderByDesc('total_hours')
@@ -309,7 +321,7 @@ class TimeoffController extends Controller
         $query = Timeoffs::query();
         $this->applyFilters($query, $filters, true);
 
-        $records = $query->get(['duration', 'approved', 'request_timestamp', 'start_timestamp']);
+        $records = $query->get(['duration', 'type', 'approved', 'request_timestamp', 'start_timestamp']);
 
         $grouped = $records->groupBy(function ($item) {
             $timestamp = $item->request_timestamp ?: $item->start_timestamp;
@@ -328,16 +340,24 @@ class TimeoffController extends Controller
             ->map(function (Collection $items, string $key) {
                 [$year, $month] = array_map('intval', explode('-', $key));
 
-                $totalHours = $items->sum('duration');
+                $totalHours = $items->sum(function ($row) {
+                    return $this->normalizeDuration((float) $row->duration, $row->type);
+                });
                 $approvedHours = $items->filter(function ($row) {
                     return (string) $row->approved === '1';
-                })->sum('duration');
+                })->sum(function ($row) {
+                    return $this->normalizeDuration((float) $row->duration, $row->type);
+                });
                 $rejectedHours = $items->filter(function ($row) {
                     return (string) $row->approved === '0';
-                })->sum('duration');
+                })->sum(function ($row) {
+                    return $this->normalizeDuration((float) $row->duration, $row->type);
+                });
                 $pendingHours = $items->filter(function ($row) {
                     return $row->approved === null;
-                })->sum('duration');
+                })->sum(function ($row) {
+                    return $this->normalizeDuration((float) $row->duration, $row->type);
+                });
 
                 return (object) [
                     'year' => $year,
@@ -421,6 +441,20 @@ class TimeoffController extends Controller
         } catch (\Throwable $exception) {
             // ignore invalid year filter
         }
+    }
+
+    protected function normalizeDuration(float $duration, ?string $type): float
+    {
+        if ($type === 'ساعتی') {
+            return $duration;
+        }
+
+        return $duration * self::HOURS_PER_DAY;
+    }
+
+    protected function normalizedDurationExpression(): string
+    {
+        return 'CASE WHEN type = "ساعتی" THEN duration ELSE duration * ' . self::HOURS_PER_DAY . ' END';
     }
 
     protected function convertHoursToDays($hours): float
