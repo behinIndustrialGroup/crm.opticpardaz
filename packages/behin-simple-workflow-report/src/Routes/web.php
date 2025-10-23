@@ -11,6 +11,7 @@ use Behin\SimpleWorkflowReport\Controllers\Core\RoleReportFormController;
 use Behin\SimpleWorkflowReport\Controllers\Core\SummaryReportController;
 use Behin\SimpleWorkflowReport\Controllers\Core\TransActionController;
 use Behin\SimpleWorkflowReport\Controllers\Core\RepairIncomeReportController;
+use Behin\SimpleWorkflowReport\Controllers\Core\TimeoffController;
 use Behin\SimpleWorkflowReport\Controllers\Scripts\PersonelActivityController;
 use BehinInit\App\Http\Middleware\Access;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     Route::resource('fin-report', FinReportController::class);
     Route::get('customers/export', [CustomersReportController::class, 'export'])->name('customers.export');
     Route::resource('customers', CustomersReportController::class)->except(['create', 'show', 'edit']);
+    Route::get('timeoff-report', [TimeoffController::class, 'index'])->middleware(Access::class . ':گزارش مرخصی ها')->name('timeoff-report.index');
     Route::get('total-payment', [FinReportController::class, 'totalPayment'])->name('totalPayment');
     Route::get('test', function () {
         $images = Variable::where('key', 'device_plaque_image')->whereNotNull('value')->get();
