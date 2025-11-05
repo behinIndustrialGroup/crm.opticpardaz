@@ -59,17 +59,10 @@
                             <td>{{ $row->case->number ?? '' }}</td>
                             <td>{{ $row->case_name }}</td>
                             <td>
-                                @if ($row->status == 'new')
-                                    <span class="badge bg-primary">{{ trans('fields.New') }}</span>
-                                @elseif($row->status == 'in_progress')
-                                    <span class="badge bg-warning">{{ trans('fields.In Progress') }}</span>
-                                @elseif($row->status == 'draft')
-                                    <span class="badge bg-info">{{ trans('fields.Draft') }}</span>
-                                @elseif($row->status == 'canceled')
-                                    <span class="badge bg-danger">{{ trans('fields.Canceled') }}</span>
-                                @else
-                                    <span class="badge bg-success">{{ trans('fields.Completed') }}</span>
-                                @endif
+                                @php
+                                    $status = config('workflow.inboxStatus.' . $row->status);
+                                @endphp
+                                <span class="badge bg-{{ $status }}">{{ trans('fields.' . $status) }}</span>
                             </td>
                             <td dir="ltr">
                                 {{ toJalali($row->created_at)->format('Y-m-d') }}&nbsp;&nbsp;{{ toJalali($row->created_at)->format('H:i') }}

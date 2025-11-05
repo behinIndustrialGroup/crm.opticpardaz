@@ -8,5 +8,14 @@ return [
         'device_serial_no'
     ],
     'caseNumberingPerCategory' => true,
-    'caseNumberingPerProcess' => false
+    'caseNumberingPerProcess' => false,
+    'inboxStatus' => [
+        'new' => ['label' => 'new', 'color' => 'primary'],
+        'opened' => ['label' => 'opened', 'color' => 'secondary'],
+        'inProgress' => ['label' => 'inProgress', 'color' => 'warning'],
+        'draft' => ['label' => 'draft', 'color' => 'info'],
+        'canceled' => ['label' => 'canceled', 'color' => 'danger'],
+        'done' => ['label' => 'done', 'color' => 'success'],
+        'doneByOther' => ['label' => 'doneByOther', 'color' => 'success']
+    ]
 ];
