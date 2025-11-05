@@ -311,7 +311,12 @@
                 <span class="material-icons material-header-icon">edit</span>
                 {{ $task->name }}
             </h5>
-            <span class="badge bg-{{ $bgColor }}">{{ ucfirst($task->type) }}</span>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-{{ $bgColor }}">{{ ucfirst($task->type) }}</span>
+                <span class="badge {{ $task->is_preview ? 'bg-secondary text-dark ml-2' : 'bg-success ml-2' }}">
+                    {{ $task->is_preview ? trans('fields.Preview Mode') : trans('fields.Published') }}
+                </span>
+            </div>
         </div>
         <div class="card-body">
             <ul class="nav nav-tabs material-tabs" role="tablist">
@@ -335,7 +340,7 @@
                 </li>
             </ul>
             <div class="tab-content material-tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="tab-general">
+                <div role="tabpanel" class="tab-pane fade show active" id="tab-general">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="md-form-group">
@@ -353,6 +358,32 @@
                         </div>
                         <div class="col-md-6">
                             <div class="md-form-group">
+                                <label for="is_preview">{{ trans('fields.Preview Status') }}</label>
+                                <select name="is_preview" id="is_preview" class="form-control material-select">
+                                    <option value="1" {{ $task->is_preview ? 'selected' : '' }}>{{ trans('fields.Preview Mode') }}</option>
+                                    <option value="0" {{ !$task->is_preview ? 'selected' : '' }}>{{ trans('fields.Published') }}</option>
+                                </select>
+                                <small class="text-muted d-block mt-1">{{ trans('fields.Preview Status Hint') }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="md-form-group">
+                                <label for="show_save_button">{{ trans('fields.Show Save Button') }}</label>
+                                <select name="show_save_button" id="show_save_button" class="form-control material-select">
+                                    <option value="1" {{ $task->show_save_button ? 'selected' : '' }}>{{ trans('fields.Yes') }}</option>
+                                    <option value="0" {{ !$task->show_save_button ? 'selected' : '' }}>{{ trans('fields.No') }}</option>
+                                </select>
+                            </div>
+                            <div class="md-form-group">
+                                <label for="show_reminder_button">{{ trans('fields.Show Reminder Button') }}</label>
+                                <select name="show_reminder_button" id="show_reminder_button" class="form-control material-select">
+                                    <option value="1" {{ $task->show_reminder_button ? 'selected' : '' }}>{{ trans('fields.Yes') }}</option>
+                                    <option value="0" {{ !$task->show_reminder_button ? 'selected' : '' }}>{{ trans('fields.No') }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="md-form-group">
                                 <label for="parent_id">{{ trans('Parent Task') }}</label>
                                 <select name="parent_id" id="parent_id"
                                     class="form-control material-select select2">
@@ -360,7 +391,11 @@
                                     @foreach ($task->process->tasks() as $item)
                                         <option dir="ltr" value="{{ $item->id }}"
                                             {{ $item->id == $task->parent_id ? 'selected' : '' }}>
-                                            {{ $item->name }} ({{ $item->id }})
+                                            {{ $item->name }}
+                                            @if ($item->is_preview)
+                                                ({{ trans('fields.Preview') }})
+                                            @endif
+                                            ({{ $item->id }})
                                         </option>
                                     @endforeach
                                 </select>
@@ -376,6 +411,9 @@
                                         <option value="{{ $item->id }}"
                                             {{ $item->id == $task->next_element_id ? 'selected' : '' }}>
                                             {{ $item->name }}
+                                            @if ($item->is_preview)
+                                                ({{ trans('fields.Preview') }})
+                                            @endif
                                         </option>
                                     @endforeach
                                 </select>

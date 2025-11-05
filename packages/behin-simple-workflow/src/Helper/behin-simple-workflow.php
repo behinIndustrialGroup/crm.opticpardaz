@@ -106,18 +106,12 @@ if (!function_exists('runScript')) {
 
 if(!function_exists('toJalali')){
     function toJalali($date){
-        if ($date instanceof Jalalian) {
-            return $date;
-        }
-
-        if ($date instanceof \DateTimeInterface) {
-            $date = Carbon::instance($date);
-        } elseif (is_numeric($date)) {
-            $date = Carbon::createFromTimestamp((int) $date, 'Asia/Tehran');
-        } else {
+        if (is_string($date)) {
             $date = Carbon::parse($date);
         }
-
+        if (is_int($date)) {
+            $date = Carbon::createFromTimestamp($date, 'Asia/Tehran');
+        }
         // Log::info("function toJalali Used By user". Auth::user()->name);
         $jDate = Jalalian::fromCarbon($date);
         return $jDate;
