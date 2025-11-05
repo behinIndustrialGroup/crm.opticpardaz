@@ -16,6 +16,7 @@ return [
             'submenu' => [
                 'new-process' => [ 'fa_name' => 'فرایند جدید', 'route-name' => 'simpleWorkflow.process.startListView' ],
                 'inbox' => [ 'fa_name' => 'کارتابل من', 'route-name' => 'simpleWorkflow.inbox.index' ],
+                'categorized-inbox' => [ 'fa_name' => 'کارتابل دسته بندی شده', 'route-name' => 'simpleWorkflow.inbox.categorized' ],
                 'done-inbox' => [ 'fa_name' => 'انجام شده ها', 'route-name' => 'simpleWorkflow.inbox.done' ],
             ]
         ],
