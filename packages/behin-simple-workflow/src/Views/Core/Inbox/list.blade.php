@@ -62,7 +62,7 @@
                                 @php
                                     $status = config('workflow.inboxStatus.' . $row->status);
                                 @endphp
-                                <span class="badge bg-{{ $status }}">{{ trans('fields.' . $status) }}</span>
+                                <span class="badge bg-{{ $status['color'] }}">{{ trans('fields.' . $status['label']) }}</span>
                             </td>
                             <td dir="ltr">
                                 {{ toJalali($row->created_at)->format('Y-m-d') }}&nbsp;&nbsp;{{ toJalali($row->created_at)->format('H:i') }}
