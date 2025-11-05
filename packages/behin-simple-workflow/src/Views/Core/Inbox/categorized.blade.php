@@ -367,22 +367,9 @@
                                         <td>{{ optional($row->task ?? null)->name ?? '-' }}</td>
                                         <td>
                                             @php
-                                                $status = $row->status;
+                                                $status = config('workflow.inboxStatus.' . $row->status);
                                             @endphp
-                                            @if ($status === 'new')
-                                                <span class="status-badge status-new">{{ trans('fields.New') }}</span>
-                                            @elseif($status === 'in_progress' || $status === 'inProgress')
-                                                <span
-                                                    class="status-badge status-in-progress">{{ trans('fields.In Progress') }}</span>
-                                            @elseif($status === 'draft')
-                                                <span class="status-badge status-draft">{{ trans('fields.Draft') }}</span>
-                                            @elseif($status === 'canceled')
-                                                <span
-                                                    class="status-badge status-canceled">{{ trans('fields.Canceled') }}</span>
-                                            @else
-                                                <span
-                                                    class="status-badge status-done">{{ trans('fields.Completed') }}</span>
-                                            @endif
+                                            <span class="status-badge bg-{{ $status['color'] }}">{{ trans('fields.' . $status['label']) }}</span>
                                         </td>
                                         <td dir="ltr" class="text-muted">
                                             {{ toJalali($row->created_at)->format('Y-m-d') }}
