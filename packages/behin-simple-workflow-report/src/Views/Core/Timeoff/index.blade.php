@@ -410,9 +410,9 @@
                                     <div class="text-muted small">{{ number_format(($row->normalized_duration ?? $row->duration) / $hoursPerDay, 2) }} روز</div>
                                 </td>
                                 <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
-                                <td>{{ $row->start_timestamp ? toJalali($row->start_timestamp)->format('Y/m/d H:i') : '---' }}</td>
-                                <td>{{ $row->end_timestamp ? toJalali($row->end_timestamp)->format('Y/m/d H:i') : '---' }}</td>
-                                <td>{{ $row->request_timestamp ? toJalali($row->request_timestamp)->format('Y/m/d H:i') : '---' }}</td>
+                                <td>{{ $row->start_timestamp ? toJalali((int)$row->start_timestamp)->format('Y/m/d H:i') : '---' }}</td>
+                                <td>{{ $row->end_timestamp ? toJalali((int)$row->end_timestamp)->format('Y/m/d H:i') : '---' }}</td>
+                                <td>{{ $row->request_timestamp ? toJalali((int)$row->request_timestamp)->format('Y/m/d H:i') : '---' }}</td>
                                 <td>{{ $approvedBy->name ?? ($row->approved_by ? 'کاربر #' . $row->approved_by : '---') }}</td>
                                 <td>{{ $row->uniqueId ?? '---' }}</td>
                                 <td style="max-width: 220px;">
