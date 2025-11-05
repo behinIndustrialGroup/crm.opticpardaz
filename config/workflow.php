@@ -5,7 +5,9 @@ return [
     'patterns' => [
         'customer_fullname',
         'device_name', 
-        'device_serial_no'
+        'device_serial_no',
+        'creator',
+        'case_name'
     ],
     'caseNumberingPerCategory' => true,
     'caseNumberingPerProcess' => false,
