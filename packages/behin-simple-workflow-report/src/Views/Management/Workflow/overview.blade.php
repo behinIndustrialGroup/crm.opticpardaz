@@ -9,7 +9,7 @@
         use Illuminate\Support\Carbon;
 
         $inboxTasks = DB::table('wf_inbox')
-            ->select('id', 'task_id', 'case_id', 'user_id', 'status', 'priority', 'created_at', 'updated_at')
+            ->select('id', 'task_id', 'case_id', 'actor', 'status', 'created_at', 'updated_at')
             ->orderByDesc('created_at')
             ->limit(200)
             ->get();
@@ -29,25 +29,25 @@
 
         $taskRoles = DB::table('wf_task_actor as ta')
             ->leftJoin('wf_task as t', 't.id', '=', 'ta.task_id')
-            ->leftJoin('roles', 'roles.id', '=', 'ta.role_id')
+            ->leftJoin('behin_roles as roles', 'roles.id', '=', 'ta.role_id')
             ->select('ta.task_id', 't.name as task_name', 'roles.name as role_name')
             ->orderBy('ta.task_id')
             ->get();
 
         $taskJumps = DB::table('wf_task_jumps as j')
-            ->leftJoin('wf_task as from_task', 'from_task.id', '=', 'j.from_task_id')
-            ->leftJoin('wf_task as to_task', 'to_task.id', '=', 'j.to_task_id')
-            ->select('j.from_task_id', 'j.to_task_id', 'j.condition', 'from_task.name as from_name', 'to_task.name as to_name')
+            ->leftJoin('wf_task as from_task', 'from_task.id', '=', 'j.task_id')
+            ->leftJoin('wf_task as to_task', 'to_task.id', '=', 'j.next_task_id')
+            ->select('j.task_id', 'j.next_task_id', 'from_task.name as from_name', 'to_task.name as to_name')
             ->get();
 
         $processGraph = DB::table('wf_task as t')
-            ->leftJoin('wf_task_jumps as j', 'j.from_task_id', '=', 't.id')
-            ->select('t.process_id', 't.id as task_id', 't.name as task_name', 'j.to_task_id')
+            ->leftJoin('wf_task_jumps as j', 'j.task_id', '=', 't.id')
+            ->select('t.process_id', 't.id as task_id', 't.name as task_name', 'j.next_task_id as to_task_id')
             ->get()
             ->groupBy('process_id');
 
-        $users = DB::table('users')->whereIn('id', $inboxTasks->pluck('user_id')->filter())->pluck('name', 'id');
-        $tasks = DB::table('wf_task')->whereIn('id', $inboxTasks->pluck('task_id')->merge($taskDurations->pluck('task_id'))->merge($taskRoles->pluck('task_id'))->merge($taskJumps->pluck('from_task_id'))->merge($taskJumps->pluck('to_task_id'))->filter())->pluck('name', 'id');
+        $users = DB::table('users')->whereIn('id', $inboxTasks->pluck('actor')->filter())->pluck('name', 'id');
+        $tasks = DB::table('wf_task')->whereIn('id', $inboxTasks->pluck('task_id')->merge($taskDurations->pluck('task_id'))->merge($taskRoles->pluck('task_id'))->merge($taskJumps->pluck('task_id'))->merge($taskJumps->pluck('next_task_id'))->filter())->pluck('name', 'id');
     @endphp
 
     <div class="grid gap-6">
@@ -83,7 +83,6 @@
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">پرونده</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">کاربر</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">وضعیت</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">اولویت</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">تاریخ ایجاد</th>
                         </tr>
                     </thead>
@@ -92,9 +91,8 @@
                             <tr>
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $tasks[$task->task_id] ?? ('وظیفه #' . $task->task_id) }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $task->case_id ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $users[$task->user_id] ?? ('کاربر #' . $task->user_id) }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $users[$task->actor] ?? ($task->actor ? 'کاربر #' . $task->actor : '---') }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $task->status ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $task->priority ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $task->created_at ? Carbon::parse($task->created_at)->format('Y-m-d H:i') : '---' }}</td>
                             </tr>
                         @empty
@@ -204,9 +202,9 @@
                         <tbody class="bg-white divide-y divide-slate-200">
                             @forelse($taskJumps as $jump)
                                 <tr>
-                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $jump->from_name ?? ($tasks[$jump->from_task_id] ?? ('تسک #' . $jump->from_task_id)) }}</td>
-                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $jump->to_name ?? ($tasks[$jump->to_task_id] ?? ('تسک #' . $jump->to_task_id)) }}</td>
-                                    <td class="px-4 py-2 text-sm text-slate-600">{{ $jump->condition ?? '---' }}</td>
+                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $jump->from_name ?? ($tasks[$jump->task_id] ?? ('تسک #' . $jump->task_id)) }}</td>
+                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $jump->to_name ?? ($tasks[$jump->next_task_id] ?? ('تسک #' . $jump->next_task_id)) }}</td>
+                                    <td class="px-4 py-2 text-sm text-slate-600">---</td>
                                 </tr>
                             @empty
                                 <tr>

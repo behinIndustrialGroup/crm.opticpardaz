@@ -10,30 +10,43 @@
         use Illuminate\Support\Str;
 
         $devices = DB::table('wf_entity_devices')
-            ->select('id', 'customer_id', 'name', 'serial', 'model', 'created_at')
+            ->select('id', 'case_id', 'case_number', 'name', 'brand', 'power', 'serial', 'created_at')
             ->orderByDesc('created_at')
             ->limit(100)
             ->get();
 
         $repairs = DB::table('wf_entity_device_repair')
-            ->select('id', 'device_id', 'case_id', 'status', 'started_at', 'finished_at', 'approved_at', 'is_confirmed', 'repair_type', 'created_at')
+            ->select('id', 'device_id', 'case_id', 'repair_type', 'repair_start_date', 'repair_end_date', 'repair_is_approved', 'repair_is_approved_by', 'created_at')
             ->orderByDesc('created_at')
             ->limit(200)
             ->get();
 
         $repairPictures = DB::table('wf_entity_device_repair_pictures')
-            ->select('id', 'repair_id', 'path', 'description', 'created_at')
+            ->select('id', 'case_id', 'case_number', 'file', 'created_at')
             ->orderByDesc('created_at')
             ->limit(200)
             ->get();
 
         $repairStats = DB::table('wf_entity_device_repair')
             ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN status IN ("approved", "done") OR IFNULL(is_confirmed, 0) = 1 THEN 1 ELSE 0 END) as approved')
-            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, started_at, finished_at)) as avg_duration_seconds')
+            ->selectRaw('SUM(CASE WHEN IFNULL(repair_is_approved, "") <> "" THEN 1 ELSE 0 END) as approved')
             ->first();
 
-        $averageDuration = $repairStats && $repairStats->avg_duration_seconds ? gmdate('H:i:s', (int) round($repairStats->avg_duration_seconds)) : '00:00:00';
+        $averageDurationSeconds = $repairs->map(function ($repair) {
+            if (empty($repair->repair_start_date) || empty($repair->repair_end_date)) {
+                return null;
+            }
+
+            try {
+                $start = Carbon::parse($repair->repair_start_date);
+                $end = Carbon::parse($repair->repair_end_date);
+                return max($end->diffInSeconds($start), 0);
+            } catch (\Throwable $e) {
+                return null;
+            }
+        })->filter()->average();
+
+        $averageDuration = $averageDurationSeconds ? gmdate('H:i:s', (int) round($averageDurationSeconds)) : '00:00:00';
         $approvalRate = $repairStats && $repairStats->total ? round(($repairStats->approved / $repairStats->total) * 100, 2) : 0;
 
         $repairTypeDistribution = DB::table('wf_entity_device_repair')
@@ -86,8 +99,8 @@
                         <tr>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نام دستگاه</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شماره سریال</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">مدل</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">مشتری</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">برند</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">پرونده</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">تاریخ ثبت</th>
                         </tr>
                     </thead>
@@ -96,8 +109,8 @@
                             <tr>
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $device->name ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $device->serial ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $device->model ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $device->customer_id ? ('مشتری #' . $device->customer_id) : '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $device->brand ?? ($device->power ? 'قدرت: ' . $device->power : '---') }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $device->case_number ?? $device->case_id ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $device->created_at ? Carbon::parse($device->created_at)->format('Y-m-d') : '---' }}</td>
                             </tr>
                         @empty
@@ -118,7 +131,7 @@
                         <tr>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">دستگاه</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">پرونده</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">وضعیت</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نوع تعمیر</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شروع</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">پایان</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">تأیید</th>
@@ -129,10 +142,10 @@
                             <tr>
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $deviceNames[$repair->device_id] ?? ('دستگاه #' . $repair->device_id) }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->case_id ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->status ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->started_at ? Carbon::parse($repair->started_at)->format('Y-m-d') : '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->finished_at ? Carbon::parse($repair->finished_at)->format('Y-m-d') : '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->approved_at ? Carbon::parse($repair->approved_at)->format('Y-m-d') : ($repair->is_confirmed ? 'تأیید شده' : '---') }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ is_string($repair->repair_type) ? $repair->repair_type : (is_array($repair->repair_type ?? null) ? json_encode($repair->repair_type, JSON_UNESCAPED_UNICODE) : '---') }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->repair_start_date ? Carbon::parse($repair->repair_start_date)->format('Y-m-d') : '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->repair_end_date ? Carbon::parse($repair->repair_end_date)->format('Y-m-d') : '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $repair->repair_is_approved ? 'تأیید شده' : '---' }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -159,11 +172,11 @@
                     <tbody class="bg-white divide-y divide-slate-200">
                         @forelse($repairPictures as $picture)
                             <tr>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $picture->repair_id ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $picture->description ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $picture->case_number ?? $picture->case_id ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">---</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">
-                                    @if(!empty($picture->path))
-                                        <a href="{{ url('storage/' . ltrim($picture->path, '/')) }}" class="text-blue-600 hover:text-blue-800" target="_blank">مشاهده</a>
+                                    @if(!empty($picture->file))
+                                        <a href="{{ url('storage/' . ltrim($picture->file, '/')) }}" class="text-blue-600 hover:text-blue-800" target="_blank">مشاهده</a>
                                     @else
                                         ---
                                     @endif

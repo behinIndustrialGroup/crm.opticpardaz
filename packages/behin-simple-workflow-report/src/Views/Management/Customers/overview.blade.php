@@ -9,9 +9,21 @@
         use Illuminate\Support\Str;
         use Illuminate\Support\Carbon;
 
-        $customers = DB::table('wf_entity_customers')
-            ->select('id', 'full_name', 'mobile', 'national_code', 'province', 'city', 'postal_code', 'economic_code', 'customer_job')
-            ->orderByDesc('created_at')
+        $customers = DB::table('wf_entity_customers as customers')
+            ->leftJoin('wf_entity_case_customer as case_customer', 'case_customer.customer_id', '=', 'customers.id')
+            ->select(
+                'customers.id',
+                'customers.fullname',
+                'customers.mobile',
+                'customers.national_id',
+                DB::raw('MAX(case_customer.address) as address'),
+                DB::raw('MAX(case_customer.postal_code) as postal_code'),
+                DB::raw('MAX(case_customer.eco_number) as eco_number'),
+                'customers.customer_job',
+                DB::raw('MAX(customers.created_at) as created_at')
+            )
+            ->groupBy('customers.id', 'customers.fullname', 'customers.mobile', 'customers.national_id', 'customers.customer_job')
+            ->orderByDesc(DB::raw('MAX(customers.created_at)'))
             ->limit(100)
             ->get();
 
@@ -20,11 +32,12 @@
             ->leftJoin('wf_entity_customers as customers', 'customers.id', '=', 'c.customer_id')
             ->select(
                 'c.case_id',
-                'cases.number as case_number',
+                'c.case_number',
                 'cases.status',
-                'customers.full_name',
-                'c.relation_type',
-                'c.created_at'
+                'customers.fullname',
+                'c.created_at',
+                'c.postal_code',
+                'c.eco_number'
             )
             ->orderByDesc('c.created_at')
             ->limit(100)
@@ -32,14 +45,14 @@
 
         $customerActivity = DB::table('wf_entity_customers as customers')
             ->leftJoin('wf_entity_case_customer as case_customer', 'case_customer.customer_id', '=', 'customers.id')
-            ->leftJoin('wf_entity_pre_invoices as invoices', 'invoices.customer_id', '=', 'customers.id')
+            ->leftJoin('wf_entity_pre_invoices as invoices', 'invoices.case_id', '=', 'case_customer.case_id')
             ->select(
                 'customers.id',
-                'customers.full_name',
+                'customers.fullname',
                 DB::raw('COUNT(DISTINCT case_customer.case_id) as total_cases'),
                 DB::raw('COUNT(DISTINCT invoices.id) as total_invoices')
             )
-            ->groupBy('customers.id', 'customers.full_name')
+            ->groupBy('customers.id', 'customers.fullname')
             ->orderByDesc(DB::raw('COUNT(DISTINCT case_customer.case_id) + COUNT(DISTINCT invoices.id)'))
             ->limit(50)
             ->get();
@@ -54,7 +67,7 @@
                 $decoded = json_decode($job, true);
                 if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                     return [
-                        'customer' => $customer->full_name,
+                        'customer' => $customer->fullname,
                         'title' => $decoded['title'] ?? ($decoded['name'] ?? null),
                         'industry' => $decoded['industry'] ?? null,
                         'experience' => $decoded['experience'] ?? null,
@@ -63,7 +76,7 @@
             }
 
             return [
-                'customer' => $customer->full_name,
+                'customer' => $customer->fullname,
                 'title' => is_string($job) ? $job : json_encode($job, JSON_UNESCAPED_UNICODE),
                 'industry' => null,
                 'experience' => null,
@@ -81,7 +94,7 @@
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نام</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">موبایل</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">کد ملی</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">استان/شهر</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">آدرس</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">کدپستی</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شماره اقتصادی</th>
                         </tr>
@@ -89,12 +102,12 @@
                     <tbody class="bg-white divide-y divide-slate-200">
                         @forelse($customers as $customer)
                             <tr>
-                                <td class="px-4 py-2 text-sm text-slate-700">{{ $customer->full_name ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-700">{{ $customer->fullname ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->mobile ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->national_code ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ trim(($customer->province ?? '') . ' / ' . ($customer->city ?? '')) ?: '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->national_id ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->address ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->postal_code ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->economic_code ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $customer->eco_number ?? '---' }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -115,22 +128,24 @@
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">مشتری</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شماره پرونده</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">وضعیت</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نقش/ارتباط</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">کدپستی</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شماره اقتصادی</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">تاریخ ثبت</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
                         @forelse($caseDetails as $row)
                             <tr>
-                                <td class="px-4 py-2 text-sm text-slate-700">{{ $row->full_name ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-700">{{ $row->fullname ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $row->case_number ?? ('#' . $row->case_id) }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $row->status ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $row->relation_type ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $row->postal_code ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">{{ $row->eco_number ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $row->created_at ? Carbon::parse($row->created_at)->format('Y-m-d') : '---' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-500">پرونده‌ای ثبت نشده است.</td>
+                                <td colspan="6" class="px-4 py-6 text-center text-sm text-slate-500">پرونده‌ای ثبت نشده است.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -156,7 +171,7 @@
                                 $score = ($row->total_cases ?? 0) + ($row->total_invoices ?? 0);
                             @endphp
                             <tr>
-                                <td class="px-4 py-2 text-sm text-slate-700">{{ $row->full_name ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-700">{{ $row->fullname ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ number_format($row->total_cases) }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ number_format($row->total_invoices) }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-900 font-semibold">{{ number_format($score) }}</td>

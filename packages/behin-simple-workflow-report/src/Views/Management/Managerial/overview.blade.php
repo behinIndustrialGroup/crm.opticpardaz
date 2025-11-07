@@ -9,35 +9,39 @@
 
         $unitPerformance = DB::table('wf_cases as cases')
             ->leftJoin('users', 'users.id', '=', 'cases.creator')
-            ->leftJoin('wf_entity_transactions as transactions', function ($join) {
-                $join->on('transactions.case_id', '=', 'cases.id');
-            })
+            ->leftJoin('wf_entity_transactions as transactions', 'transactions.case_id', '=', 'cases.id')
             ->select(
                 'cases.creator as user_id',
                 'users.name as user_name',
                 DB::raw('COUNT(DISTINCT cases.id) as total_cases'),
-                DB::raw('SUM(CASE WHEN transactions.transaction_type = "income" THEN transactions.amount ELSE 0 END) as total_income'),
-                DB::raw('SUM(CASE WHEN transactions.transaction_type = "expense" THEN transactions.amount ELSE 0 END) as total_expense')
+                DB::raw('SUM(CASE WHEN transactions.transaction_type = "income" THEN CAST(REPLACE(transactions.amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) as total_income'),
+                DB::raw('SUM(CASE WHEN transactions.transaction_type = "expense" THEN CAST(REPLACE(transactions.amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) as total_expense')
             )
             ->groupBy('cases.creator', 'users.name')
             ->orderByDesc(DB::raw('COUNT(DISTINCT cases.id)'))
             ->limit(20)
             ->get();
 
-        $caseClosureTime = DB::table('wf_cases as cases')
-            ->leftJoin('wf_inbox as inbox', 'inbox.case_id', '=', 'cases.id')
-            ->whereNotNull('cases.closed_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, cases.created_at, cases.closed_at)) as avg_case_seconds')
-            ->selectRaw('AVG(CASE WHEN inbox.status = "done" THEN TIMESTAMPDIFF(SECOND, inbox.created_at, inbox.updated_at) END) as avg_task_seconds')
+        $caseClosureTime = DB::table('wf_cases')
+            ->whereNotNull('created_at')
+            ->whereNotNull('updated_at')
+            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as avg_case_seconds')
             ->first();
 
-        $avgCaseClosure = $caseClosureTime && $caseClosureTime->avg_case_seconds ? gmdate('H:i:s', (int) $caseClosureTime->avg_case_seconds) : '00:00:00';
-        $avgTaskDuration = $caseClosureTime && $caseClosureTime->avg_task_seconds ? gmdate('H:i:s', (int) $caseClosureTime->avg_task_seconds) : '00:00:00';
+        $taskClosure = DB::table('wf_inbox')
+            ->whereNotNull('created_at')
+            ->whereNotNull('updated_at')
+            ->where('status', 'done')
+            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as avg_task_seconds')
+            ->first();
+
+        $avgCaseClosure = $caseClosureTime && $caseClosureTime->avg_case_seconds ? gmdate('H:i:s', (int) round($caseClosureTime->avg_case_seconds)) : '00:00:00';
+        $avgTaskDuration = $taskClosure && $taskClosure->avg_task_seconds ? gmdate('H:i:s', (int) round($taskClosure->avg_task_seconds)) : '00:00:00';
 
         $monthlyRevenue = DB::table('wf_entity_transactions')
             ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month_label')
-            ->selectRaw('SUM(CASE WHEN transaction_type = "income" THEN amount ELSE 0 END) as total_income')
-            ->selectRaw('SUM(CASE WHEN transaction_type = "expense" THEN amount ELSE 0 END) as total_expense')
+            ->selectRaw('SUM(CASE WHEN transaction_type = "income" THEN CAST(REPLACE(amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) as total_income')
+            ->selectRaw('SUM(CASE WHEN transaction_type = "expense" THEN CAST(REPLACE(amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) as total_expense')
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
             ->orderBy('month_label')
             ->limit(24)
@@ -56,13 +60,13 @@
             ->leftJoin('wf_entity_transactions as t', 't.case_id', '=', 'cc.case_id')
             ->select(
                 'customers.id',
-                'customers.full_name',
+                'customers.fullname',
                 DB::raw('COUNT(DISTINCT cc.case_id) as total_cases'),
-                DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END) as total_income')
+                DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN CAST(REPLACE(t.amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) as total_income')
             )
-            ->groupBy('customers.id', 'customers.full_name')
-            ->havingRaw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END) > 0')
-            ->orderByDesc(DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END)'))
+            ->groupBy('customers.id', 'customers.fullname')
+            ->havingRaw('SUM(CASE WHEN t.transaction_type = "income" THEN CAST(REPLACE(t.amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END) > 0')
+            ->orderByDesc(DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN CAST(REPLACE(t.amount, ",", "") AS DECIMAL(18,2)) ELSE 0 END)'))
             ->limit(20)
             ->get();
 
@@ -194,7 +198,7 @@
                         <tbody class="bg-white divide-y divide-slate-200">
                             @forelse($keyCustomers as $customer)
                                 <tr>
-                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $customer->full_name ?? ('مشتری #' . $customer->id) }}</td>
+                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $customer->fullname ?? ('مشتری #' . $customer->id) }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ number_format($customer->total_cases ?? 0) }}</td>
                                     <td class="px-4 py-2 text-sm text-emerald-600 font-semibold">{{ number_format($customer->total_income ?? 0) }}</td>
                                 </tr>

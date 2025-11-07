@@ -16,22 +16,20 @@
             ->get();
 
         $scripts = DB::table('wf_scripts')
-            ->select('id', 'name', 'type', 'created_at')
+            ->select('id', 'name', 'executive_file', 'created_at')
             ->orderByDesc('created_at')
             ->limit(100)
             ->get();
 
         $roleFormLinks = DB::table('wf_process_role_form_control as prf')
-            ->leftJoin('roles', 'roles.id', '=', 'prf.role_id')
+            ->leftJoin('behin_roles as roles', 'roles.id', '=', 'prf.role_id')
             ->leftJoin('wf_process', 'wf_process.id', '=', 'prf.process_id')
-            ->leftJoin('wf_forms', 'wf_forms.id', '=', 'prf.form_id')
+            ->leftJoin('wf_forms', 'wf_forms.id', '=', 'prf.summary_form_id')
             ->select(
                 'prf.id',
                 'roles.name as role_name',
                 'wf_process.name as process_name',
                 'wf_forms.name as form_name',
-                'prf.can_view',
-                'prf.can_edit',
                 'prf.created_at'
             )
             ->orderByDesc('prf.created_at')
@@ -45,13 +43,13 @@
             ->get();
 
         $pmVariables = DB::table('pm_vars')
-            ->select('id', 'process_id', 'case_id', 'name', 'value', 'updated_at')
+            ->select('id', 'process_id', 'case_id', 'key', 'value', 'updated_at')
             ->orderByDesc('updated_at')
             ->limit(100)
             ->get();
 
         $configChanges = DB::table('wf_entity_configs')
-            ->select('id', 'config_key', 'config_value', 'updated_at')
+            ->select('id', 'key', 'value', 'updated_at')
             ->orderByDesc('updated_at')
             ->limit(100)
             ->get();
@@ -130,7 +128,11 @@
                             <tr>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $script->id }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $script->name ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $script->type ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">
+                                    <span class="block truncate max-w-xs" title="{{ $script->executive_file }}">{{
+                                        $script->executive_file ? Str::limit($script->executive_file, 80) : '---'
+                                    }}</span>
+                                </td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $script->created_at ? Carbon::parse($script->created_at)->format('Y-m-d') : '---' }}</td>
                             </tr>
                         @empty
@@ -151,9 +153,7 @@
                         <tr>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نقش</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">فرآیند</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">فرم</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">اجازه مشاهده</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">اجازه ویرایش</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">فرم خلاصه</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
@@ -162,12 +162,10 @@
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $link->role_name ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $link->process_name ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $link->form_name ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ ($link->can_view ?? false) ? 'بله' : 'خیر' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ ($link->can_edit ?? false) ? 'بله' : 'خیر' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-500">ارتباطی ثبت نشده است.</td>
+                                <td colspan="4" class="px-4 py-6 text-center text-sm text-slate-500">ارتباطی ثبت نشده است.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -191,7 +189,7 @@
                         <tbody class="bg-white divide-y divide-slate-200">
                             @forelse($variables as $variable)
                                 <tr>
-                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $variable->key ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-700">{{ $variable->key ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ $variable->case_id ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ $variable->process_id ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">
@@ -213,7 +211,7 @@
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نام</th>
+                                <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">کلید</th>
                                 <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">پرونده</th>
                                 <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">فرآیند</th>
                                 <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">آخرین به‌روزرسانی</th>
@@ -222,7 +220,7 @@
                         <tbody class="bg-white divide-y divide-slate-200">
                             @forelse($pmVariables as $variable)
                                 <tr>
-                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $variable->name ?? '---' }}</td>
+                                    <td class="px-4 py-2 text-sm text-slate-700">{{ $variable->key ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ $variable->case_id ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ $variable->process_id ?? '---' }}</td>
                                     <td class="px-4 py-2 text-sm text-slate-600">{{ $variable->updated_at ? Carbon::parse($variable->updated_at)->format('Y-m-d H:i') : '---' }}</td>
@@ -252,9 +250,9 @@
                     <tbody class="bg-white divide-y divide-slate-200">
                         @forelse($configChanges as $config)
                             <tr>
-                                <td class="px-4 py-2 text-sm text-slate-700">{{ $config->config_key ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-700">{{ $config->key ?? '---' }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-600">
-                                    <span class="block truncate max-w-md" title="{{ $config->config_value }}">{{ Str::limit($config->config_value, 120) }}</span>
+                                    <span class="block truncate max-w-md" title="{{ $config->value }}">{{ Str::limit($config->value, 120) }}</span>
                                 </td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $config->updated_at ? Carbon::parse($config->updated_at)->format('Y-m-d H:i') : '---' }}</td>
                             </tr>
