@@ -44,4 +44,16 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     Route::resource('transaction-report', TransActionController::class);
     Route::resource('repair-income-report', RepairIncomeReportController::class);
 
+    Route::prefix('management')->name('management.')->group(function () {
+        Route::view('processes', 'SimpleWorkflowReportView::Management.Processes.overview')->name('processes');
+        Route::view('customers', 'SimpleWorkflowReportView::Management.Customers.overview')->name('customers');
+        Route::view('financial', 'SimpleWorkflowReportView::Management.Financial.overview')->name('financial');
+        Route::view('inventory', 'SimpleWorkflowReportView::Management.Inventory.overview')->name('inventory');
+        Route::view('devices', 'SimpleWorkflowReportView::Management.Devices.overview')->name('devices');
+        Route::view('hr', 'SimpleWorkflowReportView::Management.HR.overview')->name('hr');
+        Route::view('workflow', 'SimpleWorkflowReportView::Management.Workflow.overview')->name('workflow');
+        Route::view('configuration', 'SimpleWorkflowReportView::Management.Configuration.overview')->name('configuration');
+        Route::view('managerial', 'SimpleWorkflowReportView::Management.Managerial.overview')->name('managerial');
+    });
+
 });
