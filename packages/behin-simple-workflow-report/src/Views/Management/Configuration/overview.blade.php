@@ -10,7 +10,7 @@
         use Illuminate\Support\Carbon;
 
         $forms = DB::table('wf_forms')
-            ->select('id', 'name', 'description', 'created_at')
+            ->select('id', 'name', 'executive_file', 'created_at')
             ->orderByDesc('created_at')
             ->limit(100)
             ->get();
@@ -87,7 +87,7 @@
                         <tr>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">شناسه</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">نام</th>
-                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">توضیحات</th>
+                            <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">فایل اجرایی</th>
                             <th class="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase">تاریخ ایجاد</th>
                         </tr>
                     </thead>
@@ -96,7 +96,11 @@
                             <tr>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $form->id }}</td>
                                 <td class="px-4 py-2 text-sm text-slate-700">{{ $form->name ?? '---' }}</td>
-                                <td class="px-4 py-2 text-sm text-slate-600">{{ $form->description ?? '---' }}</td>
+                                <td class="px-4 py-2 text-sm text-slate-600">
+                                    <span class="block truncate max-w-xs" title="{{ $form->executive_file }}">{{
+                                        $form->executive_file ? Str::limit($form->executive_file, 80) : '---'
+                                    }}</span>
+                                </td>
                                 <td class="px-4 py-2 text-sm text-slate-600">{{ $form->created_at ? Carbon::parse($form->created_at)->format('Y-m-d') : '---' }}</td>
                             </tr>
                         @empty

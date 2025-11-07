@@ -16,8 +16,8 @@
                 'cases.creator as user_id',
                 'users.name as user_name',
                 DB::raw('COUNT(DISTINCT cases.id) as total_cases'),
-                DB::raw('SUM(CASE WHEN transactions.type = "income" THEN transactions.amount ELSE 0 END) as total_income'),
-                DB::raw('SUM(CASE WHEN transactions.type = "expense" THEN transactions.amount ELSE 0 END) as total_expense')
+                DB::raw('SUM(CASE WHEN transactions.transaction_type = "income" THEN transactions.amount ELSE 0 END) as total_income'),
+                DB::raw('SUM(CASE WHEN transactions.transaction_type = "expense" THEN transactions.amount ELSE 0 END) as total_expense')
             )
             ->groupBy('cases.creator', 'users.name')
             ->orderByDesc(DB::raw('COUNT(DISTINCT cases.id)'))
@@ -36,8 +36,8 @@
 
         $monthlyRevenue = DB::table('wf_entity_transactions')
             ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month_label')
-            ->selectRaw('SUM(CASE WHEN type = "income" THEN amount ELSE 0 END) as total_income')
-            ->selectRaw('SUM(CASE WHEN type = "expense" THEN amount ELSE 0 END) as total_expense')
+            ->selectRaw('SUM(CASE WHEN transaction_type = "income" THEN amount ELSE 0 END) as total_income')
+            ->selectRaw('SUM(CASE WHEN transaction_type = "expense" THEN amount ELSE 0 END) as total_expense')
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
             ->orderBy('month_label')
             ->limit(24)
@@ -58,11 +58,11 @@
                 'customers.id',
                 'customers.full_name',
                 DB::raw('COUNT(DISTINCT cc.case_id) as total_cases'),
-                DB::raw('SUM(CASE WHEN t.type = "income" THEN t.amount ELSE 0 END) as total_income')
+                DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END) as total_income')
             )
             ->groupBy('customers.id', 'customers.full_name')
-            ->havingRaw('SUM(CASE WHEN t.type = "income" THEN t.amount ELSE 0 END) > 0')
-            ->orderByDesc(DB::raw('SUM(CASE WHEN t.type = "income" THEN t.amount ELSE 0 END)'))
+            ->havingRaw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END) > 0')
+            ->orderByDesc(DB::raw('SUM(CASE WHEN t.transaction_type = "income" THEN t.amount ELSE 0 END)'))
             ->limit(20)
             ->get();
 
