@@ -94,7 +94,7 @@
                 "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Persian.json"
             },
             order: [
-                [6, 'desc']
+                [7, 'desc']
             ],
             pageLength: 25,
             "lengthChange": false
