@@ -56,4 +56,14 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
         Route::view('managerial', 'SimpleWorkflowReportView::Management.Managerial.overview')->name('managerial');
     });
 
+    Route::get('total-timeoff', function(){
+        return Excel::download(new TotalTimeoff, 'total_timeoff.xlsx');
+    })->name('totalTimeoff');
+
+    Route::get('user-timeoffs/{userId?}', function($userId = null){
+        return Excel::download(new UserTimeoffs($userId), 'timeoff_report.xlsx');
+    })->name('userTimeoffs');
+
+    Route::post('timeoff/update', [TimeoffController::class, 'update'])->name('timeoff.update');
+
 });
