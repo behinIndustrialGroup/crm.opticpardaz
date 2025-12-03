@@ -114,7 +114,7 @@ Route::get('test', function () {
             return [
                 'task_name' => $rows->first()->task->name ?? '—',
                 'count'     => $rows->pluck('case_id')->unique()->count(),
-                'cases'     => $rows->pluck('case_id')->unique()->values(),
+                // 'cases'     => $rows->pluck('case_id')->unique()->values(),
             ];
         })
         ->values(); // برای اینکه خروجی شماره ای نشود
