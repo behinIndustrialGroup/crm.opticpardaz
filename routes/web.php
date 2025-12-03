@@ -1,5 +1,6 @@
 <?php
 
+use Behin\SimpleWorkflow\Controllers\Core\InboxController;
 use Behin\SimpleWorkflow\Controllers\Core\PushNotifications;
 use Behin\SimpleWorkflow\Jobs\SendPushNotification;
 use Behin\SimpleWorkflow\Models\Core\Cases;
@@ -99,3 +100,25 @@ Route::get('build-app', function () {
     Artisan::call('migrate');
     return redirect()->back();
 });
+
+Route::get('test', function () {
+
+    $inboxes = Inbox::whereIn('status', ['new', 'opened', 'inProgress'])
+        ->with('task:id,name')  // فقط ستون های لازم
+        ->select('task_id', 'case_id')
+        ->get();
+
+    $result = $inboxes
+        ->groupBy('task_id')
+        ->map(function ($rows) {
+            return [
+                'task_name' => $rows->first()->task->name ?? '—',
+                'count'     => $rows->pluck('case_id')->unique()->count(),
+                'cases'     => $rows->pluck('case_id')->unique()->values(),
+            ];
+        })
+        ->values(); // برای اینکه خروجی شماره ای نشود
+
+    return $result;
+});
+
