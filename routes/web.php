@@ -102,9 +102,16 @@ Route::get('build-app', function () {
 });
 
 Route::get('test', function () {
-
+$processId = "879e001c-59d5-4afb-958c-15ec7ff269d1";
+    $dateFrom  = "2025-03-21";
     $inboxes = Inbox::whereIn('status', ['new', 'opened', 'inProgress'])
-        ->with('task:id,name')  // فقط ستون های لازم
+    ->whereHas('task', function($q) use ($processId){
+            $q->where('process_id', $processId);
+        }) 
+        ->whereHas('case', function($q) use ($dateFrom){
+            $q->whereDate('created_at', '>', $dateFrom);
+        })   
+    ->with('task:id,name')  // فقط ستون های لازم
         ->select('task_id', 'case_id')
         ->get();
 
