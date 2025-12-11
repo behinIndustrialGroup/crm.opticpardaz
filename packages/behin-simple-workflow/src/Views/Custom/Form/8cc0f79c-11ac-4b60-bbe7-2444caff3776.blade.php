@@ -34,7 +34,7 @@
             </div>
             <div class="col-sm-3">
                 تصویر اولیه: 
-                <img src='{{ url('public/$device->initial_pic') }}' alt="">
+                <img src='{{ url("public/$device->initial_pic") }}' alt="">
             </div>
         </div>
 
