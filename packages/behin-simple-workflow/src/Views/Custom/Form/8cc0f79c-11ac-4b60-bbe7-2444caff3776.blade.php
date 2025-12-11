@@ -50,3 +50,12 @@
 
     </div>
 </div>
+
+<div class="card">
+    <div class="card-header">
+        آخرین وضعیت
+    </div>
+    <div class="card-body">
+        {{ $case->getVariable('last_status') }}
+    </div>
+</div>
