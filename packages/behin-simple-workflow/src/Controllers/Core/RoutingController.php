@@ -374,7 +374,7 @@ class RoutingController extends Controller
                             $inbox = InboxController::create($task->id, $caseId, $actor, 'new');
                         }
                     }
-                    $inbox = InboxController::create($task->id, $caseId, Auth::id(), 'new');
+                    // $inbox = InboxController::create($task->id, $caseId, Auth::id(), 'new');
                 }
             }
             if ($task->type == 'script') {
