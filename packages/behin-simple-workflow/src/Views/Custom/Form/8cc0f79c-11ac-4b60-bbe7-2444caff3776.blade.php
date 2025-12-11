@@ -32,12 +32,14 @@
             <div class="col-sm-3">
                 سریال: {{ $device->serial }}
             </div>
-            <div class="col-sm-3">
-                تصویر اولیه: 
-                <img src='{{ url("public/$device->initial_pic") }}' alt="" width="150">
+            <div class="col-sm-6">
+                تصویر اولیه:
+                <a href="{{ url("public/$device->initial_pic") }}" download>
+                    <img src='{{ url("public/$device->initial_pic") }}' alt="" width="150">
+                </a>
             </div>
-            <div class="col-sm-3">
-                تصویر پلاک دستگاه: 
+            <div class="col-sm-6">
+                تصویر پلاک دستگاه:
                 <img src='{{ url("public/$device->plaque_pic") }}' alt="" width="150">
             </div>
         </div>
