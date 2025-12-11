@@ -6,7 +6,7 @@
 @extends('behin-layouts.welcome')
 
 
-@section('contents')
+@section('content')
     <form action="javascript:void(0)" method="POST" id="form" enctype="multipart/form-data" class="needs-validation"
         novalidate>
         <input type="hidden" name="inboxId" id="inboxId" value="{{ $inbox->id }}">
