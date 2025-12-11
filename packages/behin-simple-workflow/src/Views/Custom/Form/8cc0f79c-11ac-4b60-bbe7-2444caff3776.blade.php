@@ -5,7 +5,11 @@
     $device = Devices::where('case_number', $case->number)->first();
 @endphp
 
-{{ $case->number }}
+<div class="card">
+    <div class="card-header">
+        تست
+    </div>
+</div>
 
 
 
