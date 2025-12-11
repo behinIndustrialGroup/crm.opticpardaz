@@ -34,7 +34,11 @@
             </div>
             <div class="col-sm-3">
                 تصویر اولیه: 
-                <img src='{{ url("public/$device->initial_pic") }}' alt="">
+                <img src='{{ url("public/$device->initial_pic") }}' alt="" width="150">
+            </div>
+            <div class="col-sm-3">
+                تصویر پلاک دستگاه: 
+                <img src='{{ url("public/$device->plaque_pic") }}' alt="" width="150">
             </div>
         </div>
 
