@@ -7,9 +7,23 @@
 
 <div class="card">
     <div class="card-header">
-        تست
+        مشخصات مشتری
+    </div>
+    <div class="card-body">
+        نام: {{ $customer->name }}
     </div>
 </div>
 
-
-
+<div class="card">
+    <div class="card-header">
+        مشخصات دستگاه
+    </div>
+    <div class="card-body">
+        <div class="col-sm-3">
+            نام: {{ $device->name }}
+        </div>
+        <div class="col-sm-3">
+            برند: {{ $device->brand }}
+        </div>
+    </div>
+</div>
