@@ -19,11 +19,24 @@
         مشخصات دستگاه
     </div>
     <div class="card-body">
-        <div class="col-sm-3">
-            نام: {{ $device->name }}
+        <div class="row">
+            <div class="col-sm-3">
+                نام: {{ $device->name }}
+            </div>
+            <div class="col-sm-3">
+                برند: {{ $device->brand }}
+            </div>
+            <div class="col-sm-3">
+                توان: {{ $device->power }}
+            </div>
+            <div class="col-sm-3">
+                سریال: {{ $device->serial }}
+            </div>
+            <div class="col-sm-3">
+                تصویر اولیه: 
+                <img src='{{ url('public/$device->initial_pic') }}' alt="">
+            </div>
         </div>
-        <div class="col-sm-3">
-            برند: {{ $device->brand }}
-        </div>
+
     </div>
 </div>
