@@ -34,13 +34,17 @@
             </div>
             <div class="col-sm-6">
                 تصویر اولیه:
+                <br>
                 <a href="{{ url("public/$device->initial_pic") }}" download>
                     <img src='{{ url("public/$device->initial_pic") }}' alt="" width="150">
                 </a>
             </div>
             <div class="col-sm-6">
                 تصویر پلاک دستگاه:
-                <img src='{{ url("public/$device->plaque_pic") }}' alt="" width="150">
+                <br>
+                <a href="{{ url("public/$device->plaque_pic") }}" download>
+                    <img src='{{ url("public/$device->plaque_pic") }}' alt="" width="150">
+                </a>
             </div>
         </div>
 
