@@ -115,6 +115,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
             'Spatie\\Ignition\\' => 16,
             'Spatie\\FlareClient\\' => 19,
             'Spatie\\Backtrace\\' => 17,
+            'ShortenerUrl\\Shortener\\' => 23,
         ),
         'R' => 
         array (
@@ -422,6 +423,10 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Spatie\\Backtrace\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/backtrace/src',
+        ),
+        'ShortenerUrl\\Shortener\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/shortener-url/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -940,6 +945,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'Behin\\SimpleWorkflow\\Controllers\\Core\\ViewModelController' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Controllers/Core/ViewModelController.php',
         'Behin\\SimpleWorkflow\\Jobs\\ExecuteNextTaskWithDelay' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Jobs/ExecuteNextTaskWithDelay.php',
         'Behin\\SimpleWorkflow\\Jobs\\SendPushNotification' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Jobs/SendPushNotification.php',
+        'Behin\\SimpleWorkflow\\Jobs\\SendTaskReminderNotification' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Jobs/SendTaskReminderNotification.php',
         'Behin\\SimpleWorkflow\\Models\\Core\\CaseNumbering' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Models/Core/CaseNumbering.php',
         'Behin\\SimpleWorkflow\\Models\\Core\\Cases' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Models/Core/Cases.php',
         'Behin\\SimpleWorkflow\\Models\\Core\\Condition' => __DIR__ . '/../..' . '/packages/behin-simple-workflow/src/Models/Core/Condition.php',

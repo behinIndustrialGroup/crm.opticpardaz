@@ -168,6 +168,7 @@ return array(
     'Behin\\SimpleWorkflow\\Controllers\\Core\\ViewModelController' => $baseDir . '/packages/behin-simple-workflow/src/Controllers/Core/ViewModelController.php',
     'Behin\\SimpleWorkflow\\Jobs\\ExecuteNextTaskWithDelay' => $baseDir . '/packages/behin-simple-workflow/src/Jobs/ExecuteNextTaskWithDelay.php',
     'Behin\\SimpleWorkflow\\Jobs\\SendPushNotification' => $baseDir . '/packages/behin-simple-workflow/src/Jobs/SendPushNotification.php',
+    'Behin\\SimpleWorkflow\\Jobs\\SendTaskReminderNotification' => $baseDir . '/packages/behin-simple-workflow/src/Jobs/SendTaskReminderNotification.php',
     'Behin\\SimpleWorkflow\\Models\\Core\\CaseNumbering' => $baseDir . '/packages/behin-simple-workflow/src/Models/Core/CaseNumbering.php',
     'Behin\\SimpleWorkflow\\Models\\Core\\Cases' => $baseDir . '/packages/behin-simple-workflow/src/Models/Core/Cases.php',
     'Behin\\SimpleWorkflow\\Models\\Core\\Condition' => $baseDir . '/packages/behin-simple-workflow/src/Models/Core/Condition.php',

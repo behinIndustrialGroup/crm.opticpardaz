@@ -12,6 +12,7 @@ use FileService\FileServiceProvider;
 use TodoList\TodoListProvider;
 use UserProfile\UserProfileProvider;
 use Maatwebsite\Excel\ExcelServiceProvider;
+use ShortenerUrl\Shortener\ShortenerServiceProvider;
 
 return [
     App\Providers\AppServiceProvider::class,
@@ -33,4 +34,5 @@ return [
     TelegramBot\TelegramBotProvider::class,
     BaleBot\BaleBotProvider::class,
     ExcelServiceProvider::class,
+    ShortenerServiceProvider::class
 ];
