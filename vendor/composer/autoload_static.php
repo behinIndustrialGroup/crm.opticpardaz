@@ -426,7 +426,7 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         ),
         'ShortenerUrl\\Shortener\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/packages/shortener-url/src',
+            0 => __DIR__ . '/../..' . '/packages/shortener-url/Shortener/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -7503,6 +7503,9 @@ class ComposerStaticInitf86875715c5b32c6021b837db7efc70f
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/type/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/type/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'ShortenerUrl\\Shortener\\Http\\Controllers\\ShortLinkController' => __DIR__ . '/../..' . '/packages/shortener-url/Shortener/src/Http/Controllers/ShortLinkController.php',
+        'ShortenerUrl\\Shortener\\Models\\ShortLink' => __DIR__ . '/../..' . '/packages/shortener-url/Shortener/src/Models/ShortLink.php',
+        'ShortenerUrl\\Shortener\\ShortenerServiceProvider' => __DIR__ . '/../..' . '/packages/shortener-url/Shortener/src/ShortenerServiceProvider.php',
         'Spatie\\Backtrace\\Arguments\\ArgumentReducers' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ArgumentReducers.php',
         'Spatie\\Backtrace\\Arguments\\ProvidedArgument' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ProvidedArgument.php',
         'Spatie\\Backtrace\\Arguments\\ReduceArgumentPayloadAction' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ReduceArgumentPayloadAction.php',
