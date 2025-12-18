@@ -15,11 +15,11 @@
                         <form method="GET" class="row g-3 align-items-end mb-4">
                             <div class="col-md-3">
                                 <label for="start_date" class="form-label">از تاریخ (payment_date - شمسی)</label>
-                                <input type="text" id="start_date" name="start_date" value="{{ $startDate }}" class="form-control" dir="ltr" placeholder="مثال: ۱۴۰۲-۰۱-۰۱" />
+                                <input type="text" id="start_date" name="start_date" value="{{ $startDate }}" class="form-control persian-date" dir="ltr"  />
                             </div>
                             <div class="col-md-3">
                                 <label for="end_date" class="form-label">تا تاریخ (payment_date - شمسی)</label>
-                                <input type="text" id="end_date" name="end_date" value="{{ $endDate }}" class="form-control" dir="ltr" placeholder="مثال: ۱۴۰۲-۰۱-۳۱" />
+                                <input type="text" id="end_date" name="end_date" value="{{ $endDate }}" class="form-control persian-date" dir="ltr" />
                             </div>
                             <div class="col-md-3 d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">اعمال فیلتر</button>
