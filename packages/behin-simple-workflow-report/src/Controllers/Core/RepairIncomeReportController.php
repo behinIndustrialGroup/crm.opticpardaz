@@ -51,7 +51,7 @@ class RepairIncomeReportController extends Controller
                 'payments_count' => $payments->count(),
                 'payments' => $sortedPayments,
             ];
-        })->sortByDesc('total_amount')->values();
+        })->sortByDesc('case_number')->values();
 
         $caseDetails = Cases::whereIn('id', $caseSummaries->pluck('case_id')->filter()->all())
             ->get()
