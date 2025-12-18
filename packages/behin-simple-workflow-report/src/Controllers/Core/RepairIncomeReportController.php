@@ -5,12 +5,26 @@ namespace Behin\SimpleWorkflowReport\Controllers\Core;
 use App\Http\Controllers\Controller;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Entities\Repair_incomes;
+use Illuminate\Http\Request;
 
 class RepairIncomeReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $incomes = Repair_incomes::orderByDesc('payment_date')
+        $startDate = $this->normalizeJalaliDate($request->query('start_date'));
+        $endDate = $this->normalizeJalaliDate($request->query('end_date'));
+
+        $incomesQuery = Repair_incomes::query();
+
+        if ($startDate) {
+            $incomesQuery->where('payment_date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $incomesQuery->where('payment_date', '<=', $endDate);
+        }
+
+        $incomes = $incomesQuery->orderByDesc('payment_date')
             ->orderByDesc('created_at')
             ->get()
             ->map(function ($income) {
@@ -57,6 +71,8 @@ class RepairIncomeReportController extends Controller
         return view('SimpleWorkflowReportView::Core.RepairIncome.index', [
             'caseSummaries' => $caseSummaries,
             'overallTotal' => $overallTotal,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
     }
 
@@ -87,5 +103,21 @@ class RepairIncomeReportController extends Controller
         }
 
         return (int) $amount;
+    }
+
+    private function normalizeJalaliDate($date): ?string
+    {
+        if (is_null($date)) {
+            return null;
+        }
+
+        $date = trim($date);
+        $date = str_replace(
+            ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'],
+            ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+            $date
+        );
+
+        return $date === '' ? null : $date;
     }
 }
