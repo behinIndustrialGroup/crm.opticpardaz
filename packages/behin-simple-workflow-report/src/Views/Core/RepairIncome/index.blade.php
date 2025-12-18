@@ -12,6 +12,20 @@
                         <span class="badge bg-success fs-6">مجموع کل دریافتی‌ها: {{ number_format($overallTotal) }} ریال</span>
                     </div>
                     <div class="card-body table-responsive">
+                        <form method="GET" class="row g-3 align-items-end mb-4">
+                            <div class="col-md-3">
+                                <label for="start_date" class="form-label">از تاریخ (payment_date)</label>
+                                <input type="date" id="start_date" name="start_date" value="{{ $startDate }}" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end_date" class="form-label">تا تاریخ (payment_date)</label>
+                                <input type="date" id="end_date" name="end_date" value="{{ $endDate }}" class="form-control" />
+                            </div>
+                            <div class="col-md-3 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">اعمال فیلتر</button>
+                                <a href="{{ route('simpleWorkflowReport.repair-income-report.index') }}" class="btn btn-secondary">حذف فیلتر</a>
+                            </div>
+                        </form>
                         <table class="table table-bordered table-striped table-hover" id="repair-income-table">
                             <thead class="thead-dark">
                                 <tr>

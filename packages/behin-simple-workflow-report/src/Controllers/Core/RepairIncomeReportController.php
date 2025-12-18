@@ -5,12 +5,26 @@ namespace Behin\SimpleWorkflowReport\Controllers\Core;
 use App\Http\Controllers\Controller;
 use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Entities\Repair_incomes;
+use Illuminate\Http\Request;
 
 class RepairIncomeReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $incomes = Repair_incomes::orderByDesc('payment_date')
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $incomesQuery = Repair_incomes::query();
+
+        if ($startDate) {
+            $incomesQuery->where('payment_date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $incomesQuery->where('payment_date', '<=', $endDate);
+        }
+
+        $incomes = $incomesQuery->orderByDesc('payment_date')
             ->orderByDesc('created_at')
             ->get()
             ->map(function ($income) {
@@ -57,6 +71,8 @@ class RepairIncomeReportController extends Controller
         return view('SimpleWorkflowReportView::Core.RepairIncome.index', [
             'caseSummaries' => $caseSummaries,
             'overallTotal' => $overallTotal,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
     }
 
