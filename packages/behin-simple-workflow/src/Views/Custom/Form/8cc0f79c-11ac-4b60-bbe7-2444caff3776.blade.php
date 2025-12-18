@@ -10,7 +10,7 @@
         مشخصات مشتری
     </div>
     <div class="card-body">
-        نام: {{ $customer->name }}
+        نام: {{ $customer->fullname }}
     </div>
 </div>
 
