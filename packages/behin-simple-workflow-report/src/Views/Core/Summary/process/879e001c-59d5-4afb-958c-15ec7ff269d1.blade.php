@@ -43,6 +43,7 @@
                                         <th>کارشناس</th>
                                         <th>نوع تعمیر</th>
                                         <th>جزئیات نوع تعمیر</th>
+                                        <th>کارتابل جاری</th>
                                         <th>مرحله جاری</th>
                                         <th>تاریخ پذیرش</th>
                                     </tr>
@@ -100,6 +101,15 @@
                                                 }
                                             @endphp
                                             <td>{!! $w !!}</td>
+                                            @php
+                                                $w2 = ' ';
+                                                foreach ($case->whereIsByTask() as $inbox) {
+                                                    $w2 .= $inbox->task->name ?? '';
+                                                    $w2 .= '(' . getUserInfo($inbox->actor)?->name . ')';
+                                                    $w2 .= '<br>';
+                                                }
+                                            @endphp
+                                            <td>{!! $w2 !!}</td>
                                             <td>{{ $case->getVariable('receive_date') ?? '' }}</td>
                                         </tr>
                                     @endforeach
