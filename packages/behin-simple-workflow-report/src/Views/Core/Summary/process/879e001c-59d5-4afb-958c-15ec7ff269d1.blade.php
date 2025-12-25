@@ -105,7 +105,6 @@
                                                 $w2 = ' ';
                                                 foreach ($case->whereIsByTask() as $inbox) {
                                                     $w2 .= $inbox->task->name ?? '';
-                                                    $w2 .= '(' . getUserInfo($inbox->actor)?->name . ')';
                                                     $w2 .= '<br>';
                                                 }
                                             @endphp

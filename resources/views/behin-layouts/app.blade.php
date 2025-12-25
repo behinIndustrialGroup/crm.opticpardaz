@@ -315,34 +315,34 @@
             unformatOnSubmit: true
         });
 
-        $('table tbody td').each(function() {
-            let $cell = $(this);
-            let originalHtml = $cell.html();
-            console.log(originalHtml)
-            let textOnly = $cell.text().trim();
+        // $('table tbody td').each(function() {
+        //     let $cell = $(this);
+        //     let originalHtml = $cell.html();
+        //     console.log(originalHtml)
+        //     let textOnly = $cell.text().trim();
 
-            // اگر شامل دکمه یا اسپن بود، هیچی تغییر نده
-            if (originalHtml.includes('button') || originalHtml.includes('span') || originalHtml.includes('a')) {
-                return;
-            }
+        //     // اگر شامل دکمه یا اسپن بود، هیچی تغییر نده
+        //     if (originalHtml.includes('button') || originalHtml.includes('span') || originalHtml.includes('a')) {
+        //         return;
+        //     }
 
-            if (textOnly.length > 25) {
-                let shortText = textOnly.substr(0, 25) ;
+        //     if (textOnly.length > 25) {
+        //         let shortText = textOnly.substr(0, 25) ;
 
-                $cell.html(`
-            <span class="short-text">${shortText}</span>
-            <span class="full-text" style="display:none;">${originalHtml}</span>
-            <button class="toggle-btn show-more-btn material-icons" style="border:none;background:none;cursor:pointer;">more_horiz</button>
-        `);
-            }
-        });
+        //         $cell.html(`
+        //     <span class="short-text">${shortText}</span>
+        //     <span class="full-text" style="display:none;">${originalHtml}</span>
+        //     <button class="toggle-btn show-more-btn material-icons" style="border:none;background:none;cursor:pointer;">more_horiz</button>
+        // `);
+        //     }
+        // });
 
-        // هندل کلیک روی نمایش بیشتر/کمتر
-        $(document).on('click', '.toggle-btn', function() {
-            let $cell = $(this).closest('td');
-            $cell.find('.short-text, .full-text').toggle();
-            $(this).text($(this).text() === 'more_horiz' ? 'expand_less' : 'more_horiz');
-        });
+        // // هندل کلیک روی نمایش بیشتر/کمتر
+        // $(document).on('click', '.toggle-btn', function() {
+        //     let $cell = $(this).closest('td');
+        //     $cell.find('.short-text, .full-text').toggle();
+        //     $(this).text($(this).text() === 'more_horiz' ? 'expand_less' : 'more_horiz');
+        // });
 
 
     }

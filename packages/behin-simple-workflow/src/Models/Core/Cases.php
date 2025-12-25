@@ -110,7 +110,7 @@ class Cases extends Model
         $childCaseId = Cases::where('number', $this->number)->get()->pluck('id')->toArray();
         $rows = Inbox::where(function ($query) use ($childCaseId) {
             $query->where('case_id', $this->id)->orWhereIn('case_id', $childCaseId);
-        })->whereNotIn('status', ['done', 'doneByOther', 'canceled'])->get();
+        })->whereNotIn('status', ['done', 'doneByOther', 'canceled'])->groupBy('task_id')->get();
 
         if ($rows->isEmpty()) {
             if ($this->process_id == '4bb6287b-9ddc-4737-9573-72071654b9de') {
