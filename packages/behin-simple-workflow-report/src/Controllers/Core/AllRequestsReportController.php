@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Behin\SimpleWorkflow\Models\Entities;
 
 class AllRequestsReportController extends Controller
 {
@@ -522,6 +523,13 @@ class AllRequestsReportController extends Controller
     public function show(string $caseNumber): View
     {
         $case = Cases::where('number', $caseNumber)->first();
+        $case->customer = Entities\Customers::where('case_number', $caseNumber)->first();
+        $case->device = Entities\Devices::where('case_number', $caseNumber)->first();
+        $case->deviceRepair = Entities\Device_repairs::where('case_number', $caseNumber)->first();
+        $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
+        $case->repairCosts = Entities\Repair_costs::where('case_number', $caseNumber)->get();
+        $case->repairIncomes = Entities\Repair_incomes::where('case_number', $caseNumber)->get();
+        dd($case);
 
 
         return view('SimpleWorkflowReportView::Core.AllRequests.show', [
