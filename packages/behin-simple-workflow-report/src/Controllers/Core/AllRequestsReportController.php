@@ -525,9 +525,9 @@ class AllRequestsReportController extends Controller
         $case = Cases::where('number', $caseNumber)->first();
         $case->customer = Entities\Case_customer::where('case_number', $caseNumber)->first();
         $case->device = Entities\Devices::where('case_number', $caseNumber)->first();
-        $case->deviceRepair = Entities\Device_repairs::where('case_number', $caseNumber)->first();
+        $case->deviceRepair = Entities\Device_repair::where('case_number', $caseNumber)->first();
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
-        $case->repairCosts = Entities\Repair_costs::where('case_number', $caseNumber)->get();
+        $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
         $case->repairIncomes = Entities\Repair_incomes::where('case_number', $caseNumber)->get();
         dd($case);
 
