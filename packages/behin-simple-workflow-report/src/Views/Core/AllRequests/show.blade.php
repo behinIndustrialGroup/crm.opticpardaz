@@ -127,7 +127,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            اطلاعات تعیین هزینه
+            اطلاعات پرداخت
         </div>
         <div class="card-body row">
             @foreach ($case->repairIncomes as $income)
