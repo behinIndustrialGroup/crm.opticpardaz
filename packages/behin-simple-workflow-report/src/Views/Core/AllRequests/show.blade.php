@@ -57,4 +57,43 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            اطلاعات تعمیرات
+        </div>
+        <div class="card-body row">
+            <div class="col-sm-3">
+                <label for="">نام تعمیرکار</label>
+                <p>{{ $case->deviceRepair->repairman }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">نام تعمیرکار</label>
+                <p>{{ $case->deviceRepair->repairman }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">نوع تعمیر</label>
+                <p>{{ $case->deviceRepair->repair_type }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">جزئیات نوع تعمیر</label>
+                <p>{{ $case->deviceRepair->repair_subtype }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">تاریخ شروع تعمیر</label>
+                <p>{{ $case->deviceRepair->repair_start_date }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">نام دستیار تعمیرکار</label>
+                <p>{{ $case->deviceRepair->repairman_assitant }}</p>
+            </div>
+            <div class="col-sm-3">
+                <label for="">تاریخ پایان تعمیر</label>
+                <p>{{ $case->deviceRepair->repair_end_date }}</p>
+            </div>
+            <div class="col-sm-12">
+                <label for="">گزارش تعمیر</label>
+                <p>{{ $case->deviceRepair->repair_report }}</p>
+            </div>
+        </div>
+    </div>
 @endsection
