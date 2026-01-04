@@ -64,11 +64,7 @@
         <div class="card-body row">
             <div class="col-sm-3">
                 <label for="">نام تعمیرکار</label>
-                <p>{{ $case->deviceRepair->repairman }}</p>
-            </div>
-            <div class="col-sm-3">
-                <label for="">نام تعمیرکار</label>
-                <p>{{ $case->deviceRepair->repairman }}</p>
+                <p>{{ getUserInfo($case->deviceRepair->repairman)?->name ?? $case->deviceRepair->repairman  }}</p>
             </div>
             <div class="col-sm-3">
                 <label for="">نوع تعمیر</label>
