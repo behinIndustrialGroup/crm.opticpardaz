@@ -114,13 +114,58 @@
         </div>
         <div class="card-body row">
             @foreach ($case->repairCosts as $cost)
-            <div class="col-sm-9">
-                <label for="">توضیحات</label>
-                <p>{{ $cost->description }}</p>
-            </div>
-            <div class="col-sm-3">
+                <div class="col-sm-9">
+                    <label for="">توضیحات</label>
+                    <p>{{ $cost->description }}</p>
+                </div>
+                <div class="col-sm-3">
                     <label for="">هزینه</label>
                     <p>{{ $cost->cost }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            اطلاعات تعیین هزینه
+        </div>
+        <div class="card-body row">
+            @foreach ($case->repairIncomes as $income)
+                <div class="col-sm-3">
+                    <label for="">نوع پرداختی</label>
+                    <p>{{ $income->payment_method }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">رسید پرداختی</label>
+                    <p>{{ $income->payment_receipt }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">تاریخ پرداختی</label>
+                    <p>{{ $income->payment_date }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">مبلغ پرداختی</label>
+                    <p>{{ $income->payment_amount }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">توضیحات پرداختی</label>
+                    <p>{{ $income->payment_description }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">شماره تراکنش</label>
+                    <p>{{ $income->transaction_number }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">شماره چک</label>
+                    <p>{{ $income->cheque_number }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">تاریخ سررسید چک</label>
+                    <p>{{ $income->cheque_due_date }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="">تایید پرداختی</label>
+                    <p>{{ $income->income_is_approved }}</p>
                 </div>
             @endforeach
         </div>
