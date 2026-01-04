@@ -529,7 +529,6 @@ class AllRequestsReportController extends Controller
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
         $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
         $case->repairIncomes = Entities\Repair_incomes::where('case_number', $caseNumber)->get();
-        dd($case);
 
 
         return view('SimpleWorkflowReportView::Core.AllRequests.show', [
