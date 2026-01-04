@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تایید اول تعمیرات</label>
-                                            <select name="approval_first" class="form-select">
+                                            <select name="approval_first" class="form-select form-control">
                                                 @foreach($approvalOptions as $key => $label)
                                                     <option value="{{ $key }}" {{ ($filters['approval_first'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
                                                 @endforeach
@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تایید دوم تعمیرات</label>
-                                            <select name="approval_second" class="form-select">
+                                            <select name="approval_second" class="form-select form-control">
                                                 @foreach($approvalOptions as $key => $label)
                                                     <option value="{{ $key }}" {{ ($filters['approval_second'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
                                                 @endforeach
@@ -114,7 +114,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تایید سوم تعمیرات</label>
-                                            <select name="approval_third" class="form-select">
+                                            <select name="approval_third" class="form-select form-control">
                                                 @foreach($approvalOptions as $key => $label)
                                                     <option value="{{ $key }}" {{ ($filters['approval_third'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
                                                 @endforeach
@@ -142,7 +142,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تعداد نمایش در هر صفحه</label>
-                                            <select name="per_page" class="form-select">
+                                            <select name="per_page" class="form-select form-control">
                                                 @foreach([10, 15, 25, 50, 100] as $size)
                                                     <option value="{{ $size }}" {{ ($perPage ?? 15) == $size ? 'selected' : '' }}>{{ $size }}</option>
                                                 @endforeach
