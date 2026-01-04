@@ -520,35 +520,11 @@ class AllRequestsReportController extends Controller
 
     public function show(string $caseNumber): View
     {
-        $row = $this->baseQuery()
-            ->where('c.number', $caseNumber)
-            ->first();
+        $case = Cases::where('number', $caseNumber)->first();
 
-        if (!$row) {
-            abort(404);
-        }
-
-        $preparedRow = $this->prepareRows(collect([$row]))->first();
-
-        /** @var CallHistoryService $callHistoryService */
-        $callHistoryService = app(CallHistoryService::class);
-
-        $callRecords = collect();
-        $callRecordsError = null;
-        $searchedNumbers = [];
-
-        if (!empty($preparedRow->customer_mobile_raw)) {
-            $callRecords = $callHistoryService->getCallsByPhone($preparedRow->customer_mobile_raw);
-            $callRecordsError = $callHistoryService->getLastError();
-            $searchedNumbers = $callHistoryService->getLastSearchNumbers();
-        }
 
         return view('SimpleWorkflowReportView::Core.AllRequests.show', [
-            'requestRow' => $preparedRow,
-            'conversationViewModel' => ViewModel::find('912880ce-7acf-4735-9170-cbc34b39362b'),
-            'callRecords' => $callRecords,
-            'callRecordsError' => $callRecordsError,
-            'callRecordsSearchedNumbers' => $searchedNumbers,
+            'case' => $case,
         ]);
     }
 }
