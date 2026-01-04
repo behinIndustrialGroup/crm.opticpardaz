@@ -96,4 +96,33 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            تصاویر تعمیرات
+        </div>
+        <div class="card-body row">
+            @foreach ($case->deviceRepairPics as $pic)
+                <div class="col-sm-3">
+                    <img src="{{ asset($pic->file) }}" alt="">
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            اطلاعات تعیین هزینه
+        </div>
+        <div class="card-body row">
+            @foreach ($case->repairCosts as $cost)
+            <div class="col-sm-9">
+                <label for="">توضیحات</label>
+                <p>{{ $cost->description }}</p>
+            </div>
+            <div class="col-sm-3">
+                    <label for="">هزینه</label>
+                    <p>{{ $cost->cost }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
 @endsection
