@@ -247,19 +247,23 @@ class AllRequestsReportController extends Controller
         }
 
         if (!empty($filters['repair_start_from'])) {
-            $query->whereDate('dr.repair_start_timestamp', '>=', $filters['repair_start_from']);
+            $filters['repair_start_from'] = convertPersianDateToTimestamp($filters['repair_start_from']);
+            $query->whereDate('dr.repair_start_date_alt', '>=', $filters['repair_start_from']);
         }
 
         if (!empty($filters['repair_start_to'])) {
-            $query->whereDate('dr.repair_start_timestamp', '<=', $filters['repair_start_to']);
+            $filters['repair_start_to'] = convertPersianDateToTimestamp($filters['repair_start_to']);
+            $query->whereDate('dr.repair_start_date_alt', '<=', $filters['repair_start_to']);
         }
 
         if (!empty($filters['repair_end_from'])) {
-            $query->whereDate('dr.updated_at', '>=', $filters['repair_end_from']);
+            $filters['repair_end_from'] = convertPersianDateToTimestamp($filters['repair_end_from']);
+            $query->whereDate('dr.repair_end_date_alt', '>=', $filters['repair_end_from']);
         }
 
         if (!empty($filters['repair_end_to'])) {
-            $query->whereDate('dr.updated_at', '<=', $filters['repair_end_to']);
+            $filters['repair_end_to'] = convertPersianDateToTimestamp($filters['repair_end_to']);
+            $query->whereDate('dr.repair_end_date_alt', '<=', $filters['repair_end_to']);
         }
 
         if (!empty($filters['approval_first'])) {

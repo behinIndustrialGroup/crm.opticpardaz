@@ -82,19 +82,19 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تاریخ شروع از</label>
-                                            <input type="date" name="repair_start_from" value="{{ $filters['repair_start_from'] ?? '' }}" class="form-control">
+                                            <input type="text" name="repair_start_from" value="{{ $filters['repair_start_from'] ?? '' }}" class="form-control persian-date">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تاریخ شروع تا</label>
-                                            <input type="date" name="repair_start_to" value="{{ $filters['repair_start_to'] ?? '' }}" class="form-control">
+                                            <input type="text" name="repair_start_to" value="{{ $filters['repair_start_to'] ?? '' }}" class="form-control persian-date">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تاریخ پایان از</label>
-                                            <input type="date" name="repair_end_from" value="{{ $filters['repair_end_from'] ?? '' }}" class="form-control">
+                                            <input type="text" name="repair_end_from" value="{{ $filters['repair_end_from'] ?? '' }}" class="form-control persian-date">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تاریخ پایان تا</label>
-                                            <input type="date" name="repair_end_to" value="{{ $filters['repair_end_to'] ?? '' }}" class="form-control">
+                                            <input type="text" name="repair_end_to" value="{{ $filters['repair_end_to'] ?? '' }}" class="form-control persian-date">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">تایید اول تعمیرات</label>
