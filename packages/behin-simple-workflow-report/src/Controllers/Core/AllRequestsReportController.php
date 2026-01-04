@@ -5,6 +5,7 @@ namespace Behin\SimpleWorkflowReport\Controllers\Core;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Behin\Ami\Services\CallHistoryService;
+use Behin\SimpleWorkflow\Models\Core\Cases;
 use Behin\SimpleWorkflow\Models\Core\ViewModel;
 use Behin\SimpleWorkflowReport\Exports\AllRequestsReportExport;
 use Carbon\Carbon;
