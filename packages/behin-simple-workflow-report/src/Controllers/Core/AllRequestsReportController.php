@@ -523,7 +523,7 @@ class AllRequestsReportController extends Controller
     public function show(string $caseNumber): View
     {
         $case = Cases::where('number', $caseNumber)->first();
-        $case->customer = Entities\Customers::where('case_number', $caseNumber)->first();
+        $case->customer = Entities\Case_customer::where('case_number', $caseNumber)->first();
         $case->device = Entities\Devices::where('case_number', $caseNumber)->first();
         $case->deviceRepair = Entities\Device_repairs::where('case_number', $caseNumber)->first();
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
