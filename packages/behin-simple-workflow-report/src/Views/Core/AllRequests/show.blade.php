@@ -7,7 +7,7 @@
         <div class="card-header">
             اطلاعات مشتری
         </div>
-        <div class="card-body">
+        <div class="card-body row">
             <div class="col-sm-3">
                 <label for="">نام مشتری</label>
                 <p>{{ $case->customer->name }}</p>
@@ -26,7 +26,7 @@
         <div class="card-header">
             اطلاعات دستگاه
         </div>
-        <div class="card-body">
+        <div class="card-body row">
             <div class="col-sm-3">
                 <label for="">نام دستگاه</label>
                 <p>{{ $case->device->name }}</p>
