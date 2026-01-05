@@ -25,7 +25,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ext-language_tools.min.js"></script>
 
 
-    <h1>Edit Script</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Edit Script</h1>
+        <button class="btn btn-secondary" onclick="copyScript()">{{ trans('fields.Copy') }}</button>
+    </div>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -155,6 +158,46 @@
                     console.log(er);
                 }
             )
+        }
+
+        function copyScript() {
+            const newName = prompt('نام جدید اسکریپت را وارد کنید', '{{ $script->name }} - Copy');
+            if (!newName) {
+                return;
+            }
+
+            const newExecutiveFile = prompt('نام executive_file جدید را وارد کنید', '{{ $script->executive_file }}-copy');
+            if (!newExecutiveFile) {
+                return;
+            }
+
+            const fd = new FormData();
+            fd.append('_token', '{{ csrf_token() }}');
+            fd.append('name', newName);
+            fd.append('executive_file', newExecutiveFile);
+
+            if (typeof editor !== 'undefined') {
+                fd.append('content', editor.getValue());
+            } else if ($('#executive_file_content').length) {
+                fd.append('content', $('#executive_file_content').val());
+            }
+
+            send_ajax_formdata_request(
+                "{{ route('simpleWorkflow.scripts.copy', $script->id) }}",
+                fd,
+                function(response) {
+                    show_message(response.message || '{{ trans('fields.Success') }}');
+                    if (response.id) {
+                        const editRoute = "{{ route('simpleWorkflow.scripts.edit', '__ID__') }}".replace('__ID__', response.id);
+                        window.location.href = editRoute;
+                    }
+                },
+                function(er) {
+                    console.log(er);
+                    const message = er?.responseJSON?.message || '{{ trans('fields.OperationFailed') }}';
+                    show_message(message);
+                }
+            );
         }
     </script>
     <script>
