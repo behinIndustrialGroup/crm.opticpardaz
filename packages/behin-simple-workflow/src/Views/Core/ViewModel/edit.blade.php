@@ -95,12 +95,18 @@
                     <tr>
                         <td>{{ trans('fields.create_form') }}</td>
                         <td>
-                            <select name="create_form" id="" class="select2">
-                                @foreach ($forms as $form)
-                                    <option value="{{ $form->id }}"
-                                        {{ $view_model->create_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex align-items-center">
+                                <select name="create_form" id="create_form_select" class="select2">
+                                    @foreach ($forms as $form)
+                                        <option value="{{ $form->id }}"
+                                            {{ $view_model->create_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="create_form_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.form.edit', ['id' => 'FORM_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -115,27 +121,21 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{{ trans('fields.script_before_create') }}</td>
-                        <td>
-                            <select name="script_before_create" id="" class="select2">
-                                <option value=""></option>
-                                @foreach ($scripts as $script)
-                                    <option value="{{ $script->id }}"
-                                        {{ $view_model->script_before_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>{{ trans('fields.script_after_create') }}</td>
                         <td>
-                            <select name="script_after_create" id="" class="select2">
-                                <option value=""></option>
-                                @foreach ($scripts as $script)
-                                    <option value="{{ $script->id }}"
-                                        {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex align-items-center">
+                                <select name="script_after_create" id="script_after_create_select" class="select2">
+                                    <option value=""></option>
+                                    @foreach ($scripts as $script)
+                                        <option value="{{ $script->id }}"
+                                            {{ $view_model->script_after_create == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="script_after_create_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.scripts.edit', ['script' => 'SCRIPT_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -154,12 +154,18 @@
                     <tr>
                         <td>{{ trans('fields.update_form') }}</td>
                         <td>
-                            <select name="update_form" id="" class="select2">
-                                @foreach ($forms as $form)
-                                    <option value="{{ $form->id }}"
-                                        {{ $view_model->update_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex align-items-center">
+                                <select name="update_form" id="update_form_select" class="select2">
+                                    @foreach ($forms as $form)
+                                        <option value="{{ $form->id }}"
+                                            {{ $view_model->update_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="update_form_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.form.edit', ['id' => 'FORM_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -184,6 +190,24 @@
                                     {{ in_array('user-updated-it', $view_model->which_rows_user_can_update) ? 'selected' : '' }}>
                                     {{ trans('fields.user updated it') }}</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ trans('fields.script_after_update') }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <select name="script_after_update" id="script_after_update_select" class="select2">
+                                    <option value=""></option>
+                                    @foreach ($scripts as $script)
+                                        <option value="{{ $script->id }}"
+                                            {{ $view_model->script_after_update == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="script_after_update_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.scripts.edit', ['script' => 'SCRIPT_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -251,12 +275,18 @@
                     <tr>
                         <td>{{ trans('fields.read_form') }}</td>
                         <td>
-                            <select name="read_form" id="" class="select2">
-                                @foreach ($forms as $form)
-                                    <option value="{{ $form->id }}"
-                                        {{ $view_model->read_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex align-items-center">
+                                <select name="read_form" id="read_form_select" class="select2">
+                                    @foreach ($forms as $form)
+                                        <option value="{{ $form->id }}"
+                                            {{ $view_model->read_form == $form->id ? 'selected' : '' }}>{{ $form->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="read_form_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.form.edit', ['id' => 'FORM_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -286,13 +316,19 @@
                     <tr>
                         <td>{{ trans('fields.script_before_show_rows') }}</td>
                         <td>
-                            <select name="script_before_show_rows" id="" class="select2">
-                                <option value=""></option>
-                                @foreach ($scripts as $script)
-                                    <option value="{{ $script->id }}"
-                                        {{ $view_model->script_before_show_rows == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex align-items-center">
+                                <select name="script_before_show_rows" id="script_before_show_rows_select" class="select2">
+                                    <option value=""></option>
+                                    @foreach ($scripts as $script)
+                                        <option value="{{ $script->id }}"
+                                            {{ $view_model->script_before_show_rows == $script->id ? 'selected' : '' }}>{{ $script->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a id="script_before_show_rows_edit_btn" class="btn btn-sm btn-outline-primary ml-2" target="_blank"
+                                    data-url-template="{{ route('simpleWorkflow.scripts.edit', ['script' => 'SCRIPT_ID']) }}" style="display: none;">
+                                    {{ trans('fields.Edit') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -320,6 +356,45 @@
 
 @section('script')
     <script>
-        initial_view()
+        function toggleEditButton(selectId, buttonId, placeholder = 'FORM_ID') {
+            const select = document.getElementById(selectId);
+            const button = document.getElementById(buttonId);
+
+            if (!select || !button) {
+                return;
+            }
+
+            const value = select.value;
+            const template = button.dataset.urlTemplate;
+
+            if (value && template) {
+                button.href = template.replace(placeholder, value);
+                button.style.display = 'inline-block';
+            } else {
+                button.removeAttribute('href');
+                button.style.display = 'none';
+            }
+        }
+
+        function setupEditButton(selectId, buttonId, placeholder = 'FORM_ID') {
+            toggleEditButton(selectId, buttonId, placeholder);
+
+            const select = document.getElementById(selectId);
+            if (!select) {
+                return;
+            }
+
+            select.addEventListener('change', function() {
+                toggleEditButton(selectId, buttonId, placeholder);
+            });
+        }
+
+        initial_view();
+        setupEditButton('create_form_select', 'create_form_edit_btn');
+        setupEditButton('update_form_select', 'update_form_edit_btn');
+        setupEditButton('read_form_select', 'read_form_edit_btn');
+        setupEditButton('script_after_create_select', 'script_after_create_edit_btn', 'SCRIPT_ID');
+        setupEditButton('script_after_update_select', 'script_after_update_edit_btn', 'SCRIPT_ID');
+        setupEditButton('script_before_show_rows_select', 'script_before_show_rows_edit_btn', 'SCRIPT_ID');
     </script>
 @endsection
