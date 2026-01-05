@@ -66,4 +66,9 @@ class ViewModel extends Model
         'which_rows_user_can_delete' => 'array',
         'which_rows_user_can_read' => 'array',
     ];
+
+    public function getEditUrlAttribute()
+    {
+        return "<a href='" . route('simpleWorkflow.view-model.edit', $this->id) . "' >". $this->name ."</a>";
+    }
 }
