@@ -31,4 +31,9 @@ class Entity extends Model
         'namespace',
     ];
 
+    public function getEditUrlAttribute()
+    {
+        return "<a href='" . route('simpleWorkflow.entity.edit', $this->id) . "' class='btn btn-primary btn-sm'>". $this->name ."</a>";
+    }
+
 }

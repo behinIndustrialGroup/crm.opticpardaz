@@ -59,7 +59,7 @@
                                             <td><input type="checkbox" name="view_model_ids[]" value="{{ $viewModel->id }}"></td>
                                             <td>{{ $viewModel->id }}</td>
                                             <td>{{ $viewModel->name }}</td>
-                                            <td>{{ $viewModel->entity->name }}</td>
+                                            <td>{!! $viewModel->entity->edit_url ?? 'N/A' !!}</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{{ route('simpleWorkflow.view-model.edit', $viewModel->id) }}">{{ trans('fields.Edit') }}</a>
                                                 <a href="{{ route('simpleWorkflow.view-model.copy', $viewModel->id) }}" class="btn btn-info">Copy</a>
