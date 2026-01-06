@@ -80,7 +80,7 @@
                                             <label class="form-label">تعمیرکار</label>
                                             <input type="text" name="repairman" value="{{ $filters['repairman'] ?? '' }}" class="form-control">
                                         </div>
-                                        <div class="col-md-3">
+                                        {{-- <div class="col-md-3">
                                             <label class="form-label">تاریخ شروع از</label>
                                             <input type="text" name="repair_start_from" value="{{ $filters['repair_start_from'] ?? '' }}" class="form-control persian-date">
                                         </div>
@@ -139,7 +139,7 @@
                                         <div class="col-md-3">
                                             <label class="form-label">آخرین وضعیت</label>
                                             <input type="text" name="last_status" value="{{ $filters['last_status'] ?? '' }}" class="form-control">
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-3">
                                             <label class="form-label">تعداد نمایش در هر صفحه</label>
                                             <select name="per_page" class="form-select form-control">
