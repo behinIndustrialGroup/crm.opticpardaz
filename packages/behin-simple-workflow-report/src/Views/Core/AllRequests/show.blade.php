@@ -47,7 +47,7 @@
                 <label for="">تصویر اولیه دستگاه</label>
                 <p>
                     @if ($case->device->initial_pic)
-                        <img src="{{ url($case->device->initial_pic) }}" alt="">
+                        <img src="{{ url('public/'.$case->device->initial_pic) }}" alt="">
                     @endif
                 </p>
             </div>
