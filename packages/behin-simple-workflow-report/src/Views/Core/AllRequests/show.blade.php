@@ -47,13 +47,17 @@
                 <label for="">تصویر اولیه دستگاه</label>
                 <p>
                     @if ($case->device->initial_pic)
-                        <img src="{{ url('public/'.$case->device->initial_pic) }}" alt="">
+                        <img src="{{ url('public/' . $case->device->initial_pic) }}" alt="" width="100" download>
                     @endif
                 </p>
             </div>
             <div class="col-sm-3">
                 <label for="">تصویر پلاک دستگاه</label>
-                <p>{{ $case->device->plaque_pic }}</p>
+                <p>
+                    @if ($case->device->plaque_pic)
+                        <img src="{{ url('public/' . $case->device->plaque_pic) }}" alt="" width="100" download>
+                    @endif
+                </p>
             </div>
             <div class="col-sm-3">
                 <label for="">مشخصات دستگاه</label>
