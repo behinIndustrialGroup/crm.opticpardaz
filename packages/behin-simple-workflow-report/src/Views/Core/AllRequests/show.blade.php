@@ -89,7 +89,14 @@
             </div>
             <div class="col-sm-3">
                 <label for="">جزئیات نوع تعمیر</label>
-                <p>{{ $case->deviceRepair?->repair_subtype }}</p>
+                <p>
+                    @php
+                        $repairSubtype = normalizeList($case->deviceRepair?->repair_subtype);
+                    @endphp
+                    @foreach ($repairSubtype as $subtype)
+                        <span class="badge bg-primary">{{ $subtype }}</span>
+                    @endforeach
+                </p>
             </div>
             <div class="col-sm-3">
                 <label for="">تاریخ شروع تعمیر</label>
