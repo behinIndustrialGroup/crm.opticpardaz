@@ -76,7 +76,16 @@
             </div>
             <div class="col-sm-3">
                 <label for="">نوع تعمیر</label>
-                <p>{{ $case->deviceRepair?->repair_type }}</p>
+                <p>
+                    @if ($case->deviceRepair?->repair_type)
+                        @php
+                            $repairType = normalizeList($case->deviceRepair?->repair_type);
+                        @endphp
+                        @foreach ($repairType as $type)
+                            <span class="badge bg-primary">{{ $type }}</span>
+                        @endforeach
+                    @endif
+                </p>
             </div>
             <div class="col-sm-3">
                 <label for="">جزئیات نوع تعمیر</label>
