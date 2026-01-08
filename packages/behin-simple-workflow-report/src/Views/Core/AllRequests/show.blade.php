@@ -45,7 +45,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="">تصویر اولیه دستگاه</label>
-                <p>{{ $case->device->initial_pic }}</p>
+                <p>
+                    @if ($case->device->initial_pic)
+                        <img src="{{ url($case->device->initial_pic) }}" alt="">
+                    @endif
+                </p>
             </div>
             <div class="col-sm-3">
                 <label for="">تصویر پلاک دستگاه</label>

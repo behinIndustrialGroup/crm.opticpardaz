@@ -87,11 +87,13 @@
 <script>
     initial_view()
 
-    function updateViewModelRecord(row_id) {
+    function updateViewModelRecord(row_id, showMessage = true) {
         var fd = new FormData($(`#modal-form-${row_id}`)[0]);
         var url = "{{ route('simpleWorkflow.view-model.update-record') }}"
         send_ajax_formdata_request(url, fd, function(response) {
-            show_message(response)
+            if (showMessage) {
+                show_message(response)
+            }
             console.log(response)
             get_view_model_rows('{{ $viewModel->id }}', '{{ $viewModel->api_key }}')
             close_admin_modal()
