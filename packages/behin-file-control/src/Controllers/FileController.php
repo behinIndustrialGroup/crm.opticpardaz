@@ -18,6 +18,35 @@ class FileController extends Controller
                 'message' => trans("File Format Is Invalid")
             ];
         }
+        $ftpHost = '3117204815.cloudydl.com';
+        $ftpUser = env('FTP_USERNAME');
+        $ftpPass = env('FTP_PASSWORD');
+
+        $conn = ftp_connect($ftpHost);
+        if (!$conn) return false;
+
+        if (!ftp_login($conn, $ftpUser, $ftpPass)) return false;
+
+        ftp_pasv($conn, true);
+
+        $filename = uniqid() . '_' . $value->getClientOriginalName();
+        $remotePath = "/public_html/uploads/$filename";
+
+        $uploaded = ftp_put($conn, $remotePath, $value->getRealPath(), FTP_BINARY);
+
+        ftp_close($conn);
+
+        if (!$uploaded) return [
+            'status' => 500,
+            'message' => trans("Error In Uploading File")
+        ];
+
+        $downloadUrl = "https://$ftpHost/uploads/$filename";
+        return [
+            'status' => 200,
+            'message' => trans("File Uploaded"),
+            'dir' => $downloadUrl
+        ];
         $name = Str::random(40) . '.' . $file->getClientOriginalExtension();
         $path = Storage::disk('parspack')->putFileAs('', $file, $name);
         Log::info($path);
@@ -30,7 +59,6 @@ class FileController extends Controller
                 'message' => trans("File Uploaded"),
                 'dir' => $downloadUrl
             ];
-
         }
         return [
             'status' => 500,
