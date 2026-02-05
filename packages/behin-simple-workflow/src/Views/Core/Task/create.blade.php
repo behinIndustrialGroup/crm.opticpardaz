@@ -4,7 +4,7 @@
 
 @section('content')
     <script type="module">
-        import mermaid from "{{ url('public/behin/behin-dist/plugins/mermaid/mermaid.esm.min.mjs') }}";
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
         mermaid.initialize({
             startOnLoad: true
         });
