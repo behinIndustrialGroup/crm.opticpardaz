@@ -3,12 +3,12 @@
 @section('title', trans('Edit Process'))
 
 @section('content')
-    {{-- <script type="module">
+    <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({
             startOnLoad: true
         });
-    </script> --}}
+    </script>
     <style>
         .task-form rect {
             fill: #007bff !important; /* آبی برای تسک‌های نوع فرم */
