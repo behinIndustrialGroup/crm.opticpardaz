@@ -19,6 +19,7 @@ class FileController extends Controller
             ];
         }
         $ftpHost = '3117204815.cloudydl.com';
+        $ftpUrl = 'dl.opticpardaz.ir';
         $ftpUser = env('FTP_USERNAME');
         $ftpPass = env('FTP_PASSWORD');
 
@@ -42,7 +43,7 @@ class FileController extends Controller
             'message' => trans("Error In Uploading File")
         ];
 
-        $downloadUrl = "https://$ftpHost/uploads/$filename";
+        $downloadUrl = "https://$ftpUrl/crm/uploads/$filename";
         return [
             'status' => 200,
             'message' => trans("File Uploaded"),
