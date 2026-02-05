@@ -29,10 +29,11 @@ class FileController extends Controller
 
         ftp_pasv($conn, true);
 
-        $filename = uniqid() . '_' . $value->getClientOriginalName();
+        $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+
         $remotePath = "/public_html/uploads/$filename";
 
-        $uploaded = ftp_put($conn, $remotePath, $value->getRealPath(), FTP_BINARY);
+        $uploaded = ftp_put($conn, $remotePath, $file->getRealPath(), FTP_BINARY);
 
         ftp_close($conn);
 
