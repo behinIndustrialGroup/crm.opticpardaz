@@ -22,10 +22,13 @@ use MyFormBuilder\Fields\LocationField;
 use MyFormBuilder\Fields\TitleField;
 use MyFormBuilder\Renderers\FormRenderer;
 use MyFormBuilder\Fields\SelectMultipleField;
+use MyFormBuilder\Fields\SimpleSelectField;
 use MyFormBuilder\Fields\SignatureField;
 use MyFormBuilder\Fields\TimeField;
 use MyFormBuilder\Fields\DateTimeField;
+use MyFormBuilder\Fields\NumberField;
 use MyFormBuilder\Fields\ViewModelField;
+use MyFormBuilder\Fields\SearchableInputField;
 
 class FormBuilder
 {
@@ -111,6 +114,13 @@ class FormBuilder
         // $field = $this->fieldFactory->create('text', $name, $attributes);
         return (new TextField($name, $attributes))->render();
         return $this;
+    }
+    public function number(string $name, array $attributes = null)
+    {
+
+        $attributes = $attributes ?? [];
+        // $field = $this->fieldFactory->create('text', $name, $attributes);
+        return (new NumberField($name, $attributes))->render();
     }
 
     public function signature(string $name, array $attributes = null)
@@ -216,6 +226,14 @@ class FormBuilder
         return $this;
     }
 
+    public function selectSimple($name, $options, $attributes = [])
+    {
+        $attributes = $attributes ?? [];
+        $attributes['options'] = $options;
+
+        return (new SimpleSelectField($name, $attributes))->render();
+    }
+
     public function selectMultiple($name, $options, $attributes = [])
     {
         $attributes = $attributes ?? [];
@@ -249,6 +267,13 @@ class FormBuilder
         // $field = $this->fieldFactory->create('text', $name, $attributes);
         return (new FormattedDigitField($name, $attributes))->render();
         return $this;
+    }
+
+    public function searchableInput(string $name, array $attributes = null)
+    {
+        $attributes = $attributes ?? [];
+
+        return (new SearchableInputField($name, $attributes))->render();
     }
 
     public function submit($text = 'Submit', $attributes = []): self

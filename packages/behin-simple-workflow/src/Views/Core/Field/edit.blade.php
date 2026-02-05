@@ -6,11 +6,11 @@
 
 @section('content')
     {{-- ACE Editor --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ext-language_tools.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-javascript.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-css.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script> --}}
 
     {{-- Back Button --}}
     <div class="card mb-3">
@@ -57,7 +57,7 @@
                         <select name="type" id="type" class="form-select">
                             @foreach ([
                                 'string', 'number', 'formatted-digit', 'text', 'date', 'time', 'datetime',
-                                'select', 'select-multiple', 'select-simple', 'file', 'checkbox', 'radio',
+                                'select', 'select-multiple', 'select-simple', 'searchable-input', 'file', 'checkbox', 'radio',
                                 'location', 'signature', 'entity', 'title', 'div', 'button',
                                 'help', 'hidden', 'view-model'
                             ] as $typeOption)
@@ -81,6 +81,10 @@
 
                     @case('view-model')
                         @include('SimpleWorkflowView::Core.Field.view-model', ['field' => $field])
+                        @break
+
+                    @case('searchable-input')
+                        @include('SimpleWorkflowView::Core.Field.searchable-input', ['field' => $field])
                         @break
 
                     @default
@@ -118,7 +122,7 @@
                         <div class="mb-3">
                             <label for="style-editor" class="form-label">Style</label>
                             <div id="style-editor" style="height: 200px; width: 100%; font-size: 16px;">{{ $attributes->style ?? '' }}</div>
-                            <textarea name="style" id="style" class="d-none" dir="ltr">{{ $attributes->style ?? '' }}</textarea>
+                            <textarea name="style" id="style" class="" dir="ltr">{{ $attributes->style ?? '' }}</textarea>
 
                             <script>
                                 const styleEditor = ace.edit("style-editor");
@@ -153,7 +157,7 @@
                             <label for="script-editor" class="form-label">Script</label>
                             <small class="d-block text-muted">نیازی به تگ <code>&lt;script&gt;</code> نیست</small>
                             <div id="script-editor" style="height: 500px; width: 100%; font-size: 16px;">{{ $attributes->script ?? '' }}</div>
-                            <textarea name="script" id="script" class="d-none" dir="ltr">{{ $attributes->script ?? '' }}</textarea>
+                            <textarea name="script" id="script" class="form-control" rows="10" dir="ltr">{{ $attributes->script ?? '' }}</textarea>
 
                             <script>
                                 const editor = ace.edit("script-editor");

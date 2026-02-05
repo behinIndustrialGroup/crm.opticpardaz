@@ -22,6 +22,7 @@ class AllRequestsReportExport implements FromCollection, WithHeadings, WithMappi
     {
         return [
             'شماره پرونده',
+            'تاریخ پذیرش',
             'نام مشتری',
             'موبایل مشتری',
             'نام دستگاه',
@@ -53,6 +54,7 @@ class AllRequestsReportExport implements FromCollection, WithHeadings, WithMappi
 
         return [
             $row['case_number'] ?? null,
+            toJalali($row['case_created_at']) ?? null,
             $row['customer_name'] ?? null,
             $row['customer_mobile'] ?? null,
             $row['device_name'] ?? null,

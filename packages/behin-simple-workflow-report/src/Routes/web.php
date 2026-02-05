@@ -35,9 +35,9 @@ Route::name('simpleWorkflowReport.')->prefix('workflow-report')->middleware(['we
     });
 
     
-    Route::get('all-requests/export', [AllRequestsReportController::class, 'export'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.export');
-    Route::get('all-requests/{case_number}', [AllRequestsReportController::class, 'show'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.show');
-    Route::get('all-requests', [AllRequestsReportController::class, 'index'])->middleware(Access::class. ':گزارش کل درخواست های ثبت شده')->name('all-requests.index');
+    Route::get('all-requests/export', [AllRequestsReportController::class, 'export'])->middleware(Access::class. ':گزارش کل درخواست ها')->name('all-requests.export');
+    Route::get('all-requests/{case_number}', [AllRequestsReportController::class, 'show'])->middleware(Access::class. ':گزارش کل درخواست ها')->name('all-requests.show');
+    Route::get('all-requests', [AllRequestsReportController::class, 'index'])->middleware(Access::class. ':گزارش کل درخواست ها')->name('all-requests.index');
 
 
     Route::resource('oppa-report', OPPAReportController::class);

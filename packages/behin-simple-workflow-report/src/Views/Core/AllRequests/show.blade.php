@@ -3,6 +3,7 @@
 @section('title', 'جزئیات درخواست')
 
 @section('content')
+    <input type="hidden" id="caseId" value="{{ $case->id }}">
     <div class="card row">
         <div class="card-header">
             اطلاعات مشتری
@@ -10,7 +11,7 @@
         <div class="card-body row">
             <div class="col-sm-3">
                 <label for="">نام مشتری</label>
-                <p>{{ $case->customer->name }}</p>
+                <p>{{ $case->customer->fullname }}</p>
             </div>
             <div class="col-sm-3">
                 <label for="">موبایل مشتری</label>
@@ -72,7 +73,7 @@
         <div class="card-body row">
             <div class="col-sm-3">
                 <label for="">نام تعمیرکار</label>
-                <p>{{ getUserInfo($case->deviceRepair?->repairman)?->name ?? $case->deviceRepair?->repairman  }}</p>
+                <p>{{ getUserInfo($case->deviceRepair?->repairman)?->name ?? $case->deviceRepair?->repairman }}</p>
             </div>
             <div class="col-sm-3">
                 <label for="">نوع تعمیر</label>
@@ -104,7 +105,24 @@
             </div>
             <div class="col-sm-3">
                 <label for="">نام دستیار تعمیرکار</label>
-                <p>{{ $case->deviceRepair?->repairman_assitant }}</p>
+                <p>
+                    @if ($case->deviceRepair?->repairman_assitant)
+                        @if (gettype($case->deviceRepair?->repairman_assitant) == 'string')
+                            string
+                        @elseif(gettype($case->deviceRepair?->repairman_assitant) == 'array')
+                            @foreach ($case->deviceRepair?->repairman_assitant as $assitant)
+                                array
+                            @endforeach
+                        @else
+                            @foreach ($case->deviceRepair?->repairman_assitant as $assitant)
+                                {{ getUserInfo($assitant)?->name }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                        @endif
+                    @endif
+                </p>
             </div>
             <div class="col-sm-3">
                 <label for="">تاریخ پایان تعمیر</label>
@@ -157,7 +175,11 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="">رسید پرداختی</label>
-                    <p>{{ $income->payment_receipt }}</p>
+                    <p>
+                        @if ($income->payment_receipt)
+                            <img src="{{ url('public/' . $income->payment_receipt) }}" alt="" width="150">
+                        @endif
+                    </p>
                 </div>
                 <div class="col-sm-3">
                     <label for="">تاریخ پرداختی</label>
@@ -189,5 +211,27 @@
                 </div>
             @endforeach
         </div>
+    </div>
+    @php
+        $fieldName = 'فایل های مرتبط با پرونده';
+        $fieldDetails = getFieldDetailsByName($fieldName);
+        $fieldValue = isset($case) ? $case->getVariable($fieldName) : null;
+        $fieldValueAlt =
+            (isset($case) and in_array($fieldDetails->type, ['datetime', 'date']))
+                ? $case->getVariable($fieldName . '_alt')
+                : null;
+
+    @endphp
+    <div class="">
+        <p class="bg-warning text-center card">دقت داشته باشید این فایل های زیر به مشتری نمایش داده خواهد شد</p>
+        @include('SimpleWorkflowView::Core.Form.field-generator', [
+            'fieldName' => $fieldName,
+            'fieldId' => $fieldName,
+            'fieldClass' => 'col-sm-12',
+            'readOnly' => true,
+            'required' => false,
+            'fieldValue' => $fieldValue,
+            'fieldValueAlt' => $fieldValueAlt ?? '',
+        ])
     </div>
 @endsection

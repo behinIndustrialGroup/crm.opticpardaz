@@ -70,6 +70,7 @@ class VariableController extends Controller
         //     $paths = json_decode($row->value);
 
         // }
+        
         $result = FileController::store($value, 'simpleWorkflow');
         if ($result['status'] == 200) {
             Variable::create([

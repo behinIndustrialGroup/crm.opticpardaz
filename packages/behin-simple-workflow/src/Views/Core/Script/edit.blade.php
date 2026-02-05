@@ -19,10 +19,10 @@
 @endphp
 
 @section('content')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ace.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-php.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ext-language_tools.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ext-language_tools.min.js"></script> --}}
 
 
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -94,7 +94,7 @@
                     <div id="editor" style="height: 80vh; width: 100%;font-size: 16px;">{{ $executive_file_content }}
                     </div>
                     <textarea name="executive_file_content" id="executive_file_content" class="form-control" rows="50"
-                        style="text-align: left; white-space: pre; font-family: Monospace; display: none" dir="ltr">{{ $executive_file_content }}</textarea>
+                        style="text-align: left; white-space: pre; font-family: Monospace; display: block" dir="ltr">{{ $executive_file_content }}</textarea>
                 </form>
                 <button class="btn btn-primary mt-3" onclick="saveContent()">{{ trans('fields.Save') }}</button>
             @else

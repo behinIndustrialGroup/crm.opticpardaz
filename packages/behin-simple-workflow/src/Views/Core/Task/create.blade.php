@@ -3,76 +3,76 @@
 @section('title', trans('Edit Process'))
 
 @section('content')
-    <script type="module">
+    {{-- <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({
             startOnLoad: true
         });
-    </script>
+    </script> --}}
     <style>
         .task-form rect {
             fill: #007bff !important; /* آبی برای تسک‌های نوع فرم */
             stroke: #0056b3 !important; /* حاشیه تیره‌تر */
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
 
         .task-script rect {
             fill: #28a745 !important; /* سبز برای تسک‌های نوع اسکریپت */
             stroke: #1e7e34 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
 
         .task-condition rect {
             fill: #ffc107 !important; /* زرد برای سایر تسک‌ها */
             stroke: #d39e00 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
         .task-end  rect{
             fill: #f10808 !important; /* زرد برای سایر تسک‌ها */
             stroke: #d30000 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
         .task-timed_condition  rect{
             fill: #8408f1 !important; /* زرد برای سایر تسک‌ها */
             stroke: #6d00d3 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
         .task-form  {
             fill: #007bff !important; /* آبی برای تسک‌های نوع فرم */
             stroke: #0056b3 !important; /* حاشیه تیره‌تر */
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
 
         .task-script  {
             fill: #28a745 !important; /* سبز برای تسک‌های نوع اسکریپت */
             stroke: #1e7e34 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
 
         .task-condition  {
             fill: #ffc107 !important; /* زرد برای سایر تسک‌ها */
             stroke: #d39e00 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
         .task-end  {
             fill: #f10808 !important; /* زرد برای سایر تسک‌ها */
             stroke: #d30000 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
         .task-timed_condition  {
             fill: #8408f1 !important; /* زرد برای سایر تسک‌ها */
             stroke: #6d00d3 !important;
             font-family: Vazir !important;
-            color: white !important;
+            color: black !important;
         }
     </style>
     <div class="container">

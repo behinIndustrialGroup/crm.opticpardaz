@@ -282,7 +282,7 @@ function open_view_model_create_new_form(form_id, viewModel_id, api_key){
     })
 }
 
-function delete_view_model_row(viewModel_id, row_id, api_key){
+function delete_view_model_row(viewModel_id, row_id, api_key, callback){
     url = appUrl + 'workflow/delete-view-model-record'
     var fd = new FormData();
     fd.append('viewModel_id', viewModel_id);
@@ -292,6 +292,9 @@ function delete_view_model_row(viewModel_id, row_id, api_key){
     send_ajax_formdata_request_with_confirm(url, fd, function(response){
         show_message(response)
         get_view_model_rows(viewModel_id, api_key)
+        if(callback){
+            callback(response)
+        }
     })
 }
 

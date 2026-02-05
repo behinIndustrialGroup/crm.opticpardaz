@@ -174,6 +174,7 @@ class AllRequestsReportController extends Controller
             ->select([
                 'c.id',
                 'c.number',
+                'c.created_at as case_created_at',
                 'cc.fullname as customer_name',
                 'cc.mobile as customer_mobile',
                 'd.name as device_name',
@@ -378,6 +379,7 @@ class AllRequestsReportController extends Controller
             return (object) [
                 'id' => $row->id,
                 'case_number' => $row->number,
+                'case_created_at' => $row->case_created_at,
                 'customer_name' => $row->customer_name,
                 'customer_mobile' => $row->customer_mobile,
                 'device_name' => $row->device_name,
@@ -530,9 +532,11 @@ class AllRequestsReportController extends Controller
         $case->customer = Entities\Case_customer::where('case_number', $caseNumber)->first();
         $case->device = Entities\Devices::where('case_number', $caseNumber)->first();
         $case->deviceRepair = Entities\Device_repair::where('case_number', $caseNumber)->first();
+        $case->deviceRepair->repairman_assitant = $this->extractIds($case->deviceRepair?->repairman_assitant);
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
         $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
         $case->repairIncomes = Entities\Repair_incomes::where('case_number', $caseNumber)->get();
+        $case->extraDocs = Entities\Case_extra_docs::where('case_number', $caseNumber)->get();
 
 
         return view('SimpleWorkflowReportView::Core.AllRequests.show', [
