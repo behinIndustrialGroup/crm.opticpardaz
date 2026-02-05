@@ -19,16 +19,12 @@
 @endphp
 
 @section('content')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-php.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.1/ext-language_tools.min.js"></script> --}}
-
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Edit Script</h1>
-        <button class="btn btn-secondary" onclick="copyScript()">{{ trans('fields.Copy') }}</button>
+    <div class="card">
+        <div class="card-header">ویرایش {{ $script->name }}
+            <button class="btn btn-sm btn-secondary" onclick="copyScript()">{{ trans('fields.Copy') }}</button>
+        </div>
     </div>
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -39,54 +35,66 @@
         </div>
     @endif
 
-    <div class="row">
-        <div class="col-md-4 card shadow-sm p-3">
-            <form action="{{ route('simpleWorkflow.scripts.update', $script->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="mb-3">
-                    <label for="name" class="form-label">{{ trans('Name') }}</label>
-                    <input type="text" name="" id="" class="form-control" value="{{ $script->id }}"
-                        readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">{{ trans('Name') }}</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ $script->name }}"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label for="executive_file" class="form-label">{{ trans('Executive File') }}</label>
-                    <select name="executive_file" id="executive_file" class="form-select select2">
-                        @foreach (File::files(base_path('packages/behin-simple-workflow/src/Controllers/Scripts')) as $file)
-                            <option value="{{ str_replace('.php', '', $file->getFilename()) }}"
-                                {{ $script->executive_file . '.php' == $file->getFilename() ? 'selected' : '' }}>
-                                {{ $file->getFilename() }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">{{ trans('Update') }}</button>
-            </form>
-            <form action="javascript:void(0)" method="POST" id="test-form" class="form-inline">
-                @csrf
-                <div class="form-group">
-                    <label for="caseId">{{ trans('fields.Case') }}</label>
-                    <input type="text" name="caseId" id="caseId" class="form-control" list="cases">
-                    <datalist id="cases">
-                        <option value="">{{ trans('fields.Choose') }}</option>
-                        @foreach (getCases() as $case)
-                            <option value="{{ $case->id }}">{{ $case->number }} {{ $case->process->name }} </option>
-                        @endforeach
-                    </datalist>
-                </div>
-                <button type="submit" class="btn btn-primary ml-2" onclick="test()">{{ trans('fields.Test') }}</button>
-            </form>
-            <h5 class="mt-3" dir="ltr">
-                <pre style="text-align: left; white-space: pre;" dir="ltr">{{ trans('fields.Result') }}</pre>
-            </h5>
-            <div id="result" dir="ltr" style="text-align: left; white-space: pre;"></div>
+    <div class="card shadow-sm">
+        <div class="card-header" data-toggle="collapse" data-target="#scriptCardBody" style="cursor:pointer">
+            مشخصات و تست
         </div>
-        <div class="col-md-8 card">
+
+        <div class="collapse" id="scriptCardBody">
+            <div class="card-body" id="info">
+                <form action="{{ route('simpleWorkflow.scripts.update', $script->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label">{{ trans('Name') }}</label>
+                        <input type="text" class="form-control" value="{{ $script->id }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{ trans('Name') }}</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ $script->name }}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="executive_file" class="form-label">{{ trans('Executive File') }}</label>
+                        <select name="executive_file" id="executive_file" class="form-select select2">
+                            @foreach (File::files(base_path('packages/behin-simple-workflow/src/Controllers/Scripts')) as $file)
+                                <option value="{{ str_replace('.php', '', $file->getFilename()) }}"
+                                    {{ $script->executive_file . '.php' == $file->getFilename() ? 'selected' : '' }}>
+                                    {{ $file->getFilename() }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{ trans('Update') }}</button>
+                </form>
+
+                <form action="javascript:void(0)" method="POST" id="test-form" class="form-inline mt-3">
+                    @csrf
+                    <div class="form-group">
+                        <label for="caseId">{{ trans('fields.Case') }}</label>
+                        <input type="text" name="caseId" id="caseId" class="form-control" list="cases">
+                        <datalist id="cases">
+                            <option value="">{{ trans('fields.Choose') }}</option>
+                            @foreach (getCases() as $case)
+                                <option value="{{ $case->id }}">{{ $case->number }} {{ $case->process->name }}
+                                </option>
+                            @endforeach
+                        </datalist>
+                    </div>
+                    <button type="submit" class="btn btn-primary ml-2"
+                        onclick="test()">{{ trans('fields.Test') }}</button>
+                </form>
+
+                <h5 class="mt-3" dir="ltr">
+                    <pre style="text-align: left; white-space: pre;" dir="ltr">{{ trans('fields.Result') }}</pre>
+                </h5>
+                <div id="result" dir="ltr" style="text-align: left; white-space: pre;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
             @if ($executive_file_content)
                 <form action="javascript:void(0)" method="POST" id="content-form">
                     @csrf
@@ -94,7 +102,7 @@
                     <div id="editor" style="height: 80vh; width: 100%;font-size: 16px;">{{ $executive_file_content }}
                     </div>
                     <textarea name="executive_file_content" id="executive_file_content" class="form-control" rows="50"
-                        style="text-align: left; white-space: pre; font-family: Monospace; display: block" dir="ltr">{{ $executive_file_content }}</textarea>
+                        style="text-align: left; white-space: pre; font-family: Monospace; display: none" dir="ltr">{{ $executive_file_content }}</textarea>
                 </form>
                 <button class="btn btn-primary mt-3" onclick="saveContent()">{{ trans('fields.Save') }}</button>
             @else
@@ -109,10 +117,11 @@
                 </form>
             @endif
         </div>
-        <div class="col-md-12 card" dir="ltr">
+
+    </div>
+    <div class="col-md-12 card" dir="ltr">
 
 
-        </div>
     </div>
 @endsection
 
@@ -188,7 +197,8 @@
                 function(response) {
                     show_message(response.message || '{{ trans('fields.Success') }}');
                     if (response.id) {
-                        const editRoute = "{{ route('simpleWorkflow.scripts.edit', '__ID__') }}".replace('__ID__', response.id);
+                        const editRoute = "{{ route('simpleWorkflow.scripts.edit', '__ID__') }}".replace('__ID__',
+                            response.id);
                         window.location.href = editRoute;
                     }
                 },
@@ -204,6 +214,18 @@
         const editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/php");
+
+        // کلید میانبر کنترل بعلاوه اس برای ذخیره
+        editor.commands.addCommand({
+            name: "saveCommand",
+            bindKey: {
+                win: "Ctrl-S",
+                mac: "Command-S"
+            },
+            exec: function() {
+                saveContent();
+            }
+        });
 
         // فعال کردن autocomplete
         editor.setOptions({
