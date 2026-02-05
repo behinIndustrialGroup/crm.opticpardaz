@@ -157,8 +157,8 @@
 
     {{-- ACE Editor --}}
     <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.1/ace.js') }}></script>
-    <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.0/mode-php.js') }}></script>
-    <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.0/theme-monokai.js') }}></script>
+    <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.1/mode-php.js') }}></script>
+    <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.1/theme-monokai.js') }}></script>
     <script src={{ url('public/behin/behin-dist/plugins/ace/1.13.1/ext-language_tools.min.js') }}></script>
 
 
