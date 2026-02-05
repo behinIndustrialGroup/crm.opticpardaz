@@ -155,6 +155,12 @@
         src="{{ url('public/behin/behin-dist/plugins/autonumeric/autoNumeric.min.js') . '?' . config('app.version') }}">
     </script>
 
+    {{-- ACE Editor --}}
+    <script src={{ url('behin/behin-dist/plugins/ace/1.13.1/ace.js') }}></script>
+    <script src={{ url('behin/behin-dist/plugins/ace/1.23.0/mode-php.js') }}></script>
+    <script src={{ url('behin/behin-dist/plugins/ace/1.23.0/theme-monokai.js') }}></script>
+    <script src={{ url('behin/behin-dist/plugins/ace/1.13.1/ext-language_tools.min.js') }}></script>
+
 
 
     @yield('script_in_head')
