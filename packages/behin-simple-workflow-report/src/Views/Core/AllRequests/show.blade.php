@@ -107,6 +107,7 @@
                 <label for="">نام دستیار تعمیرکار</label>
                 <p>
                     @if ($case->deviceRepair?->repairman_assitant)
+                     {{ $case->deviceRepair?->repairman_assitant }}
                         @if (gettype($case->deviceRepair?->repairman_assitant) == 'string')
                             string
                         @elseif(gettype($case->deviceRepair?->repairman_assitant) == 'array')
