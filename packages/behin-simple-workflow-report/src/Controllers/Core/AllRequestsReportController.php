@@ -534,7 +534,7 @@ class AllRequestsReportController extends Controller
         $case->deviceRepair = Entities\Device_repair::where('case_number', $caseNumber)->first();
         $assistantIds = $this->extractIds($row->repairman_assitant ?? null);
         $assistantNames = $assistantIds->map(fn($id) => getUserInfo($id, (string) $id))->filter();
-        $case->deviceRepair->repairman_assitants = $assistantNames;
+        // $case->deviceRepair->repairman_assitants = $assistantNames;
         
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
         $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
@@ -544,6 +544,7 @@ class AllRequestsReportController extends Controller
 
         return view('SimpleWorkflowReportView::Core.AllRequests.show', [
             'case' => $case,
+            'assistants' => $assistantNames
         ]);
     }
 }

@@ -106,8 +106,8 @@
             <div class="col-sm-3">
                 <label for="">نام دستیار تعمیرکار</label>
                 <p>
-                    @if ($case->deviceRepair?->repairman_assitants)
-                     {{ $case->deviceRepair?->repairman_assitants }}
+                    @if ($assistants)
+                     {{ $assistants }}
                         {{-- @if (gettype($case->deviceRepair?->repairman_assitant) == 'string')
                             string
                         @elseif(gettype($case->deviceRepair?->repairman_assitant) == 'array')
