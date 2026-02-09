@@ -532,7 +532,7 @@ class AllRequestsReportController extends Controller
         $case->customer = Entities\Case_customer::where('case_number', $caseNumber)->first();
         $case->device = Entities\Devices::where('case_number', $caseNumber)->first();
         $case->deviceRepair = Entities\Device_repair::where('case_number', $caseNumber)->first();
-        $assistantIds = $this->extractIds($row->repairman_assitant ?? null);
+        $assistantIds = $this->extractIds($case->deviceRepair->repairman_assitant ?? null);
         $assistantNames = $assistantIds->map(fn($id) => getUserInfo($id, (string) $id))->filter();
         // $case->deviceRepair->repairman_assitants = $assistantNames;
         

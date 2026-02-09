@@ -107,7 +107,12 @@
                 <label for="">نام دستیار تعمیرکار</label>
                 <p>
                     @if ($assistants)
-                     {{ $assistants }}
+                      @foreach ($assistants as $assitant)
+                                {{ $assitant?->name }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
                         {{-- @if (gettype($case->deviceRepair?->repairman_assitant) == 'string')
                             string
                         @elseif(gettype($case->deviceRepair?->repairman_assitant) == 'array')
