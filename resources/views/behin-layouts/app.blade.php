@@ -124,6 +124,44 @@
         .show-more-btn:hover {
             text-decoration: underline;
         }
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+            /* ارتفاع form-control */
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px !important;
+        }
+
+        i::before {
+            font-family: "FontAwesome" !important;
+            /* یا نسخه‌ای که داری */
+            font-weight: 900;
+        }
+
+        i {
+            font-family: "Vazir", sans-serif !important;
+            /* فونت متن */
+            font-style: normal;
+            vertical-align: middle !important;
+        }
+
+        i::after {
+            font-family: "Vazirmatn", sans-serif;
+            margin-inline-start: 6px;
+            opacity: 0;
+            transition: opacity .2s ease;
+            white-space: nowrap;
+        }
+
+        /* hover موس */
+        i:hover::after {
+            opacity: 1;
+        }
     </style>
     @yield('style')
 
