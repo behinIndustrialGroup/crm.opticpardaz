@@ -249,7 +249,7 @@ class ViewModelController extends Controller
                 });
 
                 $rows = $rows->orderBy('updated_at', 'desc')
-                    ->take($max_number_of_rows)
+                    // ->take($max_number_of_rows)
                     ->get()->each(function ($row) use ($viewModel, $updateCondition, $deleteCondition) {
                         $row->show_as = $viewModel->show_as;
                         $row->alllow_update = self::userCanUpdateRow($row, $updateCondition);
