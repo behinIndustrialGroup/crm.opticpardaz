@@ -194,6 +194,7 @@ class ViewModelController extends Controller
     public function getRows(Request $request)
     {
         try {
+
             // $inbox = InboxController::getById($request->inbox_id);
             $case = CaseController::getById($request->case_id);
             $viewModel = self::getById($request->viewModel_id);
@@ -223,11 +224,11 @@ class ViewModelController extends Controller
 
             if ($viewModel->allow_read_row) {
                 if ($viewModel->show_rows_based_on == 'case_id') {
-                    $rows = $model::where('case_id', $case->id);
+                    $rows = $model::where('case_id', $case->id)->whereNull('deleted_at');
                 } elseif ($viewModel->show_rows_based_on == 'case_number') {
-                    $rows = $model::where('case_number', $case->number);
+                    $rows = $model::where('case_number', $case->number)->whereNull('deleted_at');
                 } else {
-                    $rows = $model::query();
+                    $rows = $model::query()->whereNull('deleted_at');
                 }
 
                 $rows = $rows->where(function ($query) use ($readCondition) {
@@ -252,12 +253,13 @@ class ViewModelController extends Controller
                     // ->take($max_number_of_rows)
                     ->get()->each(function ($row) use ($viewModel, $updateCondition, $deleteCondition) {
                         $row->show_as = $viewModel->show_as;
-                        $row->alllow_update = self::userCanUpdateRow($row, $updateCondition);
-                        $row->alllow_delete = self::userCanDeleteRow($row, $deleteCondition);
+                        $row->allow_update = self::userCanUpdateRow($row, $updateCondition);
+                        $row->allow_delete = self::userCanDeleteRow($row, $deleteCondition);
                     });
                 if ($viewModel->script_before_show_rows) {
                     $request->merge(['rows' => $rows]);
                     $rows = ScriptController::runFromView($request, $viewModel->script_before_show_rows);
+                    Log::info($rows);
                 }
 
                 foreach ($rows as $row) {
@@ -286,12 +288,12 @@ class ViewModelController extends Controller
                             }
                         }
                         $s .= "<td>";
-                        if ($row->alllow_update) {
-                            $s .= "<i class='material-icons btn btn-sm btn-success ml-1' onclick='open_view_model_form(`$viewModel->update_form`, `$viewModel->id`,`$row->id`, `$viewModel->api_key`)'>edit</i>";
+                        if ($row->allow_update) {
+                            $s .= "<i class='fa fa-edit btn btn-sm btn-success ml-1' onclick='open_view_model_form(`$viewModel->update_form`, `$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
                         }
 
-                        if ($row->alllow_delete) {
-                            $s .= "<i class='material-icons btn btn-sm btn-danger ml-1' onclick='delete_view_model_row(`$viewModel->id`,`$row->id`, `$viewModel->api_key`)'>delete</i>";
+                        if ($row->allow_delete) {
+                            $s .= "<i class='fa fa-trash btn btn-sm btn-danger ml-1' onclick='delete_view_model_row(`$viewModel->id`,`$row->id`, `$viewModel->api_key`)'></i>";
                         }
                         $s .= "</td>";
                         $s .= "</tr>";
@@ -304,7 +306,7 @@ class ViewModelController extends Controller
                             'viewModel_id' => $viewModel->id,
                         ]);
                         $s .= "<div class='card'>";
-                        if ($row->alllow_update) {
+                        if ($row->allow_update) {
                             $s .= FormController::open($request, $viewModel->update_form, false);
                         } else {
                             $s .= FormController::openReadForm($request, $viewModel->read_form, false);
@@ -321,12 +323,12 @@ class ViewModelController extends Controller
                 $btnLabel = trans('fields.Create new');
                 $s .= "<td colspan='{$colspan}'>";
                 $s .= "<button class='btn btn-sm btn-primary' onclick='open_view_model_create_new_form(`$viewModel->create_form`, `$viewModel->id`, `$viewModel->api_key`)'>";
-                $s .= "{$btnLabel}</button></td>";
+                $s .= "<i class='fa fa-plus' aria-hidden='true'></i>{$btnLabel}</button></td>";
                 $s .= "</tr>";
             }
             return $s;
         } catch (Exception $e) {
-            return '';//$e->getMessage();
+            return $e->getMessage();
         }
     }
 
