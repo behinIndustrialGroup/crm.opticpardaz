@@ -22,7 +22,7 @@
                 <p>{{ $case->customer->address }}</p>
             </div>
             <div class="col-sm-12">
-                <label for="لینک کوتاه مشاهده جزئیات پرونده توسط مشتری"></label>
+                <label for="">لینک کوتاه مشاهده جزئیات پرونده توسط مشتری</label>
                 {{ $case->getVariable('tracking_url') ?? 'ندارد' }}
             </div>
         </div>

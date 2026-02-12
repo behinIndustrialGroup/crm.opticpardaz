@@ -1,6 +1,6 @@
 <?php
 
-namespace Behin\SimpleWorkflow\Models\Core;
+namespace Behin\SimpleWorkflowReport\Models\Core;
 
 use Behin\SimpleWorkflow\Controllers\Core\FormController;
 use Behin\SimpleWorkflow\Controllers\Core\VariableController;
