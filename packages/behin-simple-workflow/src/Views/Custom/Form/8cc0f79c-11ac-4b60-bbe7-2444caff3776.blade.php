@@ -68,34 +68,43 @@
 
     @if (auth()->id())
         <div class="card">
-            <div class="card-header">
-                پیش فاکتور
-            </div>
-            <div class="card-body">
-                <table class="table table-striped table-bordered">
 
-                    <thead>
-                        <tr>
-                            <th>شرح کالا/خدمات</th>
-                            <th>قیمت واحد</th>
-                            <th>تعداد</th>
-                            <th>قیمت کل</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($case->preInvoiceItems as $preInvoiceItem)
+            <div class="card-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                data-bs-target="#preInvoiceBody" style="cursor: pointer;">
+
+                <span>پیش فاکتور</span>
+                <span id="toggleIcon">
+                    <i class="fa fa-plus"></i>
+                </span>
+            </div>
+
+            <div id="preInvoiceBody" class="collapse">
+                <div class="card-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
                             <tr>
-                                <td>{{ $preInvoiceItem->name ?? '' }}</td>
-                                <td>{{ number_format($preInvoiceItem->unit_price) ?? '' }}</td>
-                                <td>{{ $preInvoiceItem->number ?? '' }}</td>
-                                <td>{{ number_format($preInvoiceItem->price) ?? '' }}</td>
+                                <th>شرح کالا/خدمات</th>
+                                <th>قیمت واحد</th>
+                                <th>تعداد</th>
+                                <th>قیمت کل</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                        </thead>
+                        <tbody>
+                            @foreach ($case->preInvoiceItems as $preInvoiceItem)
+                                <tr>
+                                    <td>{{ $preInvoiceItem->name ?? '' }}</td>
+                                    <td>{{ number_format($preInvoiceItem->unit_price) ?? '' }}</td>
+                                    <td>{{ $preInvoiceItem->number ?? '' }}</td>
+                                    <td>{{ number_format($preInvoiceItem->price) ?? '' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
+
     @endif
 
     <div class="card">
@@ -142,3 +151,19 @@
         </div>
     @endif
 </div>
+
+
+<script>
+    const collapseElement = document.getElementById('preInvoiceBody');
+    const icon = document.getElementById('toggleIcon').querySelector('i');
+
+    collapseElement.addEventListener('show.bs.collapse', function () {
+        icon.classList.remove('fa-plus');
+        icon.classList.add('fa-minus');
+    });
+
+    collapseElement.addEventListener('hide.bs.collapse', function () {
+        icon.classList.remove('fa-minus');
+        icon.classList.add('fa-plus');
+    });
+</script>
