@@ -127,5 +127,5 @@ Route::name('simpleWorkflow.')->prefix('workflow')->middleware(['web', 'auth'])-
 });
 
 Route::get('workflow/process/start/{taskId}/{force?}/{redirect?}/{inDraft?}', [ ProcessController::class, 'start' ])->name('simpleWorkflow.process.start')->middleware('web');
-Route::get('workflow/inbox/view/{inboxId}', [ InboxController::class, 'view' ])->name('simpleWorkflow.inbox.view')->middleware(['web']);
+Route::any('workflow/inbox/view/{inboxId}', [ InboxController::class, 'view' ])->name('simpleWorkflow.inbox.view')->middleware(['web']);
 
