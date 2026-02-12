@@ -119,6 +119,10 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <label for="">بارگزاری رسید پرداخت</label>
+                    <input type="file" name="payment_receipt" id="" class="form-control">
+                </div>
             </div>
         </div>
 
