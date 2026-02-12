@@ -70,7 +70,7 @@
         <div class="card">
 
             <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse"
-                data-target="#preInvoiceBody" style="cursor: pointer;">
+                data-target="#preInvoiceBody" aria-expanded="false" style="cursor:pointer;">
 
                 <span>پیش فاکتور</span>
                 <span id="toggleIcon">
@@ -104,6 +104,7 @@
             </div>
 
         </div>
+
 
     @endif
 
@@ -152,18 +153,13 @@
     @endif
 </div>
 
-
 <script>
-    const collapseElement = document.getElementById('preInvoiceBody');
-    const icon = document.getElementById('toggleIcon').querySelector('i');
-
-    collapseElement.addEventListener('show.bs.collapse', function () {
-        icon.classList.remove('fa-plus');
-        icon.classList.add('fa-minus');
+    $('#preInvoiceBody').on('show.bs.collapse', function () {
+        $('#toggleIcon i').removeClass('fa-plus').addClass('fa-minus');
     });
 
-    collapseElement.addEventListener('hide.bs.collapse', function () {
-        icon.classList.remove('fa-minus');
-        icon.classList.add('fa-plus');
+    $('#preInvoiceBody').on('hide.bs.collapse', function () {
+        $('#toggleIcon i').removeClass('fa-minus').addClass('fa-plus');
     });
 </script>
+
