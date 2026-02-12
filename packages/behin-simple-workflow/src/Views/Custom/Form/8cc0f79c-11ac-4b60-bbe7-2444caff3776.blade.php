@@ -86,9 +86,9 @@
                         @foreach ($case->preInvoiceItems as $preInvoiceItem)
                             <tr>
                                 <td>{{ $preInvoiceItem->name ?? '' }}</td>
-                                <td>{{ $preInvoiceItem->unit_price ?? '' }}</td>
+                                <td>{{ number_format($preInvoiceItem->unit_price) ?? '' }}</td>
                                 <td>{{ $preInvoiceItem->number ?? '' }}</td>
-                                <td>{{ $preInvoiceItem->price ?? '' }}</td>
+                                <td>{{ number_format($preInvoiceItem->price) ?? '' }}</td>
                             </tr>
                         @endforeach
                     </tbody>
