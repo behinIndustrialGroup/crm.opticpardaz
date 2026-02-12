@@ -107,7 +107,7 @@
             <div class="card-header">
                 اطلاعات پرداخت
             </div>
-            <div class="card-body">
+            <div class="card-body row">
                 <div class="col-sm-6">
                     <label for="">مبلغ قابل پرداخت</label>
                     <div class="">
