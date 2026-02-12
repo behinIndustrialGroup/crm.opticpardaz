@@ -10,7 +10,7 @@
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
     $case->repairCosts = Entities\Repair_cost::where('case_number', $case->number)->get();
 
-    if(auth()->id() and request()->method == 'post'){
+    if (auth()->id() and request()->method == 'post') {
         $path = request()->file('payment_receipt');
         dd($path);
     }
@@ -127,8 +127,9 @@
                     <div class="col-sm-6">
                         <label for="">بارگزاری رسید پرداخت</label>
                         <input type="file" name="payment_receipt" id="" class="form-control">
+                        <input type="submit" name="submit" id="" value="ثبت">
+
                     </div>
-                    <input type="submit" name="submit" id="" value="ثبت">
                 </form>
             </div>
         </div>
