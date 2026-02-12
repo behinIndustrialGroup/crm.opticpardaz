@@ -154,8 +154,10 @@
     $('#preInvoiceHeader').on('click', function() {
         if ($('#preInvoiceBody').css('display') == 'none') {
             $('#preInvoiceBody').css('display', 'block');
+            $('#toggleIcon i').removeClass('fa-plus').addClass('fa-minus');
         } else {
             $('#preInvoiceBody').css('display', 'none');
+            $('#toggleIcon i').removeClass('fa-minus').addClass('fa-plus');
         }
     });
 </script>
