@@ -149,10 +149,12 @@
 </div>
 
 <script>
+    $('#preInvoiceBody').css('display', 'none');
+
     $('#preInvoiceHeader').on('click', function() {
-        if($('#preInvoiceBody').css('display') == 'none'){
+        if ($('#preInvoiceBody').css('display') == 'none') {
             $('#preInvoiceBody').css('display', 'block');
-        }else{
+        } else {
             $('#preInvoiceBody').css('display', 'none');
         }
     });
