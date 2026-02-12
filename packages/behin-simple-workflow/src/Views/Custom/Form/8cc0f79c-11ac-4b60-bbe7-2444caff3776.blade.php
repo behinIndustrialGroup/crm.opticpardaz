@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    @if (isset(Auth::id()))
+    @if (auth()->id())
         <div class="card">
             <div class="card-header">
                 پیش فاکتور
