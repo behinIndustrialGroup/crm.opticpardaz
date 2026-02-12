@@ -8,7 +8,7 @@
     $device = Devices::where('case_number', $case->number)->first();
     $case->extraDocs = Case_extra_docs::where('case_number', $case->number)->get();
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
-    $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
+    $case->repairCosts = Entities\Repair_cost::where('case_number', $case->number)->get();
 
 @endphp
 
