@@ -69,8 +69,8 @@
     @if (auth()->id())
         <div class="card">
 
-            <div class="card-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                data-bs-target="#preInvoiceBody" style="cursor: pointer;">
+            <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse"
+                data-target="#preInvoiceBody" style="cursor: pointer;">
 
                 <span>پیش فاکتور</span>
                 <span id="toggleIcon">
