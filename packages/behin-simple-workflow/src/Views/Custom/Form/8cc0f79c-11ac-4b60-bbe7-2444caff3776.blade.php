@@ -10,7 +10,6 @@
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
     $case->repairCosts = Entities\Repair_cost::where('case_number', $case->number)->get();
 
-        dd(request());
 
 @endphp
 
