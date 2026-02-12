@@ -127,8 +127,7 @@
                     <div class="col-sm-6">
                         <label for="">بارگزاری رسید پرداخت</label>
                         <input type="file" name="payment_receipt" id="" class="form-control">
-                        <input type="submit" name="submit" id="" value="ثبت">
-
+                        <button class="btn btn-sm btn-primary" onclick="uploadPaymentReceipt()">ثبت</button>
                     </div>
                 </form>
             </div>
@@ -194,4 +193,15 @@
             $('#toggleIcon i').removeClass('fa-minus').addClass('fa-plus');
         }
     });
+
+    function uploadPaymentReceipt() {
+        var fd = new FormData($('#form')[0]);
+        send_ajax_formdata_request(
+            '',
+            fd,
+            function(res){
+                console.log(res);
+            }
+        )
+    }
 </script>
