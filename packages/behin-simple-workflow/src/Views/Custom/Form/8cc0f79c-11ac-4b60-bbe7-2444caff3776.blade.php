@@ -2,9 +2,11 @@
     use Behin\SimpleWorkflow\Models\Entities\Case_customer;
     use Behin\SimpleWorkflow\Models\Entities\Devices;
     use Behin\SimpleWorkflow\Models\Entities\Case_extra_docs;
+    use Behin\SimpleWorkflow\Models\Entities\Pre_invoice_items;
     $customer = Case_customer::where('case_number', $case->number)->first();
     $device = Devices::where('case_number', $case->number)->first();
     $case->extraDocs = Case_extra_docs::where('case_number', $case->number)->get();
+    $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
 @endphp
 
 <div class="container">
@@ -63,6 +65,38 @@
 
         </div>
     </div>
+
+    @if (isset(Auth::id()))
+        <div class="card">
+            <div class="card-header">
+                پیش فاکتور
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th>شرح کالا/خدمات</th>
+                            <th>قیمت واحد</th>
+                            <th>تعداد</th>
+                            <th>قیمت کل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($case->preInvoiceItems as $preInvoiceItem)
+                            <tr>
+                                <td>{{ $preInviiceItem->name ?? '' }}</td>
+                                <td>{{ $preInviiceItem->unit_price ?? '' }}</td>
+                                <td>{{ $preInviiceItem->number ?? '' }}</td>
+                                <td>{{ $preInviiceItem->price ?? '' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    @endif
 
     <div class="card">
         <div class="card-header bg-warning">
