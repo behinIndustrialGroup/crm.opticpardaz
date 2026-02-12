@@ -10,6 +10,10 @@
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
     $case->repairCosts = Entities\Repair_cost::where('case_number', $case->number)->get();
 
+    if (isset(request())) {
+        dd(request());
+    }
+
 @endphp
 
 <div class="container">
@@ -119,10 +123,12 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <label for="">بارگزاری رسید پرداخت</label>
-                    <input type="file" name="payment_receipt" id="" class="form-control">
-                </div>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="col-sm-6">
+                        <label for="">بارگزاری رسید پرداخت</label>
+                        <input type="file" name="payment_receipt" id="" class="form-control">
+                    </div>
+                </form>
             </div>
         </div>
 
