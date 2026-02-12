@@ -107,12 +107,12 @@
                 <label for="">نام دستیار تعمیرکار</label>
                 <p>
                     @if ($assistants)
-                      @foreach ($assistants as $assitant)
-                                {{ $assitant?->name }}
-                                @if (!$loop->last)
-                                    ,
-                                @endif
-                            @endforeach
+                        @foreach ($assistants as $assitant)
+                            {{ $assitant?->name }}
+                            @if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
                         {{-- @if (gettype($case->deviceRepair?->repairman_assitant) == 'string')
                             string
                         @elseif(gettype($case->deviceRepair?->repairman_assitant) == 'array')
@@ -218,6 +218,38 @@
             @endforeach
         </div>
     </div>
+    @if (access('تفکیک هزینه ها در مشاهده جزئیات بیشتر هر پرونده'))
+        <div class="card">
+            <div class="card-header">
+                تفکیک هزینه ها و دستمزد ها و پاداش ها
+            </div>
+            <div class="card-body row table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>نوع تراکنش</th>
+                            <th>مبلغ</th>
+                            <th>توضیحات</th>
+                            <th>طرف حساب</th>
+                            <th>دسته بندی</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($case->transactions as $transaction)
+                            <tr>
+                                <td>{{ $transaction->transaction_type }}</td>
+                                <td>{{ $transaction->amount }}</td>
+                                <td>{{ $transaction->description }}</td>
+                                <td>{{ $transaction->counterparty }}</td>
+                                <td>{{ $transaction->catagory }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    @endif
     @php
         $fieldName = 'فایل های مرتبط با پرونده';
         $fieldDetails = getFieldDetailsByName($fieldName);
@@ -226,7 +258,6 @@
             (isset($case) and in_array($fieldDetails->type, ['datetime', 'date']))
                 ? $case->getVariable($fieldName . '_alt')
                 : null;
-
     @endphp
     <div class="">
         <p class="bg-warning text-center card">دقت داشته باشید این فایل های زیر به مشتری نمایش داده خواهد شد</p>

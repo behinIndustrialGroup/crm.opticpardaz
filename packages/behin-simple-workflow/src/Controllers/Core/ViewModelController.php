@@ -347,10 +347,13 @@ class ViewModelController extends Controller
             $row = $model::findOrNew($request->rowId);
 
             $isNew = !$row->exists;
-            $rows = $model::where('case_number', $case->number)->count();
-            if ($rows >= $viewModel->max_number_of_rows) {
-                return response(trans("حداکثر تعداد رکورد مجاز " . $viewModel->max_number_of_rows . " رکورد است"), 403);
+            if ($isNew) {
+                $rows = $model::where('case_number', $case->number)->count();
+                if ($rows >= $viewModel->max_number_of_rows) {
+                    return response(trans("حداکثر تعداد رکورد مجاز " . $viewModel->max_number_of_rows . " رکورد است"), 403);
+                }
             }
+
             $data = $request->all();
             // بررسی داینامیک فایل‌ها
             foreach ($request->allFiles() as $fieldName => $file) {

@@ -41,19 +41,23 @@
                 <div class="col-sm-3">
                     سریال: {{ $device->serial }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     تصویر اولیه:
                     <br>
-                    <a href="{{ url("public/$device->initial_pic") }}" download>
-                        <img src='{{ url("public/$device->initial_pic") }}' alt="" width="150">
-                    </a>
+                    @if (str_contains($device->initial_pic, 'http'))
+                        <a href="{{ $device->initial_pic }}" target="_blank" download>دانلود</a>
+                    @else
+                        <a href="{{ url('public/' . $device->initial_pic) }}" target="_blank" download>دانلود</a>
+                    @endif
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     تصویر پلاک دستگاه:
                     <br>
-                    <a href="{{ url("public/$device->plaque_pic") }}" download>
-                        <img src='{{ url("public/$device->plaque_pic") }}' alt="" width="150">
-                    </a>
+                    @if (str_contains($device->plaque_pic, 'http'))
+                        <a href="{{ $device->plaque_pic }}" target="_blank" download>دانلود</a>
+                    @else
+                        <a href="{{ url('public/' . $device->plaque_pic) }}" target="_blank" download>دانلود</a>
+                    @endif
                 </div>
             </div>
 
@@ -90,10 +94,8 @@
                             <tr>
                                 <td>{{ $doc->name }}</td>
                                 <td>
-                                    @if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp']))
-                                        <a href="{{ url('public/' . $doc->file) }}" target="_blank" download>
-                                            <img src="{{ url('public/' . $doc->file) }}" style="max-width:100px">
-                                        </a>
+                                    @if (str_contains($doc->file, 'http'))
+                                        <a href="{{ $doc->file }}" target="_blank" download>دانلود</a>
                                     @else
                                         <a href="{{ url('public/' . $doc->file) }}" target="_blank" download>دانلود</a>
                                     @endif

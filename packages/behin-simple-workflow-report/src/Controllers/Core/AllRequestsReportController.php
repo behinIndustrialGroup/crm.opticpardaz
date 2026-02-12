@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Behin\SimpleWorkflow\Models\Entities;
+use Behin\SimpleWorkflow\Models\Entities\Transactions;
 
 class AllRequestsReportController extends Controller
 {
@@ -203,7 +204,7 @@ class AllRequestsReportController extends Controller
             ->whereNull('c.deleted_at')
             ->where('c.process_id', '879e001c-59d5-4afb-958c-15ec7ff269d1')
             ->whereNotNull('c.number')
-            ->orderByDesc('c.number')
+            ->orderByDesc('c.created_at')
             ->groupBy('c.number');
     }
 
@@ -539,6 +540,7 @@ class AllRequestsReportController extends Controller
         $case->deviceRepairPics = Entities\Device_repair_pictures::where('case_number', $caseNumber)->get();
         $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
         $case->repairIncomes = Entities\Repair_incomes::where('case_number', $caseNumber)->get();
+        $case->transactions = Transactions::where('case_number', $caseNumber)->get();
         $case->extraDocs = Entities\Case_extra_docs::where('case_number', $caseNumber)->get();
 
 
