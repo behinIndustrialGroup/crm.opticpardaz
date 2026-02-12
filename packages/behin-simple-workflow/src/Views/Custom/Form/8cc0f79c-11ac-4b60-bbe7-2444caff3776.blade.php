@@ -1,4 +1,5 @@
 @php
+    use Behin\SimpleWorkflow\Models\Entities;
     use Behin\SimpleWorkflow\Models\Entities\Case_customer;
     use Behin\SimpleWorkflow\Models\Entities\Devices;
     use Behin\SimpleWorkflow\Models\Entities\Case_extra_docs;
@@ -7,6 +8,8 @@
     $device = Devices::where('case_number', $case->number)->first();
     $case->extraDocs = Case_extra_docs::where('case_number', $case->number)->get();
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
+    $case->repairCosts = Entities\Repair_cost::where('case_number', $caseNumber)->get();
+
 @endphp
 
 <div class="container">
@@ -97,6 +100,25 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                اطلاعات پرداخت
+            </div>
+            <div class="card-body">
+                <div class="col-sm-6">
+                    <label for="">مبلغ قابل پرداخت</label>
+                    <div class="">
+                        @foreach ($case->repairCosts as $cost)
+                            {{ number_format($cost->cost) ?? '' }}
+                            @if (!$loop->last)
+                                <br>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
 
