@@ -432,7 +432,7 @@ class ViewModelController extends Controller
                 }
             }
         } catch (Exception $th) {
-            return response($th->getMessage(), 500);
+            return $th;// response($th->getMessage() . 'line: '. $th->getLine(), 500);
         }
 
 

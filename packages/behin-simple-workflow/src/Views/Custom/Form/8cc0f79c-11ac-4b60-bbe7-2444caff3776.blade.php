@@ -4,19 +4,38 @@
     use Behin\SimpleWorkflow\Models\Entities\Devices;
     use Behin\SimpleWorkflow\Models\Entities\Case_extra_docs;
     use Behin\SimpleWorkflow\Models\Entities\Pre_invoice_items;
+    use BehinFileControl\Controllers\FileController;
     $customer = Case_customer::where('case_number', $case->number)->first();
     $device = Devices::where('case_number', $case->number)->first();
     $case->extraDocs = Case_extra_docs::where('case_number', $case->number)->get();
     $case->preInvoiceItems = Pre_invoice_items::where('case_number', $case->number)->get();
     $case->repairCosts = Entities\Repair_cost::where('case_number', $case->number)->get();
+    $case->repairIncome = Entities\Repair_incomes::where('case_number', $case->number)->first();
 
-    if (auth()->id() and request()->method == 'post') {
-        $path = request()->file('payment_receipt');
-        dd($path);
-    }
+    // if (auth()->id() and request()->method() == 'POST') {
+    //     $file = request()->file('payment_receipt');
+    //     $result = FileController::store($file);
+    //     if ($result['status'] == 200) {
+    //         $payment_receipt = $result['dir'];
+    //         Entities\Repair_incomes::create([
+    //             'case_id' => $case->id,
+    //             'case_number' => $case->number,
+    //             'payment_receipt' => $payment_receipt,
+    //             'payment_description' => 'آپلود شده توسط مشتری',
+    //         ]);
+    //         $sucess = "آپلود شد";
+    //     }
+    // }
 @endphp
 
 <div class="container">
+    <div class="card">
+        @isset($success)
+            <div class="alert alert-success">
+                {{ $success }}
+            </div>
+        @endisset
+    </div>
     <div class="card">
         <div class="card-header bg-success">
             مشخصات مشتری
@@ -29,7 +48,6 @@
                 شماره پرونده: {{ $case->number }}
             </div>
         </div>
-
     </div>
 
     <div class="card">
@@ -107,7 +125,7 @@
             </div>
         </div>
 
-        <div class="card">
+        {{-- <div class="card">
             <div class="card-header">
                 اطلاعات پرداخت
             </div>
@@ -131,7 +149,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
 
 
     @endif
@@ -196,12 +214,19 @@
 
     function uploadPaymentReceipt() {
         var fd = new FormData($('#form')[0]);
+        fd.append('api_key', 'DqsssZL3Ar4bxMbJ');
+        fd.append('rowId', '{{ $case->repairIncome?->id ?? '' }}');
+        fd.append('caseId', '{{ $case->id }}');
+        fd.append('viewModelId', '63fbee59-4624-4111-b2dc-ff3e5801b72e');
+        var url = "{{ route('simpleWorkflow.view-model.update-record') }}"
         send_ajax_formdata_request(
-            '',
+            url,
             fd,
-            function(res){
+            function(res) {
                 console.log(res);
             }
         )
     }
+
+    
 </script>
