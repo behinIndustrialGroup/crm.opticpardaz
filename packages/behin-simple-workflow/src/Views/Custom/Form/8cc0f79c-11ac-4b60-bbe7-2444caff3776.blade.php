@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        {{-- <div class="card">
+        <div class="card">
             <div class="card-header">
                 اطلاعات پرداخت
             </div>
@@ -149,7 +149,7 @@
                     </div>
                 </form>
             </div>
-        </div> --}}
+        </div>
 
 
     @endif
